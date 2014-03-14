@@ -1,0 +1,52 @@
+package cn.yws.longan.service.impl.share;
+
+import java.util.Date;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.common.util.SpringUtil;
+import cn.yws.longan.dao.share.ApplyDao;
+import cn.yws.longan.domain.share.Apply;
+import cn.yws.longan.service.share.ApplyListener;
+import cn.yws.longan.service.share.ShareService;
+import cn.yws.longan.web.model.share.ShareModel;
+
+@Service("share.shareService")
+public class ShareServiceImpl implements ShareService{
+	@Resource(name="share.applyDao")
+	private ApplyDao applyD;
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void apply(Apply a) throws Exception {
+		a.setApplyDate(new Date());
+		applyD.save(a);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void applyPass(ShareModel model) throws Exception {
+		Apply a=applyD.get(model.getId());
+		if(a.getState()==Apply.WORKING){
+			a.setState(Apply.PASSED);
+		}
+		
+		String name=a.getModule().getBeanName();
+		ApplyListener listener=(ApplyListener)SpringUtil.getBean(name);
+		listener.applyPass(a);
+		
+		a.setPassDate(new Date());
+	}
+
+	public void applyList(ShareModel model) throws Exception {
+		Finder f=new Finder("from Apply as t order by t.applyDate desc");
+		f.setPage(model.getPage());
+		f.setPageSize(model.getPageSize());
+		
+		model.setApplys(applyD.pageFind(f));
+		model.setTotalCount(f.getTotalSize());
+	}
+}

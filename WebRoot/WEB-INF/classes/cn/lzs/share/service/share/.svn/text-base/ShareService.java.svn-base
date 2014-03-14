@@ -1,0 +1,13 @@
+package cn.yws.longan.service.share;
+
+import cn.yws.longan.domain.share.Apply;
+import cn.yws.longan.web.model.share.ShareModel;
+
+public interface ShareService {
+	
+	public void applyList(ShareModel model)throws Exception;
+	
+	public void apply(Apply a) throws Exception;
+	
+	public void applyPass(ShareModel model)throws Exception;
+}

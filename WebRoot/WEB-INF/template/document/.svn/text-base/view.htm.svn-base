@@ -1,0 +1,169 @@
+<@LONGAN.header title="${doc.title}|雨文|雨无声分享平台|集成显卡2011">
+	<script type="text/javascript" src="${base}/resource/component/flexpaper/js/flexpaper_flash.js"></script>
+	<link rel="stylesheet" href="${base}/resource/css/document.css"/>
+</@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td width="700px" valign="top">
+					<table width="100%">
+						<tr>
+							<td widt="90%"><h3><span class='${doc.fileType}'></span>${doc.title}</h3></td>
+							<td width="105"><#if doc.ifUpload&&doc.ifPass><a href="${base}/document/download/${doc.downName}/${doc.id}">
+								<span class="VIEW_DOWN" title="下载这个文件"></span>
+							</a></#if></td>
+							<td width="46">
+								<a href="#" id="REPORT" title="举报这个文档！(已经有${doc.report}人举报)">
+									<span class="REPORT"></span>
+								</a>
+							</td>
+						</tr>
+					</table>
+					<hr />
+					<table width="90%">
+						<tr>
+							<td width="50%">上传者:<a href="${base}/user/info?id=${doc.user.id}" title="${doc.user.nick}">${doc.user.nick}</a></td>
+							<td>上传时间:${doc.uploadTime}</td>
+						</tr>
+						<tr>
+							<td>分类:${doc.category.title}</td>
+							<td>文件大小:<#if doc.ifUpload>${doc.fileSize}<#else><span class="ERROR">还没上传</span></#if></td>
+						</tr>
+						<tr>
+							<td>下载积分:${doc.downPrice}</td>
+							<td>下载次数:${doc.downNumber}</td>
+						</tr>
+						<tr>
+							<td>可否下载:<span class='<#if doc.ifPass>TRUE<#else>FALSE</#if>'></span></td>
+							<td>可评论:<span class='<#if doc.canComment>TRUE<#else>FALSE</#if>'></span></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p>说明:</p>
+								<p style="padding-left:10px;">${doc.htmlInfomation}</p>
+							</td>
+						</tr>
+					</table>
+					<#if canRead>
+					<br />
+					<div style="width:90%;margin-left:15px;display:none;">
+						<span>共<span id="currentPage">1</span>&nbsp;/&nbsp;${doc.pageNumber}页</span>
+						<a href="javascript:;" onclick="prePage();">上一页</a>
+						<a href="javascript:;" onclick="nextPage();">下一页</a>
+					</div>
+					<div id="viewerPlaceHolder" style="width:90%;margin-left:15px;margin-top:5px; height:600px;">
+						
+						正在加载...
+				        <script type="text/javascript">
+				     		var fp = new FlexPaperViewer(	
+									 '${base}/resource/component/flexpaper/FlexPaperViewer',
+									 'viewerPlaceHolder', { config : {
+									 SwfFile : escape('{${base}${doc.swf?default('')}[*,0].swf,${doc.pageNumber}}'),
+									 //SwfFile : '${base}${doc.swfPath}',
+									 Scale : 6, 
+									 ZoomTransition : 'easeOut',
+									 ZoomTime : 0.5,
+									 ZoomInterval : 0.2,
+									 FitPageOnLoad : true,
+									 FitWidthOnLoad : true,
+									 PrintEnabled : true,
+									 FullScreenAsMaxWindow : false,
+									 ProgressiveLoading : true,
+									 MinZoomSize : 0.5,
+									 MaxZoomSize : 3,
+									 SearchMatchAll : false,
+									 InitViewMode : 'Portrait',
+									 
+									 ViewModeToolsVisible : true,
+									 ZoomToolsVisible : true,
+									 NavToolsVisible : true,
+									 CursorToolsVisible : false,
+									 SearchToolsVisible : true,
+			  						
+			  						 localeChain: 'zh_CN'
+									 }});
+							
+							var current=1;
+							var max=${doc.pageNumber};
+							var path="${base}${doc.swf}";
+							
+							function prePage(){
+								if (current <= 1) {
+									alert("已经是第一页了！");
+									return ;
+								}
+								current--;
+								loadSWF();
+							}
+							function nextPage(){
+								if (current>max) {
+									alert("已经是最后一页了！");
+									return ;
+								}
+								current++;
+								loadSWF();
+							}
+							
+							function loadSWF(){
+								getDocViewer().loadSwf(path+current+".swf");
+							}
+				        </script>
+					</div>
+					<#else>
+					<div style="margin:20px 0 8px;background-color:#ccc;">
+						暂不提供在线阅读!
+					</div>				
+					</#if>
+					<br />
+					<!--下载记录-->
+					<div class="comment">
+						<h4>谁下载过此文档</h4>
+						<div id="down_log_div"></div>
+					</div>
+					<br />
+					<!--评论区-->
+					<div class="comment">
+						<h4>评论区</h4>
+						<div id="comment_div">
+							
+						</div>
+						<#if !doc.canComment>
+						<div>这个文档不能评论！</div>
+						<#else> 
+						<#if Session.login_longan??>
+						<div class="input">
+							<textarea id="input_area" class="mini_input" onkeyup="Document.checkLength();" style="display: inline-block; height: 20px;">我要评论...</textarea>
+							<div id="submit_input" class="submit_div" style="display: none;">
+								<button id="commentGo">发表</button>
+								<span id="input_tip">0/140</span>
+								<a id="commentExit" href="javascript:;">取消</a>&nbsp;&nbsp;
+								<label id="input_label" class="ERROR"></label>
+							</div>
+						</div>
+						<#else>
+						<div>请先登录再发表评论！</div>
+						</#if>
+						</#if>
+					</div>
+				</td>
+				<td valign="top">
+					<div style="width:250px;margin:15px 0 0 10px;">
+						<@LONGAN.hotDoc/>
+					</div>
+					<div style="width:250px;margin:0px 0 0 10px;">
+						<@LONGAN.newDoc/>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br />
+	<script>
+		$(document).ready(function(){
+			$("#REPORT").click(function(){Document.report();});
+			Document.initComment(${doc.id});
+			Document.getDownlogs();
+		});
+	</script>
+</@LONGAN.body>

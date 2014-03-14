@@ -1,0 +1,209 @@
+<#--
+	验证的宏，使用的是：jquery.validationEngine.js
+	传递Form表单的ID
+-->
+<#macro validate formId="">
+	<link rel="stylesheet" href="${base}/resource/component/validation/validationEngine.css" type="text/css"/>
+    <script src="${base}/resource/component/validation/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+    <script src="${base}/resource/component/validation/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(document).ready(function(){
+            $('${formId}').validationEngine();
+        });
+	</script>
+</#macro>
+
+<#--
+	上传组件的宏，使用的是DIY的flash
+-->
+<#macro upload doc_id="0">
+	<div class="container" align="left" style="padding-top:0;">
+	  <object id="longan" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="500" height="65">
+	    <param name="movie" value="${base}/resource/component/upload/longan.swf" />
+	    <param name="quality" value="high" />
+		<param name="bgcolor" value="#fdf7f7" />
+	    <embed src="${base}/resource/component/upload/longan.swf" id="longan" bgcolor="#bee2c2" name="longan" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="500" height="65" ></embed>
+	  </object>
+	</div>
+	<div id="debug" style=" overflow:auto;width:500px; margin:0px;border:1px solid #92cf28; font-size:12px;text-align:left;min-height:100px;"></div>
+	<script type="text/javascript" src="${base}/resource/component/upload/swfobject.js"></script>
+	<script language="JavaScript" type="text/javascript">
+		function getFlashMovie() {
+			var movieName="longan";
+		  	 if (window.document[movieName]){
+			    return window.document[movieName];
+			  }else if (navigator.appName.indexOf("Microsoft")==-1){
+			    if (document.embeds && document.embeds[movieName])
+			    return document.embeds[movieName];
+			  }else{
+			    return document.getElementById(movieName);
+			  }
+		}
+		
+		var setting={
+			url:"${base}/document/upload;jsessionid=${sessionID}",
+			fileTag:"select:*.txt;*.doc;*.docx;*.xls;*.ppt;*.rar;*.zip",
+			fileExt:"${allowExt}",//可以上传的文件类型*.txt;*.doc;*.docx;*.xls;*.ppt;*.rar;*.zip
+			fileName:"upload_file",//file
+			maxFileNumber:1,
+			maxSize:${maxUploadSize},//最大上传文件大小
+			logoText:"欢迎使用Longan上传工具！",//提示信息
+			params:"doc_id=${doc_id}&flash=1",//参数，格式：doc_id=1
+			response:"File.response",//返回数据时回调
+			debug:true //debug模式
+		}
+		//debug模式下的回调函数，名字不能更改
+		function longan_debug(s){
+			document.getElementById("debug").innerHTML+=s;
+		}
+		function isDebug(){
+			if(setting.debug){
+				document.write('<div id="debug" style="width:800px; margin:0 auto;border:1px solid #92cf28; font-size:12px;text-align:left;min-height:100px;"></div>');
+			}
+		}
+		//初始化上传组件
+		$(document).ready(function(){
+			File.init();});
+	</script>
+</#macro>
+
+<#--
+	上传组件的宏，使用的是DIY的flash
+	
+	这个的产生原因是  upload 不能在ie 中正常工作，不过问题已经解决
+	是因为 object 没有添加 相应的 id 与 name 属性
+-->
+<#macro upload2 doc_id="0">
+	<script language="JavaScript" type="text/javascript">
+		function getFlashMovie(movieName) {
+			  if (window.document[movieName]){
+			    return window.document[movieName];
+			  }else if (navigator.appName.indexOf("Microsoft")==-1){
+			    if (document.embeds && document.embeds[movieName])
+			    return document.embeds[movieName];
+			  }else{
+			    return document.getElementById(movieName);
+			  }
+		}
+		
+		var setting={
+			url:"${base}/document/upload;jsessionid=${sessionID}",
+			fileTag:"select:*.txt;*.doc;*.docx;*.xls;*.ppt;*.rar;*.zip",
+			fileExt:"${allowExt}",//可以上传的文件类型*.txt;*.doc;*.docx;*.xls;*.ppt;*.rar;*.zip
+			fileName:"upload_file",//file
+			maxFileNumber:1,
+			maxSize:${maxUploadSize},//最大上传文件大小
+			logoText:"欢迎使用Longan上传工具！",//提示信息
+			params:"doc_id=${doc_id}&flash=1",//参数，格式：doc_id=1
+			response:"File.response",//返回数据时回调
+			debug:true //debug模式
+		}
+		//debug模式下的回调函数，名字不能更改
+		function longan_debug(s){
+			document.getElementById("debug").innerHTML+=s;
+		}
+		//初始化上传组件
+		$(document).ready(function(){
+			File.init();
+		});
+	</script>
+	<script type="text/javascript" src="${base}/resource/component/upload/swfobject.js"></script>
+    <script type="text/javascript">
+        var swfVersionStr = "10.0.0";
+        var flashvars = {};
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#fdf7f7";
+        params.allowscriptaccess = "sameDomain";
+        params.allowfullscreen = "true";
+        var attributes = {};
+        attributes.id = "longan";
+        attributes.name = "longan";
+        attributes.align = "middle";
+        swfobject.embedSWF(
+            "${base}/resource/component/upload/longan.swf", "flashContent", 
+            "500", "65", 
+            swfVersionStr, "", 
+            flashvars, params, attributes);
+		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+    </script>
+	<div id="flashContent">
+    	<p>
+        	To view this page ensure that Adobe Flash Player version 
+			10.0.0 or greater is installed. 
+		</p>
+		<script type="text/javascript"> 
+			var pageHost = ((document.location.protocol == "https:") ? "https://" :	"http://"); 
+			document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+							+ pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+		</script> 
+    </div>
+	<div id="debug" style=" overflow:auto;width:500px; margin:0px;border:1px solid #92cf28; font-size:12px;text-align:left;min-height:100px;"></div>
+</#macro>
+
+<#--
+首页图片切换
+-->
+<#macro indexImage>
+<div class="PICTURE" style="text-align:center;">
+<script src="${base}/resource/js/longan.image.js" type="text/javascript"></script>
+<div style="width:935px;height:285px;overflow:hidden;margin:0 auto;">
+	<span class="BIG_LEFT"></span>
+	<div id="index_img" style="width:935px;height:285px;position:relative;overflow:hidden;">
+		<#assign pic_num=tipsList?size>
+		<#list tipsList as t>
+		<a href="${t.url}" index="${pic_num}" class="BIG_PIC" style="z-index:${pic_num};display:;left:0px;">
+			<img width="935px" height="285px" src="${base}${t.imgPath}"/>
+		</a>
+		<#assign pic_num=pic_num-1>		
+		</#list>
+	</div>
+	<span class="BIG_RIGHT"></span>
+	<div class="BIG_MENU"></div>
+</div>
+<script>
+	$(document).ready(function(){Img.init();});
+</script>
+</div>
+</#macro>
+
+<#--加入artDialog-->
+<#macro artDialog>
+<link href="${base}/resource/component/artDialog5.0/skins/blue.css" rel="stylesheet" />
+<script src="${base}/resource/component/artDialog5.0/jquery.artDialog.min.js"></script>
+<script src="${base}/resource/component/artDialog5.0/artDialog.plugins.min.js"></script>
+<script>
+//定义一下artDialog的常量
+(function (d) {
+	d['okValue'] = '确定';
+	d['cancelValue'] = '取消';
+	d['title'] = '雨无声分享平台提醒你';
+	// [more..]
+})($.dialog.defaults);
+</script>
+</#macro>
+
+<#--加入时间选择器-->
+<#macro datePicker>
+<script src="${base}/resource/component/DatePicker/WdatePicker.js"></script>
+</#macro>
+
+<#--kindEditor编辑器-->
+<#macro editor id="content">
+<script src="${base}/resource/component/kindeditor/kindeditor-min.js"></script>
+<script src="${base}/resource/component/kindeditor/lang/zh_CN.js"></script>
+<script>
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('#${id}', {
+			resizeType : 1,
+			allowPreviewEmoticons : false,
+			allowImageUpload : false,
+			items : [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image','flash', 'link']
+		});
+	});
+</script>
+</#macro>

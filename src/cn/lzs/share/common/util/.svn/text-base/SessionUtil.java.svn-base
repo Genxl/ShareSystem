@@ -1,0 +1,159 @@
+package cn.yws.longan.common.util;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
+
+import cn.yws.longan.common.Constant;
+import cn.yws.longan.common.PageModel;
+import cn.yws.longan.common.exception.Exceptions;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.admin.Admin;
+
+/**
+ * @项目名称 :wild
+ * @文件名称 :SessionUtil.java
+ * @所在包 :cn.wild.common.util
+ * @功能描述 :
+ *		session 的操作
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-10-23
+ * @修改记录 :
+ */
+public class SessionUtil {
+
+	public static void put(HttpServletRequest request,String key,Object value){
+		HttpSession session=request.getSession();
+		session.setAttribute(key, value);
+	}
+	
+	public static Object get(HttpServletRequest request,String key){
+		HttpSession session=request.getSession();
+		return session.getAttribute(key);
+	}
+	
+	/**
+	 * 获取登录后的用户
+	 *	@param request
+	 *	@return
+	 *  @date :2011-12-7
+	 */
+	public static User getUser(HttpServletRequest request){
+		return (User)get(request,Constant.LOGIN_USER);
+	}
+	
+	public static User checkLogin(HttpServletRequest request)throws Exception{
+		User u=getUser(request);
+		if(u==null)
+			throw new Exception(Exceptions.NOT_LOGIN);
+		return u;
+	}
+	
+	public static void clearUser(HttpServletRequest request){
+		HttpSession session=request.getSession();
+		session.removeAttribute(Constant.LOGIN_USER);
+	}
+	
+	/**
+	 * 获取登录的管理员
+	 *	@param request
+	 *	@return
+	 *  @date :2012-1-4
+	 */
+	public static Admin getAdmin(HttpServletRequest request){
+		return (Admin)get(request,Constant.ADMIN);
+	}
+	public static Admin checkAdmin(HttpServletRequest request)throws Exception{
+		Admin u=getAdmin(request);
+		if(u==null)
+			throw new Exception(Exceptions.NOT_LOGIN);
+		return u;
+	}
+	public static void clearAdmin(HttpServletRequest request){
+		HttpSession session=request.getSession();
+		session.removeAttribute(Constant.ADMIN);
+	}
+	
+	/**
+	 * 将request 路径与参数列表 添加到 pageModel 中，方便分页。
+	 *	@param model
+	 *	@param request
+	 *  @date :2011-12-13
+	 */
+	public static void bindPage(PageModel model,HttpServletRequest request){
+		model.setActionName(request.getRequestURI());
+		model.setParamMap(request.getParameterMap());
+	}
+	
+	/**
+	 * 设置一下  response的编码
+	 *	@param response
+	 *  @date :2011-12-24
+	 */
+	public static void initResponse(HttpServletResponse response){
+		response.setContentType("text/html;charset=UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+	}
+	
+	/**
+	 * 对response发送json数据<br />
+	 * 格式： error："0","message":""<br />
+	 * 
+	 *	@param response
+	 *	@param isError
+	 *	@param info
+	 *  @date :2011-12-24
+	 */
+	public static void json(HttpServletResponse response,int isError,String info){
+		initResponse(response);
+		PrintWriter writer = null;
+		try{
+			writer=response.getWriter();
+			JSONObject obj = new JSONObject();
+			obj.put("error", isError);
+			obj.put("message",info);
+			writer.write(obj.toJSONString());
+		} catch (IOException e) {
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+	
+	/**
+	 * 当需要登录才能进行的操作时，这个会保存这个URL网址，当用户登录后，就会转到这个页面
+	 *	@param request
+	 *  @date :2011-12-28
+	 */
+	public static void bindLoginUrl(HttpServletRequest request){
+		String url=request.getRequestURL()+"?"+request.getQueryString();
+		put(request, Constant.BEFORE_LOGIN, url);
+		System.out.println("已经标记！---------------》"+url);
+	}
+	
+	/**
+	 * 获取登录前的页面，如果没有，就返回 index
+	 *	@param request
+	 *	@return
+	 *  @date :2011-12-28
+	 */
+	public static String getLoginUrl(HttpServletRequest request){
+		HttpSession session=request.getSession();
+		String url=(String)session.getAttribute(Constant.BEFORE_LOGIN);
+		if(url==null)
+			url="/";
+		else{
+			session.removeAttribute(Constant.BEFORE_LOGIN);
+		}
+		if(url.indexOf("/longansss")>-1)
+			url=url.replace("/longan", "");
+		return url;
+	}
+	
+}

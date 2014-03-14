@@ -1,0 +1,64 @@
+<@LONGAN.header title="我的文档列表|雨文|雨无声分享平台|集成显卡2011"></@LONGAN.header>
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+<@LONGAN.body>
+	<@LONGAN.personal index=1>
+		<div style=" text-align:center;">
+			<h3>我的文档列表</h3>
+		</div>
+		<#if model.documents?size gt 0>
+		<table width="800" align="center" cellspacing="0" border="1" bordercolor="#cecece" style="border-collapse:collapse">
+			<thead align="center">
+				<tr>
+					<th width="300">标题</th>
+					<th width="80">分类</th>
+					<th width="30">精华</th>
+					<th width="30">审核</th>
+					<th width="50">已上传</th>
+					<th width="40">积分</th>
+					<th width="50">大小</th>
+					<th width="50">下载数</th>
+					<th width="50">阅读数</th>
+					<th width="85">更新时间</th>
+					<th width="75">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+		      <#setting number_format="0">
+		      <#list model.documents as d>
+		      <tr align="center" id="doc_${d.id}">
+		      	<td align="left">
+		      		<div>
+			      		<span class='${d.fileType}'></span>
+						<a href='${base}/document/view?id=${d.id}' target="_blank" title="${d.title}">
+							${(d.title)?html}
+							<!--<#if d.title?length gt 16>${d.title[0..15]}..<#else>${d.title}</#if>-->
+						</a>
+					</div>
+					<div class="tag">&nbsp;&nbsp;${d.tag}</div>
+				</td>
+				<td align="left">${d.category.title?default('')}</td>
+				 <td><span class='<#if d.ifGood>TRUE<#else>FALSE</#if>'></span></td>
+				 <td><span class='<#if d.ifPass>TRUE<#else>FALSE</#if>'></span></td>
+				 <td><span class='<#if d.ifUpload>TRUE<#else>FALSE</#if>'></span></td>
+				 <td>${d.downPrice}</td>
+				 <td>${d.fileSize}</td>
+				 <td>${d.downNumber}</td>
+				 <td>${d.readNumber}</td>
+				 <td>${d.uploadTime?string('yyyy-MM-dd')}</td>
+				  <td align="left">
+				 	<a href="javascript:User.delDoc(${d.id});"><span class="FILE_DEL" title="删除"></span></a>
+					<a href="${base}/document/new?doc_id=${d.id}"><span class="FILE_EDIT" title="编辑(上传)"></span></a>
+					<#if d.ifUpload><a href="${base}/document/download/${d.downName}/${d.id}"><span class="FILE_DOWN" title="下载这个文件"></span></a></#if>
+				</td>
+		      </tr>
+			  </#list>
+			</tbody>
+	    </table>
+		<div class="PAGE" style="text-align:center; margin:10px 0 10px 0;">
+			${model.pageInfo}<span class='info'>,用时${model.useTime}毫秒</span>
+		</div>
+		<#else>
+		<div>还没有上传过文档！<a href="${base}/document/new">马上上传</a></div>
+		</#if>
+	</@LONGAN.personal>	
+</@LONGAN.body>

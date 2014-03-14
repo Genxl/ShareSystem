@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" default-autowire="byName" >
+     <!-- default-lazy-init="true" -->      
+  	<!-- Enable @Transactional support -->
+	<context:annotation-config />
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/longan?useUnicode=true&amp;characterEncoding=utf8" />
+		<property name="username" value="root" />
+		<property name="password" value="XXnewgxu_~" />
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+	 <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="hibernateProperties">
+			<value>
+			hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+			hibernate.show_sql=true
+			hibernate.format_sql=false
+			<!--hibernate.hbm2ddl.auto=update-->
+			hibernate.jdbc.batch_size=20
+			<!--hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider-->
+			<!-- cache.use_second_level_cache=true
+			hibernate.search.default.directory_provider=org.hibernate.search.store.FSDirectoryProvider
+		 	hibernate.search.default.indexBase=E:/lucene/index
+		 	 -->
+			</value>
+		</property>
+		<!-- - 
+		<property name="cacheProvider">
+			<ref local="cacheProvider"/>
+		</property>-->
+		<!-- 扫描JPA类的包 -->
+        <property name="packagesToScan" value="cn.yws.longan.domain"/>
+	</bean>
+	<!-- 事务管理 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 将事务管理加到标有 @Transactional 的类或者方法上 -->
+	<tx:annotation-driven  transaction-manager="transactionManager"/>
+	
+	<!-- 扫描 navigatexp 包 -->
+	<context:component-scan base-package="cn.yws.longan" />
+	
+	<!-- 加载Spring的ApplicationContext -->
+	<bean class="cn.yws.longan.common.util.SpringUtil"/>
+</beans>

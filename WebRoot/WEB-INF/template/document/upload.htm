@@ -1,0 +1,23 @@
+<@LONGAN.header title="上传文件|学文|学文分享平台"></@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT">
+		<h4>上传文档</h4>
+		<p style="color:#d40707;font-weight:bold;font-size:18px;">
+			${error_message}
+		</p>
+		<p>
+			文档：${doc.title?default('')}<br />
+			添加日期:${doc.uploadTime?default('')}<br />
+			用户：${doc.user.name?default('')}<br />
+		</p>
+		<#if doc.ifUpload>
+			<p style="color:#d40707">
+				这个文档已经有了文件，如果现在上传新的文件，将会删除旧的文件。
+			</p>
+		</#if>
+		<form action="${base}/document/upload" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="doc_id" value="${doc.id}"/>
+			<input type="file" name="upload_file" /> <input type="submit" value="Submit" />
+		</form>
+	</div>	
+</@LONGAN.body>

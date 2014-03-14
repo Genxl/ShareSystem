@@ -1,0 +1,64 @@
+<div class="pageHeader">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+			<td width="30%">
+				&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="text-align:right;" width="69%">
+				<form onsubmit="return navTabSearch(this);" action="user/list" method="post">
+					<div class="searchBar">
+						  <input type="text" name="key"  value="${model.key}">
+						  <input type="submit" name="Submit" value="用户搜索">
+						  <a href="user/list?page=1" target="navTab" rel="user_list" title="Users概览">查看全部用户</a>
+					</div>
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="pageContent">
+	<table class="table" width="1000"  border="1" layoutH="48" align="center" cellspacing="0" bordercolor="#999999" style="border-collapse:collapse">
+		<thead>
+			<tr>
+				<th width="80">操作</th>
+				<th width="50">ID</th>
+				<th width="100">用户名</th>
+				<th width="150">昵称</th>
+				<th width="60">可登录</th>
+				<th width="50">积分</th>
+				<th width="60">登录次数</th>
+				<th width="150">最后登录</th>
+				<th width="60">文件数</th>
+				<th width="80">已用空间</th>
+				<th width="150">注册时间</th>
+			</tr>
+		</thead>
+		<tbody>
+      <#setting number_format="0">
+      <#list model.users as d>
+      <tr align="center">
+      	 <td>
+      	 	<a href="${base}/ad_min/user/edit?id=${d.id}" target="dialog" fresh="false" width="300" height="220" title="[编辑]${d.name}" rel="rank_${d.id}">编辑</a>
+		 	&nbsp;|&nbsp;<a href="${base}/ad_min/user/lock?id=${d.id}" target="ajaxTodo" title="这个是对用户锁定/解锁操作，用户锁定后不能登录，执行吗?"><#if d.state==1>解锁<#else>锁定</#if></a>
+		</td>
+      	 <td>${d.id}</td>
+		 <td>${d.name}</td>
+		 <td>${d.nick}</td>
+		 <td><span class='<#if d.state==0>TRUE<#else>FALSE</#if>'></span></td>
+		 <td>${d.integral}</td>
+		 <td>${d.loginTimes}</td>
+		 <td>${d.lastLoginTime}</td>
+		 <td>${d.docNumber}</td>
+		 <td>${d.fileSize}</td>
+		 <td>${d.joinTime}</td>
+      </tr>
+	</#list>
+	</tbody>
+    </table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>共${model.totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="${model.totalCount}" numPerPage="${model.pageSize}" pageNumShown="16" currentPage="${model.page}"></div>
+	</div>
+</div>

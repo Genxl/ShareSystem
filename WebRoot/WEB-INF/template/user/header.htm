@@ -1,0 +1,24 @@
+<@LONGAN.header title="修改头像|学文|学文分享平台|"></@LONGAN.header>
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+<@LONGAN.body>
+	<@LONGAN.personal index=2>
+		<div style="border-bottom:1px solid #cecece; text-align:center;">
+			<h3>上传头像</h3>
+		</div>
+		<br />
+		<div class="CENTER">
+			<img src="${base}/resource/header/${user.face?default('default.gif')}"/>
+			<br />
+			<form action="${base}/user/header/upload" method="post" enctype="multipart/form-data">
+				本地上传:
+				<input type="file" name="upload_file" /> <input type="submit" value="上传" />
+			</form>
+			<P style="font-weight:bold;" class="ERROR">
+				${Session.FACE_INFO}
+			</P>
+			<p>
+				tips：图片大小需要是<span class="ERROR">${size}*${size}</span>.格式可以是<span class="ERROR">jpg,gif,png</span>。
+			</p>
+		</div>
+	</@LONGAN.personal>	
+</@LONGAN.body>

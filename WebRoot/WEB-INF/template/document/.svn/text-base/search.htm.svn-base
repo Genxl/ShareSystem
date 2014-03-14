@@ -1,0 +1,72 @@
+<@LONGAN.header title="搜索结果|雨文|雨无声分享平台|集成显卡2011">
+	<style>
+		.category li {display:inline; float:left;font-size:14px;font-weight:bold;width:105px;overflow:hidden;padding:4px 22px 4px;}
+		.category a {color:#d26915;}
+		
+		.integral2 {background-position:0 4px;font-size:14px;font-weight:bold;color:#003CA9}
+	</style>
+</@LONGAN.header>
+<@LONGAN.body nav="${model.sort}">
+	<div class="CONTENT" style="margin-top:15px;margin-bottom:15px">
+		<div style="">
+			<!--搜索框-->
+			<div class="search_div">
+				<form action="${base}/document/search" method="post" id="search_form">
+					站内搜索:
+					<input type="text" name="key" class="KEY" value="${model.key}" onclick="if(this.value=='快速搜索文档') this.value='';"/>
+					<input type="submit" value="搜索" class="BTN"/>
+					<div style="height:25px;line-height:25px;">
+						文档类型:
+						<label><input type="radio" name="doc_type" value="" <#if model.doc_type==''>checked="checked"</#if>/>不限</label>
+						<label><input type="radio" name="doc_type" value="TXT" <#if model.doc_type=='TXT'>checked="checked"</#if>/><span class="TXT"></span>&nbsp;TXT</label>
+						<label><input type="radio" name="doc_type" value="DOC" <#if model.doc_type=='DOC'>checked="checked"</#if>/><span class="DOC"></span>&nbsp;DOC</label>
+						<label><input type="radio" name="doc_type" value="PDF" <#if model.doc_type=='PDF'>checked="checked"</#if>/><span class="PDF"></span>&nbsp;PDF</label>
+						<label><input type="radio" name="doc_type" value="RAR" <#if model.doc_type=='RAR'>checked="checked"</#if>/><span class="RAR"></span>&nbsp;RAR</label>
+						<label><input type="radio" name="doc_type" value="HTM" <#if model.doc_type=='HTM'>checked="checked"</#if>/><span class="HTM"></span>&nbsp;HTM</label>
+					</div>					
+				</form>
+			</div>
+			<table class="doc_list" cellspacing="0" width="100%" style="margin-top:15px;border:1px solid #aaaaad;">
+				<tbody>
+					<#assign index=0>
+					<#list model.documents as d>
+					<tr align="center" class="new_${index%2}">
+						<td align="left"  style="border-bottom: 1px dashed #AAAAAD;padding:5px">
+							<span class="${d.fileType}"></span>&nbsp;<a href="${base}/document/view?id=${d.id}" target="_blank" title="${d.title}">
+								${d.title}
+							</a>
+							<p>
+								tag:${d.tag}
+							</p>
+							<p>
+								分类:<a href="${base}/document/category?c_id=${d.category.id}">${d.category.title}</a>
+								&nbsp;&nbsp;&nbsp;
+								上传时间:${d.uploadTime}
+							</p>
+							<p>
+								<span class="INTEGRAL integral2" style="width:26px">${d.downPrice}</span>
+								下载次数:${d.downNumber}&nbsp;&nbsp;
+								文件大小:${d.fileSize}&nbsp;&nbsp;
+								上传者:<a href="${base}/user/info?id=${d.user.id}" title="${d.user.nick}">${d.user.nick}</a>
+							</p>
+							<p style="height:10px;"></p>
+						</td>
+					</tr>
+					<#assign index=index+1>
+					</#list>
+					<tr>
+						<td colspan="6" align="center">
+							<div class="PAGE">
+							<#if model.documents?size gt 0>
+								${model.pageInfo}<span class='info'>,用时${model.useTime}毫秒</span>
+							<#else>
+								<span class='info'>没有找到相应的内容,用时${model.useTime}毫秒</span>
+							</#if>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>	
+</@LONGAN.body>

@@ -1,0 +1,28 @@
+package cn.lzs.share.web.intercepter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+public class SessionIntercepter extends HandlerInterceptorAdapter{
+	
+	private long start=0;
+	
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		this.start=System.currentTimeMillis();
+		return super.preHandle(request, response, handler);
+	}
+	
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		HttpSession session=request.getSession();
+		session.setAttribute("sessionID", session.getId());
+		request.setAttribute("base", session.getServletContext().getContextPath());
+		request.setAttribute("use_time", System.currentTimeMillis()-start);
+		super.postHandle(request, response, handler, modelAndView);
+	}
+}

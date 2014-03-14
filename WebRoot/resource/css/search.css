@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ margin:0px; padding:0px; display:inline; background-color: white;}
+img{ border:0px;}
+
+.LINK {color:#7eae28;font-size:12px;}
+a.LINK  {text-decoration:none;}
+a:link.LINK  {text-decoration:none;}
+a:hover.LINK {text-decoration:underline;}
+
+.container{ width:1000px; height:520px; margin-left:-500px; margin-top:-260px; position:absolute; top:50%; left:50%}
+.top1{width:390px; height:127px; background-image:url(../images/ysearch/index/top_01.jpg);float:left;}
+.top2{width:483px; height:127px; background-image:url(../images/ysearch/index/top_02.jpg);float:left;}
+.top3{width:127px; height:127px; float:left;}
+.top4{width:390px; height:131px;background-image:url(../images/ysearch/index/t_04.jpg); float:left;}
+.top5{width:383px; height:131px;float:left;}
+.top6{width:227px; height:131px;float:left;}
+.top7{width:459px; height:141px;background-image:url(../images/ysearch/index/t_07.jpg); float:left;}
+.spake1{width:27px; height:34px;float:left;}
+.text_index{width:211px; height:34px; background-image:url(../images/ysearch/index/textbg.jpg); float:left;}
+.text_index input{ width:200px; margin-left:8px; margin-top:8px; height:20px; font-size:14px; background-color:transparent; border:0px;overflow:hidden;}
+.submit_index{width:35px; height:34px; float:left;}
+.spake2{width:268px; height:34px;float:left;}
+.searchType_index{width:540px; height:35px;float:left;}
+.spake3{width:273px; height:35px; text-align:center; line-height:30px;font-size:13px; color:#848583; float:left;}
+.searchHot{width:540px; height:72px;font-size:13px; color:#848583; float:left;}
+.footl{width:459px; height:101px; background-image:url(../images/ysearch/index/fl.jpg);float:left;}
+.footr{width:541px; height:101px; background-image:url(../images/ysearch/index/fr.jpg);float:left;}
+
+
+/*列表页面*/
+.left{ width:204px;  float:left;}
+.leftTop{ width:204px; height:221px; background-image:url(../images/ysearch/left.jpg); float:left;}
+.leftCon{ width:204px; float:left;}
+
+.right{ width:796px;  float:left;}
+.logoBg{ width:321px; height:190px; background-image:url(../images/ysearch/logobg.jpg); float:left;}
+.logo{ width:321px; height:130px;float:left;}
+
+.right2{width:361px; height:57px; background-image:url(../images/ysearch/right1.jpg); float:left;}
+.about{width:114px; height:57px; float:left;}
+.text{width:169px; height:40px; background-image:url(../images/ysearch/textbg.jpg); float:left;}
+.text input{ width:160px; margin-left:6px; margin-top:8px; height:20px; font-size:14px; background-color:transparent; border:0px;overflow:hidden;}
+.submit{width:30px; height:40px; float:left;}
+.right3{width:276px; height:40px; background-image:url(../images/ysearch/right2.jpg); float:left;}
+.hotsearch{width:475px; height:93px; background-image:url(../images/ysearch/hotsearch.jpg); font-size:13px; color:#848583; float:left;}
+.rightCon{width:795px; border-left:1px solid #848583; float:left;}
+.rightConT{width:795px; height:31px;  float:left;}
+.result{ float:left; width: 800px;;}
+.footsearch{width:795px; height:66px;  float:left;}
+.spake_04{width:34px; height:66px;  float:left;}
+.footSeaText{width:195px; height:27px; background-image:url(../images/ysearch/search2.jpg);  float:left;}
+.footSeaText input{ width:175px; margin-left:10px; margin-top:4px; height:20px; font-size:14px; background-color:transparent; border:0px;overflow:hidden;}
+.footSeaSubmit{width:65px; height:27px;  float:left;}
+.spake_05{width:500px; height:27px;  float:left;}
+.searchType{width:760px; height:39px;  font-size:13px; color:#848583; float:left;}
+
+.footer{width:1000px; height:87px; background-image:url(../images/ysearch/footer.jpg); float:left;}
+
+/*分页*/
+#page a {padding:5px;}

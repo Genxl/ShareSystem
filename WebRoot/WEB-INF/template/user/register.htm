@@ -1,0 +1,37 @@
+<@LONGAN.header title="用户注册|学文|学文分享平台|"></@LONGAN.header>
+	<@LONGAN.validate formId="#loginFrom"/>
+<@LONGAN.body>
+		<@LONGAN.indexImage />
+			<form action="${base}/register" method="post">
+				<table>
+					<tr>
+						<td>
+							用户:
+						</td>
+						<td>
+							<input type="text" name="name" style="width:130px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							密码:
+						</td>
+						<td>
+							<input type="password" name="password" style="width:130px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							昵称:
+						</td>
+						<td>
+							<input type="text" name="nick" style="width:130px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" value="提&nbsp;&nbsp;交"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重&nbsp;&nbsp;置"/></td>
+					</tr>
+				</table>
+			</form>
+</@LONGAN.body>

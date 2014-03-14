@@ -1,0 +1,66 @@
+<@LONGAN.header title="个人信息|学文|学文分享平台|"></@LONGAN.header>
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+<@LONGAN.body>
+	<@LONGAN.personal index=0>
+		<div style="border-bottom:1px solid #cecece; text-align:center; margin-bottom:5px;">
+			<h3>个人信息</h3>
+		</div>
+		<table cellpadding="3">
+			<tr><td>
+				<img width="64px" height="64px" src="${base}/resource/header/${model.user.face?default('default.gif')}"/>
+				<a href="${base}/user/header">修改头像</a>
+			</td></tr>
+			<tr><td>用户名：${model.user.name}</td></tr>
+			<tr><td>昵称：${model.user.nick}</td></tr>
+			<tr><td>
+				积分：<span id="now_integral">${model.user.integral}</span>
+			</td></tr>
+			<tr>
+				<td>
+					官阶：${model.user.rank.name}
+					<p style="padding-left:40px">
+						最大可用空间：${model.user.rank.sizeDisplay}&nbsp;&nbsp;
+						下一级所需积分：<span id="next_integral">${next_integral}</span><br />
+					 	<div id="toUpgrade" class="CENTER user_button" style="margin:4px auto 15px 40px;font-weight:bold;cursor:pointer;width:100px;line-height:24px;font-size:14px;">
+							马上升级
+						</div>
+					</p>
+				</td>
+			</tr>
+			<tr><td>
+				密码串：<span class="ERROR">[暂不显示]</span>&nbsp;&nbsp;<a href="javascript:;" id="change_pass">修改密码</a>
+				<div id="change_pass_div" class="user_div" style="margin-bottom:10px;">
+					<p id="change_pass_info">
+						输入相应的密码，再点击“确定”便可更改密码！
+					</p>
+					<p>
+						旧密码:<input type="password" id="pass_old"/>
+					</p>
+					<p>
+						新密码:<input type="password" id="pass_new"/>
+					</p>
+					<p>
+						<a href="javascript:;" id="change_pass_do">确定</a>
+					</p>
+				</div>
+			</td></tr>
+			<tr><td>登录次数：${model.user.loginTimes}</td></tr>
+			<tr><td>最后登录：${model.user.lastLoginTime}</td></tr>
+			<tr><td>文档数：${model.user.docNumber}</td></tr>
+			<tr>
+				<td>
+					已用空间：${model.user.fileSizeDisplay}&nbsp;&nbsp;
+					<div class="size_div">
+						<div class="user_size_div" style="width:${model.user.usedSize};"></div>
+						<div class="info_size_div">${model.user.usedSize}</div>
+					</div>
+				</td>
+			</tr>
+			<tr><td>加入时间：${model.user.joinTime}</td></tr>
+		</table>
+	</@LONGAN.personal>	
+	<script>
+		User.personal();
+	
+	</script>
+</@LONGAN.body>

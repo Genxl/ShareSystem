@@ -1,0 +1,3 @@
+系统的配置信息都是在这个包里面：cn.yws.longan.common.config中
+
+这里，提供了一个XML处理的类。

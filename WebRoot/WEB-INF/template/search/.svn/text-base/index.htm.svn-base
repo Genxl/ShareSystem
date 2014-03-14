@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>雨信-雨无声网站搜索平台</title>
+<link rel="stylesheet" type="text/css" href="${base}/resource/css/search.css" /> 
+</head>
+
+<body>
+<div class="container">
+	<p class="link_p" style="height:20px;font-size:14px;line-height:20px;text-align:right">
+   	  	<a class="LINK" href="${base}/" >分享平台</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/zxkd" target="_blank" >新闻网</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/sztd" target="_blank" >思政天地</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/fwrx/" target="_blank" >服务热线</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/xlsk/" target="_blank" >心理时空</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/ylsx/" target="_blank" >玉兰树下</a>
+		<a class="LINK" href="http://www.newgxu.cn/html/qczb/" target="_blank" >青春坐标</a>
+		<a class="LINK" href="http://bbs.newgxu.cn/" target="_blank" >社区论坛</a>
+		<a class="LINK" href="http://t.newgxu.cn/" target="_blank" >微雨无声</a>
+   	  </p>
+    <div class="top1"></div>
+    <div class="top2"></div>
+    <div class="top3"><img src="${base}/resource/images/ysearch/index/top_03.jpg" width="127" height="127" /></div>
+    <div class="top4"></div>
+    <div class="top5"><img src="${base}/resource/images/ysearch/index/t_05.jpg" /></div>
+    <div class="top6"></div>
+    <div class="top7"></div>
+    <div class="spake1"></div>
+    <form name="search" action="s" method="get">
+    <div class="text_index">
+    	<input type="text" name="wd" id="kw" maxlength="100">
+    	<input type="hidden" name="tn" value="you2000_pg">
+		<input type="hidden" name="ch" value="110">
+    	
+    </div>
+    <div class="submit_index">
+   		<input type="image" src="${base}/resource/images/ysearch/index/sub.jpg"/>
+    </div>
+    <div class="spake2"></div>
+    <div class="searchType_index">
+        <div class="spake3">
+            <input type="radio" name="type" value="0" />内外
+            <input type="radio" name="type" checked="checked" value="1" />外网
+        </div>
+    </div>
+    </form>
+    <div class="searchHot">
+         &nbsp;&nbsp;热门搜索：雨信&nbsp;  雨无声网站&nbsp;  广西大学  &nbsp; 雨无声社区
+    </div>
+    <div class="footl"></div>
+     <div class="footr"></div>
+</div>
+</body>
+</html>

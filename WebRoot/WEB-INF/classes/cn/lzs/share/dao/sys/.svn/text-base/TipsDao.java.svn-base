@@ -1,0 +1,25 @@
+package cn.yws.longan.dao.sys;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.common.config.Config;
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.sys.Tips;
+
+@Service("system.tipsDao")
+public class TipsDao extends BaseDao<Tips>{
+	
+	/**
+	 * 获取首页显示的图片
+	 *	@return
+	 *  @date :2012-1-4
+	 */
+	public List<Tips> getIndexTips(){
+		Finder finder=Finder.create("from Tips as t where t.ifDie=0 order by t.sort,t.addTime desc");
+		finder.setPageSize(Config.indexPicNumber());
+		return this.pageFind(finder);
+	}
+}

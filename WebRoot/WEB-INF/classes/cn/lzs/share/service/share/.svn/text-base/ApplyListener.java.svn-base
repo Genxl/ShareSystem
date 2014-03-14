@@ -1,0 +1,7 @@
+package cn.yws.longan.service.share;
+
+import cn.yws.longan.domain.share.Apply;
+
+public interface ApplyListener {
+	public void applyPass(Apply a)throws Exception;
+}

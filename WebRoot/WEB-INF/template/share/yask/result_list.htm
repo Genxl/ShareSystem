@@ -1,0 +1,73 @@
+<#assign joinType=["使用分享平台帐号","使用选课系统的学号+密码"]/>
+
+<@LONGAN.header title="问卷系统|学文|学文分享平台">
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+	<script src="${base}/resource/js/share.1.0.js" type="text/javascript"></script>
+</@LONGAN.header>
+<@LONGAN.body>
+	<@LONGAN.personal index=11>
+		
+		<@LONGAN.share_ask index=3>
+			<div style="border-bottom:1px solid #aaaaad;margin-bottom:5px;padding-bottom:3px">
+				<p class="left">
+					匹配到的结果数：${model.totalCount}
+				</p>
+				<p class="right">
+					<form action="${base}/share/yask/resultList" method="get">
+						<input type="hidden" id="p_id" name="id" value="<#if model.paper??>${model.paper.id}<#else>0</#if>" />
+						<input type="hidden" name="sort" value="${model.sort}" />
+						
+						<select id="paper_select">
+							<option value="0">请选择想要查找的试卷...</option>
+							<#list model.papers as p>
+							<option value="${p.id}">${p.name?html}</option>							
+							</#list>
+						</select>
+						&nbsp;
+						<input type="text" name="info" value="${model.info}" />
+						&nbsp;
+						<input type="submit" value="搜索"/>
+					</form>
+				</p>
+				<p class="clear"></p>
+			</div>
+			<table class="TABLE" width="100%" cellpadding="0" cellspacing="0" border="1" bordercolor="#aaaaad" style="">
+				<thead>
+					<tr>
+						<th width="100">用户名</th>
+						<th width="100">昵称</th>
+						<th width="60">正确率</th>
+						<th width="100">答对题目数</th>
+						<th width="60">用时</th>
+						<th>试卷</th>
+						<th width="100">时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign index=0>
+					<#list model.results as t>
+					<tr class="line_${t_index%2}">
+						<td align="left"><a href="${base}/share/yask/result?id=${t.id}" target="_blank" title="点击查看成绩单">${t.name}</a></td>
+						<td>${t.nick}</td>
+						<td>${t.rate}%</td>
+						<td>${t.rightCount}</td>
+						<td>${t.usedTime}秒</td>
+						<td>${t.paper.name?html}<p class="INFO">${joinType[t.paper.joinType]}</p></td>
+						<td>${t.date?string('yyyy-MM-dd HH:mm')}</td>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+			<div class="PAGE" style="text-align:center; margin:10px 0 10px 0;">
+				${model.pageInfo}
+			</div>
+			
+			<script>
+				$(document).ready(function(){
+					SHARE.paper.resultList();
+				});
+			</script>
+		</@LONGAN.share_ask>
+		
+	</@LONGAN.personal>	
+</@LONGAN.body>

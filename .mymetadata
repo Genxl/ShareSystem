@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ShareSystem"
+  id="myeclipse.1321197383680"
+  context-root="/ShareSystem"
+  j2ee-spec="5.0"
+  archive="ShareSystem.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

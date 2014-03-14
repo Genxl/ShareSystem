@@ -1,0 +1,34 @@
+<div class="pageHeader">
+	&nbsp;&nbsp;&nbsp;<a class="BUTTON" href="user/rank/add" width="300" height="220" target="dialog" rel="rank_create" fresh="false">添加等级</a>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%"  border="1" layoutH="85" align="center" cellspacing="0" bordercolor="#999999" style="border-collapse:collapse">
+		<thead>
+			<tr>
+				<th width="5%">ID</th>
+				<th width="10%">名称</th>
+				<th width="20%">所需积分</th>
+				<th width="30%">空间大小(单位为 b,1Mb=1024Kb=1024*1024b)</th>
+				<th width="20%">添加时间</th>
+				<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+      <#setting number_format="0">
+      <#list model.ranks as d>
+      <tr align="center">
+      	<td>${d.id}</td>
+		<td>${d.name}</td>
+		<td>${d.integral}</td>
+		<td>${d.size}</td>	
+		<td>${d.date}</td>
+		<td>
+			<a href="${base}/ad_min/user/rank/edit?id=${d.id}" target="dialog" fresh="false" width="300" height="220" title="[编辑]${d.name}" rel="rank_${d.id}">编辑</a>
+			|
+			<a href="${base}/ad_min/user/rank/del?id=${d.id}" target="ajaxTodo" title="真的要删除这个等级么?">删除</a>
+		</td>
+      </tr>
+	  </#list>
+	</tbody>
+    </table>
+</div>

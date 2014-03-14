@@ -1,0 +1,296 @@
+package cn.yws.longan.common.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import cn.yws.longan.common.exception.ShareException;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.share.yask.Result;
+import cn.yws.longan.domain.share.yask.Topic;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Share.java
+ * @所在包 :cn.yws.longan.common.util
+ * @功能描述 :
+ *	这个类设置了share模块中使用的常量，还有一些static 方法
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-11
+ * @修改记录 :
+ */
+public class Share {
+	public static final String SHARE_SESSION="share_session_name";
+	
+	/**
+	 * 题目类型
+	 */
+	public class TopicType{
+		public static final int JUDGE=0;
+		public static final int SINGLE=1;
+	}
+	
+	/**
+	 * 用户参与的类型：
+	 *  分享用户登陆<br />
+		选课系统学号/密码登陆<br />
+		无需登陆<br />
+		学号/姓名/身份证登陆<br />
+	 */
+	public class JoinType{
+		public static final int LONGAN=0;
+		public static final int STUDENT=1;
+		public static final int UNLIMITED=2;
+		public static final int STU_NAME=3;
+	}
+	
+	/**
+	 * 卷子生成的方式。
+	 * 				每次测试随机抽取一定数量题目<br />
+					手动添加题目<br />
+					3.随机生成卷子<br />
+	 */
+	public class BornType{
+		public static final int RANDOM_ONE=0;
+		public static final int RANDOM_ALL=1;
+		public static final int DIY=2;
+	}
+	
+	/**
+	 * 卷子答题的选项显示方式。
+	 * 有标准方式，还有使用 roundabout 这个jquery UI 框架的特效
+	 */
+	public enum ExeType{
+		NORMAL,ROUNDABOUT
+	}
+	
+	/**
+	 * 检查一个题目是否符合要求。要有答案，选项最少2个。
+	 *	@param topic
+	 *	@throws Exception
+	 *  @date :2012-4-13
+	 */
+	public static void checkTopic(Topic topic)throws Exception{
+		if(FormatUtil.isEmpty(topic.getName()))
+			throw new Exception(ShareException.TOPIC_NO_NAME);
+		if(FormatUtil.isEmpty(topic.getAnswer()))
+			throw new Exception(ShareException.TOPIC_NO_ANSWER);
+		
+		//判断题的答案必须是treu或者false
+		if(topic.getType()==TopicType.JUDGE){
+			try{
+				Boolean.valueOf(topic.getAnswer().trim());
+			}catch(Exception e){
+				throw new Exception(ShareException.TOPIC_JUDGE_ANSWER);
+			}
+		}
+		//单选的答案范围必须在选项个数以内
+		else if(topic.getType()==TopicType.SINGLE){
+			String[] temp=topic.getItems().split(" ");
+			try{
+				Integer i=Integer.valueOf(topic.getAnswer().trim());
+				if(i>=temp.length)
+					throw new Exception();
+			}catch(Exception e){
+				throw new Exception(ShareException.TOPIC_SINGLE_ANSWER);
+			}
+		}
+	}
+	
+	/**
+	 * 先清理data中的空格，再将data分解成数组，然后根据空行将数组分隔
+	 * 形成start，end点，从这两个点中的元素组合成一个Topic。
+	 * 
+	 *	@param data
+	 *	@return
+	 *  @date :2012-4-14
+	 */
+	public static List<Topic> toTopicList(String data){
+		//处理字符串
+		data=FormatUtil.killBlank(data);
+		data=data.replaceAll("\r", "").replaceAll("\n", "<br#>");
+		
+		String[] temp=data.split("<br#>");
+		List<Topic> list=new ArrayList<Topic>();
+		System.out.println(temp.length+" ----个");
+		
+		
+		int start=0;
+		int end=0;
+		for(int i=0;i<temp.length;i++){
+			System.out.println("--->"+temp[i]);
+			boolean canRun=false;
+			if(temp[i].trim().length()==0){
+				System.out.println("=====>"+i);
+				end=i;
+				canRun=true;
+			}else if(i==temp.length-1){
+				//如果只有一个题目，那么start点就不需要更改，直接为0
+				if(start!=0)
+					start=end+1;
+				end=temp.length;
+				canRun=true;
+			}
+			
+			if(canRun){
+				System.out.println(start+"-->"+end);
+				Topic t=makeTopic(temp, start, end);
+				if(t!=null)
+					list.add(t);
+				start=i+1;
+			}
+		}
+		
+		
+		return list;
+	}
+	
+	/**
+	 * 从数组t中的start点到end点构造一个Topic 题目，
+	 * end点是空行
+	 *	@param t
+	 *	@param start
+	 *	@param end
+	 *	@return
+	 *  @date :2012-4-14
+	 */
+	public static Topic makeTopic(String[] t,int start,int end){
+		if(t.length<2||end>t.length||end==0||end==start)
+			return null;
+		
+		Topic tp=new Topic();
+		tp.setName(t[start]);
+		tp.setAnswer(t[end-1]);
+		System.out.println("答案："+tp.getAnswer());
+		if(end-start==2){
+			tp.setType(TopicType.JUDGE);
+		}else{
+			tp.setType(TopicType.SINGLE);
+			String items="";
+			for(int i=start+1;i<end-1;i++){
+				items+=" "+t[i];
+			}
+			tp.setItems(items);
+		}
+		return tp;
+	}
+	
+	/**
+	 * 检查是否可以正常通过
+	 *	@param type
+	 *	@throws Exception
+	 *  @date :2012-4-16
+	 */
+	public static User checkShareLogin(HttpServletRequest req,int type)throws Exception{
+		if(type==JoinType.UNLIMITED)
+			return null;
+		User u=null;
+		//如果分享平台登录，则直接读取默认的session信息
+		if(type==JoinType.LONGAN)
+			u=SessionUtil.checkLogin(req);
+		else	
+			u=(User)SessionUtil.get(req,SHARE_SESSION+type);
+		if(u==null)
+			throw new Exception("在进行操作之前，请按照要求登录！");
+		return u;
+	}
+	
+	/**
+	 * 对data解析，并执行相应的函数。
+	 * 比如问卷完成后，可以得到一些相应的建立。
+	 * data 的格式：
+	 * {key}:{value},{key},{value} 
+	 * 如：
+	 * jion:askAfterJoin,0-10:addBBSItem(1,20)
+	 * 
+	 * 方法的默认第一个参数都是User
+	 * 
+	 *	@param u
+	 *	@param data
+	 *  @date :2012-4-17
+	 */
+	public static List<String> afterYask(User user,Result r,String data){
+		if(data==null||data.trim().length()==0)
+			return null;
+		List<String> result=new ArrayList<String>();
+		String t[]=data.split(",");
+		for(String s:t){
+			String info="";
+			String tt[]=s.split(":");
+			int key=processKey(tt[0]);
+			switch(key){
+			//join格式
+			case 0:{
+				try{
+					int i=tt[1].indexOf("(");
+					String name=tt[1].substring(0, i);
+					String param=tt[1].substring(i).replace("(", "").replace(")", "");
+					
+					System.out.println(tt[1]+"--->"+name+"---->"+param);
+					
+					info=(String)(cn.yws.longan.common.util.ShareWorker.class.getMethod(name,new Class[]{User.class,String.class}).invoke(null, user,param));
+				}catch(Exception e){
+					e.printStackTrace();
+					info=e.getMessage();
+				}
+				break;
+			}
+			//10-88的格式,包含88，不包含10
+			case 1:{
+				try{
+					String ttt[]=tt[0].split("-");
+					Integer a=Integer.valueOf(ttt[0]);
+					Integer b=Integer.valueOf(ttt[1]);
+					
+					int i=tt[1].indexOf("(");
+					String name=tt[1].substring(0, i);
+					String param=tt[1].substring(i).replace("(", "").replace(")", "");
+					
+					if(r.getRate()>a&&r.getRate()<=b){
+						info=(String)(cn.yws.longan.common.util.ShareWorker.class.getMethod(name,new Class[]{User.class,String.class}).invoke(null, user,param));
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			}
+			
+			result.add(info);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 目前只有两种模式：
+	 * 一个是 join，表示一旦提交了答卷就可以触发
+	 * 另外一个是 10-88 这样的数字组合，表示正确率从10-88之间触发
+	 * 
+	 *	@param key
+	 *	@return
+	 *  @date :2012-4-17
+	 */
+	private static int processKey(String key){
+		//join 表示参与过一个活动后
+		if(key.equals("join"))
+			return 0;
+		return 1;
+	}
+	
+	public static void main(String[] args)throws Exception {
+		User u=new User();
+		u.setName("yu0604hx");
+		Result r=new Result();
+		r.setRate(50);
+		String data="join:askAfterJoin(100-500),10-60:askInRate(3-1#2-1)";
+		
+		//System.out.println(ShareWorker.class.getMethod("askAfterJoin", new Class[]{User.class,String.class}).getName());
+		
+		for(String a:Share.afterYask(u, r, data)){
+			System.out.println(a);
+		}
+		//ShareWorker.askInRate(u, "3-1#2-1");
+	}
+}

@@ -1,0 +1,11 @@
+package cn.yws.longan.dao.share.yask;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.share.yask.Paper;
+
+@Service("share.yask.paperDao")
+public class PaperDao extends BaseDao<Paper>{
+	
+}

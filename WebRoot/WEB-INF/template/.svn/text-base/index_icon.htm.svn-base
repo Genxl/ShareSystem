@@ -1,0 +1,147 @@
+<@LONGAN.header title="雨文|雨无声分享平台">
+	<style>
+		.category li {display:inline; float:left;font-size:14px;font-weight:bold;width:105px;overflow:hidden;padding:4px 22px 4px;}
+		.category a {color:#d26915;}
+		
+		.CONTENT .time {color:#656565;}
+		.CONTENT .size {color:#656565;font-size:12px;}
+		.CONTENT .type {width:60px; height:20px; overflow:hidden;}
+	</style>
+</@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT" style="margin-bottom:10px">
+		
+		<@LONGAN.indexImage />
+		
+		<div style="float:left; width:715px;">
+			<div id="category_div" class="border" style="padding:10px">
+				<div class="borderBottom" style="border-bottom:1px solid #d3d3d3;">
+					<p class="left bigTitle heiti">文档分类</p>
+                    <p class="right more"><a href="#" target="_blank">更多></a></p>
+					<div class="clear"></div>
+				</div>
+				<#list model.categorys as c>
+				<div class="borderBottom" style="border-bottom:1px solid #f2f2f2;">
+					<p class="midTitle heiti"><a href="${base}/document/category?c_id=${c.id}" title="${c.title}--${c.information}">${c.title}</a></p>
+					<ul id="category_${c.id}" class="category_ul" style="list-style:none;">
+						<#list c.childCategory as a>
+							<li class="left son_category heiti"><a href="${base}/document/category?c_id=${a.id}">${a.title}</a></li>						
+						</#list>
+						<li class="clear"></li>
+					</ul>
+				</div>
+				</#list>
+			</div>
+			<div>
+				<div id="hot_div" style="width:340px;margin-top:15px" class="border left">
+					<div class="borderBottom">
+						<div class="left bigTitle heiti">热门文档</div>
+						<div class="left HOT"></div>
+	                    <div class="right more"><a href="${base}/document/search?sort=downNumber" target="_blank">更多></a></div>
+						<div class="clear"></div>
+					</div>
+					<ul style="list-style:none;">
+						<#list model.hotList as h>
+							<li class="borderBottom2 left">
+								<span class="${h.fileType} left" style="margin-top:5px;"></span>
+								<span class="left" style="width:215px">
+									&nbsp;
+									<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+										<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+									</a>
+								</span>
+								<span class="DOWNLOAD left">${h.downNumber}</span>
+								<span class="right RIGHT" style="width:60px;">${h.fileSize}</span>
+							</li>
+						</#list>
+						<li class="clear"></li>
+					</ul>
+				</div>
+				
+				<div id="hot_div" style="width:340px;margin-top:15px" class="border right">
+					<div class="borderBottom">
+						<div class="left bigTitle heiti">推荐文档</div>
+						<div class="left GOOD"></div>
+	                    <div class="right more"><a href="${base}/document/search" target="_blank">更多></a></div>
+						<div class="clear"></div>
+					</div>
+					<ul style="list-style:none;">
+						<#list model.goodList as h>
+							<li class="borderBottom2 left">
+								<span class="${h.fileType} left" style="margin-top:5px;"></span>
+								<span class="left" style="width:195px">
+									&nbsp;
+									<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+										<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+									</a>
+								</span>
+								<span class="INTEGRAL left" style="width:26px">${h.downPrice}</span>
+								<span class="right RIGHT" style="width:75px;">${h.uploadTime?string('yyyy-MM-dd')}</span>
+							</li>
+						</#list>
+						<li class="clear"></li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div style="float:right;margin-right:2px; width:233px;">
+			<div>
+				<a href="${base}/document/new"><img src="${base}/resource/images/icon/uploading.jpg"/></a>
+			</div>
+			<!--最新上传-->
+			<div id="hot_div" style="width:222px;margin-top:5px" class="border">
+				<div class="borderBottom">
+					<div class="left midTitle heiti">最新上传</div>
+					<div class="left NEW"></div>
+	                <div class="right more"><a href="${base}/document/search" target="_blank">更多></a></div>
+					<div class="clear"></div>
+				</div>
+				<ul style="list-style:none;">
+					<#assign index=0>
+					<#list model.newList as h>
+						<li class="borderBottom2 left new_${index%2}" style="border-bottom:none;">
+							<span class="${h.fileType} left" style="margin-top:5px;"></span>
+							<span class="left" style="width:205px">
+								&nbsp;
+								<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+									<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+								</a>
+							</span>
+						</li>
+						<#assign index=index+1>
+					</#list>
+					<li class="clear"></li>
+				</ul>
+			</div><!--end 最新上传-->
+			
+			<!--活力用户-->
+			<div id="hot_div" style="width:222px;margin-top:15px" class="border">
+				<div class="borderBottom">
+					<div class="left midTitle heiti">活力用户</div>
+					<div class="clear"></div>
+				</div>
+				<ul style="list-style:none;">
+					<#list model.users as h>
+						<li class="borderBottom2 left" style="padding-bottom:0px;margin-top:0px;">
+							<span class="left" style="margin-top:5px;">
+								<img class="index_face" src="${base}/resource/header/${h.face}"/>
+							</span>
+							<span class="left" style="width:120px;line-height:24px;padding-top:6px;">
+								&nbsp;
+								<a href="${base}/user/info?id=${h.id}" target="_blank" title="${h.nick}">
+									${h.nick}
+								</a>
+							</span>
+							<span class="user_to left" style="width:14px;margin-top:9px;">${h.downPrice}</span>
+							<span class="right LEFT" style="width:50px;line-height:24px;padding-top:6px;">${h.integral}</span>
+						</li>
+					</#list>
+					<li class="clear"></li>
+				</ul>
+			</div><!--end 活力用户-->
+		</div>
+		<div class="clear"></div>
+	</div>
+	<br />
+</@LONGAN.body>

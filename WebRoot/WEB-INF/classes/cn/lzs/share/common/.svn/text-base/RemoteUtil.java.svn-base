@@ -1,0 +1,215 @@
+package cn.yws.longan.common;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :RemoteUtil.java
+ * @所在包 :cn.yws.longan.common
+ * @功能描述 :
+ *	负责远程链接
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-26
+ * @修改记录 :
+ */
+public class RemoteUtil {
+	
+	public static String getRemoteResult(String path,String charset) throws Exception{
+		//从指定的URL中获取结果信息
+		URL url = new URL(path);
+		StringBuffer sbf = new StringBuffer();
+		String line = null;
+		//读取信息
+		InputStream inputStream = url.openStream();
+		BufferedReader br=new BufferedReader(new InputStreamReader(inputStream,charset));
+		while ((line = br.readLine()) != null){
+		  sbf.append(line);
+		}
+		br.close();
+		
+		return sbf.toString();
+	}
+	
+	//?username=yu0604hx&password=19891231
+	public static Map<String,String> getBBSUser(String name,String password)throws Exception{
+		Map<String,String> map=new HashMap<String,String>();
+		
+		String result=getRemoteResult(Constant.BBS_URL+"?username="+URLEncoder.encode(name, "utf-8")+"&password="+password, "utf-8");
+		if(result.startsWith("success!!success")){
+			map.put("success", "true");
+			map.put("nick", result.replace("success!!success", ""));
+		}else{
+			map.put("success", "false");
+		}
+		return map;
+	}
+	
+	/**
+	 * 获取论坛用户的西大币，接口详情请看论坛手册
+	 * url 格式：http://210.36.16.166/accounts/login_do!webService_login.yws?username=yu0604hx&password=19891231&keyname=money
+	 * 
+	 *	@param name
+	 *	@param password
+	 *	@return
+	 *	@throws Exception
+	 *  @date :2012-3-31
+	 */
+	public static Integer getBBSUserMoney(String name,String password)throws Exception{
+		String url="http://210.36.16.166/accounts/login_do!webService_login.yws?username="
+			+name+"&password="+password+"&keyname=money";
+		String result=getRemoteResult(url, "utf-8");
+		return Integer.valueOf(result);
+	}
+	
+	/**
+	 * 远程添加BBS中用户的道具
+	 *	@param name 用户名
+	 *	@param itemId 道具id
+	 *	@param count 需要添加的个数
+	 *	@return
+	 *	@throws Exception
+	 *  @date :2012-4-18
+	 */
+	public static boolean addBBSItem(String name,int itemId,int count)throws Exception{
+		String url="http://210.36.16.166/webservice/voteUpdate.yws?yzm=addItem2012&nick="+name+"&itemId="+itemId+"&count="+count;
+		String result=getRemoteResult(url, "utf-8");
+		return result.contains("success!!");
+	}
+	
+	public static boolean exchangeXDB(String name,int value)throws Exception{
+		String url="http://210.36.16.166/webservice/voteUpdate.yws?yzm=yumen2012&nick="+name+"&helloWorld="+value;
+		String result=getRemoteResult(url, "utf-8");
+		return result.contains("success!!");
+	}
+	
+	/**
+	 * 使用POST方式提交数据
+	 * 
+	 * @return
+	 */
+	private static HttpMethod getPostMethod(String username, String password) {
+		PostMethod post = new PostMethod(
+		"/(mm4ois55iqwii2mlcqks3l45)/default2.aspx");
+		NameValuePair p1 = new NameValuePair("__VIEWSTATE",
+		"dDwtMTAzOTYzNjY2ODs7PjegvcbXZuJzTSZGJ7J/g5Ee9Qxh");
+		NameValuePair p2 = new NameValuePair("RadioButtonList1", "%D1%A7%C9%FA");//学生
+		NameValuePair p3 = new NameValuePair("Button1", "+%B5%C7+%C2%BC+");//登录
+		NameValuePair p4 = new NameValuePair("TextBox1", username);
+		NameValuePair p5 = new NameValuePair("TextBox2", password);
+		post.setRequestBody(new NameValuePair[] { p1, p2, p3, p4, p5 });
+		return post;
+	}
+	
+	/**
+	 * 用学号验证-------- 使用新选课系统
+	 */
+	public static boolean checkRemoteStudent(String username, String password) {
+		MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
+		HttpClient client = new HttpClient(connectionManager);
+		client.getHostConfiguration().setHost("210.36.16.135", 80, "http");
+		// HttpState state = client.getState();
+		HttpMethod method = getPostMethod(username, password);
+		try {
+			client.executeMethod(method);
+		} catch (HttpException he) {
+			return false;
+		} catch (IOException ioe) {
+			return false;
+		}
+
+		// 打印数据
+		String response;
+		try {
+			response = new String(method.getResponseBodyAsString().getBytes(
+			"utf-8"));
+			System.out.println(response);
+			if (response.indexOf("密码错误") != -1
+					|| response.indexOf("用户名不存在") != -1 ) {
+				return false;
+			} else if(response.indexOf("xh="+username) > -1){
+				return true;
+			} else{
+				return false;
+			}
+		} catch (UnsupportedEncodingException uee) {
+			return false;
+		} catch (IOException ioe) {
+			return false;
+		} finally {
+			method.releaseConnection(); // 释放Http连接
+		}
+	}
+	
+	/**
+	 * 身份证号码验证
+	 * 如果需要更新网址，请根据目标网址的 contentType 调整编码，否则得到的是乱码
+	 * 
+	 * @param idCard
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean checkCard(String idCard) throws Exception {
+		URL url = new URL("http://qq.ip138.com/idsearch/index.asp?action=idcard&userid=" + idCard);
+		InputStream inputStream = url.openStream();
+		BufferedReader br=new BufferedReader(new InputStreamReader(inputStream,"gbk"));
+		StringBuffer sbf = new StringBuffer();
+		String line = null;
+		while ((line = br.readLine()) != null){
+		  sbf.append(line);
+		}
+		br.close();
+		String result=sbf.toString();
+		boolean bb = result.contains("点击这里查询验证身份证号码及照片的真实资料")&&result.contains("出生日期");
+		if ( bb) {
+			return true;
+		}
+		return false;
+	}
+	
+	/* 
+	* 16进制数字字符集 
+	*/ 
+	private static String hexString="0123456789ABCDEF"; 
+	public static String decode(String bytes) throws Exception{ 
+		ByteArrayOutputStream baos=new ByteArrayOutputStream(bytes.length()/2); 
+		//将每2位16进制整数组装成一个字节 
+		for(int i=0;i<bytes.length();i+=2) 
+		baos.write((hexString.indexOf(bytes.charAt(i))<<4 |hexString.indexOf(bytes.charAt(i+1)))); 
+		return new String(baos.toByteArray(),"gbk"); 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		/*
+		String str=getRemoteResult("http://210.36.16.163/API/GET.php?action=wish&sort=add_time&desc=1&count=4", "gbk");
+		//String str=getRemoteResult("http://localhost/programme/GET.php?action=w2ish&columns=name,password,nick&page=1&sort=id&desc=1,1&key=0604", "utf-8");
+		System.out.println(str);
+		
+		//使用json-simple解析JSON
+		JSONParser parser=new JSONParser();
+		JSONArray a=(JSONArray)parser.parse(str);
+		System.out.println(a.get(0));
+		JSONObject obj=(JSONObject)a.get(0);
+		System.out.println(obj.get("content"));
+		*/
+		
+		//System.out.print(checkRemoteStudent("0907300209",	"19891231"));
+		System.out.println(getBBSUser("碧水寒青", "127520"));
+		//System.out.println(getBBSUserMoney("yu0604hx", "19891231"));
+	}
+}

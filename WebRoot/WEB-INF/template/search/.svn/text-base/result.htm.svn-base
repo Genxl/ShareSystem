@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>雨信-雨无声网站搜索平台</title>
+<link rel="stylesheet" type="text/css" href="${base}/resource/css/search.css" /> 
+
+<style>body{color:#000;background:#fff;padding:7px 0 0;margin:0;position:relative}body,th,td,.p1,.p2{font-family:arial}p,form,ul,li,dl,dt,dd,h3{margin:0;padding:0;list-style:none}input{padding-top:0;padding-bottom:0;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}table,img{border:0}td{font-size:9pt;line-height:18px}em{font-style:normal;color:#cc0000}a em{text-decoration:underline}.m,a.m{color:#666}a.m:visited{color:#606}.g,a.g{color:#008000}.c{color:#77c}.f14{font-size:14px}.f10{font-size:10.5pt}.f16{font-size:16px}#u,#head,#tool,#search,#foot{font-size:12px}.p1{line-height:120%;margin-left:-12pt}.p2{width:100%;line-height:120%;margin-left:-12pt}#out{_margin-left:880px;_zoom:1}#in{_position:relative;_float:left;_margin-left:-880px}#wrapper{min-width:880px;_zoom:1}#container{padding-left:20px}#u{white-space:nowrap;position:absolute;right:10px;top:6px;_top:0;z-index:299}#u_m{color:#00c;cursor:pointer}#u_ms{text-decoration:underline}#u_m_tip{position:absolute;right:40px;top:24px;_top:26px;z-index:299;border:1px solid #9a99ff;display:none;background:#fff;overflow:hidden;width:100px}#u_m_tip a{display:block;line-height:22px;color:#0001cf;padding:0 10px;font-size:12px;text-decoration:none;border-bottom:1px solid #e6e6e6;width:100%}#u_m_tip a:hover{background:#d9e1f6}#u_m_tip a.last{border-bottom:0}#head{padding-left:20px}.fm{clear:both;position:relative;z-index:297}.nv{height:45px;position:relative;z-index:298}.nv .logo{float:left;margin-right:20px}.nv .tab{float:left;padding:20px 0 0;line-height:18px}.nv a,.nv b,.btn,#page,#more{font-size:14px}.nv a{color:#0000cc}.i{width:536px;*width:519px;height:32px;*height:20px;padding:3px 7px;padding-top:7px\9;font:16px arial;background:url(http://www.baidu.com/img/i2.png) no-repeat;_background-attachment:fixed;border:1px solid #b6b6b6;border-color:#7b7b7b #b6b6b6 #b6b6b6 #7b7b7b;vertical-align:top;margin-right:5px}.btn{width:95px;height:32px;padding:0;padding-top:2px\9;border:0;background:#ddd url(http://www.baidu.com/img/i2.png) 0 -35px;cursor:pointer}.btn_h{background-position:-100px -35px}.btn_wr{width:97px;height:34px;display:inline-block;background:url(http://www.baidu.com/img/i2.png) no-repeat -202px bottom;_padding-top:1px;*position:relative}.seth{margin-left:22px;display:none;display:inline\9}.seth a{color:#00c}#tb_mr{color:#00c;cursor:pointer;position:relative;z-index:298}#tb_mr b{font-weight:normal;text-decoration:underline}#tb_mr small{font-size:11px}#more{width:58px;height:100px;border:1px solid #9A99FF;background:#fff;position:absolute;z-index:298;left:452px;top:45px;*top:46px;overflow:hidden;display:none;outline:none}#more a{width:53px;height:25%;line-height:24px;display:block;padding:0 0 0 7px;color:#0001CF;text-decoration:none}#more a span{font-family:"宋体"}#more a:hover{background:#D9E1F6}#more div{height:1px;overflow:hidden;background:#ccf;margin:0 3px}#page{white-space:nowrap}#page{word-spacing:4px;margin-top: 20px;margin-bottom: 20px; margin-left: 20px;}#page .n{font-size:16px}#rs table{background:#eff2fa; padding-top: 10px;padding-bottom: 10px;}table td{width:5%}table th{font-size:14px;font-weight:normal;line-height:19px;white-space:nowrap;text-align:left;vertical-align:top}#rs .tt{font-weight:bold;padding:0 10px 0 20px}.to{font-size:16px;line-height:24px;padding:0 0 0 32px;margin:20px 0 0}#search{padding:35px 0 16px 20px}#search .btn_wr{vertical-align:middle}#foot{height:20px;line-height:20px;color:#77c;background:#e6e6e6;text-align:center}#foot span{color:#666}.f{line-height:115%;*line-height:120%;font-size:100%;width:33.7em;word-break:break-all;word-wrap:break-word}.h{margin-left:8px;width:100%}.r{word-break:break-all;cursor:hand;width:238px}.t{font-weight:normal;font-size:medium}.pl{padding-left:3px;height:8px;padding-right:2px;font-size:14px}.mo,a.mo:link,a.mo:visited{color:#666;font-size:100%;line-height:10px}.htb{margin-bottom:5px}.jc a{color:#cc0000}a font[size="3"] font, font[size="3"] a font{text-decoration:underline}div.blog,div.bbs{color:#707070;padding-top:3px}.result{width:36.7em;table-layout:fixed}.result-op .f{word-wrap:normal}.nums{font-size:12px;color:#999}.tools{width:220px;position:absolute;top:10px}#mHolder{width:62px;position:relative;z-index:296;top:-18px;margin-left:9px;margin-right:-12px;display:none}#mCon{position:absolute;right:7px;top:3px;*top:6px;cursor:pointer;padding:0 18px 0 0;line-height:normal;background:url(http://www.baidu.com/img/arr.gif) no-repeat right center}#mCon span{color:#00c;cursor:default;display:block;padding-top:3px}#mCon .hw{text-decoration:underline;cursor:pointer}#mMenu{width:56px;border:1px solid #9a99ff;position:absolute;right:7px;top:28px;display:none;background:#fff}#mMenu a{width:100%;height:100%;color:#00c;display:block;line-height:22px;text-indent:6px;text-decoration:none}#mMenu a:hover{background:#d9e1f6}#mMenu .ln{height:1px;background:#ccf;overflow:hidden;margin:2px;font-size:1px;line-height:1px}.op_LAMP{background:url("http://open.baidu.com/stat/image/Icon_Aladdin.gif") no-repeat 0 2px;color:#77C;display:inline-block;font-size:13px;height:12px;*height:14px;width:16px;text-decoration:none;zoom:1;}
+.EC_mr15{margin-left:0}.pd15{padding-left:0}.favurl{background-repeat:no-repeat;background-position:0 1px;padding-left:20px;}</style>
+
+
+<style>
+	.content{
+		margin-bottom: 10px;
+		margin-left: 10px;
+		
+	}
+	
+</style>
+
+
+</head>
+
+<body>
+<div class="" style="width:1000px; margin:0px auto;">
+    <div class="left">
+        <div class="leftTop">
+        </div>
+        <div class="leftCon">
+            相关搜索的内容
+        </div>
+    </div>
+    <div class="right">
+        <div class="logoBg">
+            <div class="logo">
+                <img src="${base}/resource/images/ysearch/logo.jpg" />
+            </div>
+        </div>
+        <div class="right2">
+        	<p class="link_p" style="height:20px;font-size:14px;line-height:20px;text-align:right">
+		   	  	<a class="LINK" href="${base}/" >分享平台</a>
+				<a class="LINK" href="http://www.newgxu.cn/html/zxkd" target="_blank" >新闻网</a>
+				<a class="LINK" href="http://www.newgxu.cn/html/sztd" target="_blank" >思政天地</a>
+				<a class="LINK" href="http://www.newgxu.cn/html/fwrx/" target="_blank" >服务热线</a>
+				<a class="LINK" href="http://www.newgxu.cn/html/xlsk/" target="_blank" >心理时空</a>
+				<br />
+				<a class="LINK" href="http://www.newgxu.cn/html/ylsx/" target="_blank" >玉兰树下</a>
+				<a class="LINK" href="http://www.newgxu.cn/html/qczb/" target="_blank" >青春坐标</a>
+				<a class="LINK" href="http://bbs.newgxu.cn/" target="_blank" >社区论坛</a>
+				<a class="LINK" href="http://t.newgxu.cn/" target="_blank" >微雨无声</a>
+		   	  </p>
+        </div>
+        <div class="about">
+            <img src="${base}/resource/images/ysearch/about.jpg" />
+        </div>
+        <form name="search" action="s" method="get">
+            <div class="text">
+                <input type="text" name="wd" id="kw" maxlength="100"><input type="hidden" name="tn" value="you2000_pg"><input type="hidden" name="ch" value="110">
+            </div>
+            <div class="submit">
+                <input type="image" src="${base}/resource/images/ysearch/sub.jpg"/>
+            </div>
+            <div class="right3">
+            </div>
+            <div class="hotsearch">
+                <input type="radio" name="type" <#if type!=1 >checked="checked"</#if> value="0" />内外
+				<input type="radio" name="type" <#if type==1 >checked="checked"</#if> value="1" />外网
+                &nbsp;&nbsp;热门搜索：雨信&nbsp;  雨无声网站&nbsp;  广西大学  &nbsp; 雨无声社区
+            </div>
+        </form>
+        <div class="rightCon">
+            <div class="rightConT">
+                所有结果
+            </div>
+            <div class="result">
+                ${content!'抱歉！没有找到你需要的内容！'}
+            </div>
+            <div class="footsearch">
+                <div class="spake_04">
+                </div>
+                <form name="search2" action="s" method="get">
+                    <div class="footSeaText">
+                        <input type="text" name="wd" id="kw" maxlength="100"><input type="hidden" name="tn" value="you2000_pg"><input type="hidden" name="ch" value="110">
+                    </div>
+                    <div class="footSeaSubmit">
+                        <input type="image" src="${base}/resource/images/ysearch/button.jpg" />
+                    </div>
+                    <div class="searchType">
+                        <input type="radio" name="type" value="0" />内外<input type="radio" name="type" checked="checked" value="1" />外网
+                    </div>
+                </form>
+            </div>
+        </div>
+		<div style="clear:both"></div>
+    </div>
+    <div class="footer" style="margin:0px auto;float:none;"></div>
+</div><!-- end container -->
+</body>
+<script>
+	//使用服务器端网络进行搜索，修改分页信息，传递type参数
+	//集成显卡 2012
+	var t=${type};
+	var list=document.getElementsByTagName('a');
+	for(var i=0;i<list.length;i++){
+		list[i].href=list[i].href+"&type="+t;
+	}
+</script>
+</html>

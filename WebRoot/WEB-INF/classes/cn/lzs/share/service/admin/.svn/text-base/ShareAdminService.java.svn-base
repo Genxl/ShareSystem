@@ -1,0 +1,31 @@
+package cn.yws.longan.service.admin;
+
+import cn.yws.longan.web.model.share.YAskModel;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :ShareAdminService.java
+ * @所在包 :cn.yws.longan.service.admin
+ * @功能描述 :
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-18
+ * @修改记录 :
+ */
+public interface ShareAdminService {
+
+	public void apply(YAskModel model)throws Exception;
+	public void applyPass(YAskModel model)throws Exception;
+	
+	public void store(YAskModel model)throws Exception;
+	public void storeDel(YAskModel model)throws Exception;
+	
+	public void topic(YAskModel model)throws Exception;
+	public void topicDel(YAskModel model)throws Exception;
+	
+	public void paper(YAskModel model)throws Exception;
+	public void paperDo(YAskModel model)throws Exception;
+	
+	public void result(YAskModel model)throws Exception;
+	public void resultDo(YAskModel model)throws Exception;
+}

@@ -1,0 +1,35 @@
+package cn.yws.longan.service.admin;
+
+import cn.yws.longan.web.model.admin.DocAdminModel;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :DocumentAdminService.java
+ * @所在包 :cn.yws.longan.service.admin
+ * @功能描述 :
+ *	这里没有使用 接口
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-10
+ * @修改记录 :
+ */
+public interface DocumentAdminService {
+	public void getDocumentList(DocAdminModel model);
+	
+	/**
+	 * 将指定文档的文件转换成 SWF
+	 *	@param model
+	 *	@throws Exception
+	 *  @date :2011-12-11
+	 */
+	public void convert(DocAdminModel model) throws Exception;
+	
+	public void toGood(DocAdminModel model)throws Exception;
+	
+	public void lock(DocAdminModel model)throws Exception;
+	
+	public void getDownloadList(DocAdminModel model);
+	public void delDownload(DocAdminModel model)throws Exception;
+	public void getReportList(DocAdminModel model);
+	public void delReport(DocAdminModel model)throws Exception;
+}

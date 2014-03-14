@@ -1,0 +1,65 @@
+package cn.yws.longan.service.impl.admin;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.dao.share.yask.PaperDao;
+import cn.yws.longan.dao.share.yask.ResultDao;
+import cn.yws.longan.dao.share.yask.TopicDao;
+import cn.yws.longan.dao.share.yask.YStoreDao;
+import cn.yws.longan.service.admin.ShareAdminService;
+import cn.yws.longan.web.model.share.YAskModel;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :ShareAdminControllerImpl.java
+ * @所在包 :cn.yws.longan.service.impl.admin
+ * @功能描述 :
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-18
+ * @修改记录 :
+ */
+@Service("admin.shareService")
+public class ShareAdminControllerImpl implements ShareAdminService{
+
+	@Resource(name="share.yask.storeDao")
+	private YStoreDao storeD;
+	@Resource(name="share.yask.topicDao")
+	private TopicDao topicD;
+	@Resource(name="share.yask.paperDao")
+	private PaperDao paperD;
+	@Resource(name="share.yask.resultDao")
+	private ResultDao resultD;
+	
+	public void apply(YAskModel model) throws Exception {
+	}
+
+	public void applyPass(YAskModel model) throws Exception {
+	}
+
+	public void paper(YAskModel model) throws Exception {
+	}
+
+	public void paperDo(YAskModel model) throws Exception {
+	}
+
+	public void result(YAskModel model) throws Exception {
+	}
+
+	public void resultDo(YAskModel model) throws Exception {
+	}
+
+	public void store(YAskModel model) throws Exception {
+	}
+
+	public void storeDel(YAskModel model) throws Exception {
+	}
+
+	public void topic(YAskModel model) throws Exception {
+	}
+
+	public void topicDel(YAskModel model) throws Exception {
+	}
+}

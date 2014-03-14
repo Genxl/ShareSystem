@@ -1,0 +1,184 @@
+package cn.yws.longan.domain.share.yask;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import cn.yws.longan.domain.BaseEntity;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Paper.java
+ * @所在包 :cn.yws.longan.domain.share.yask
+ * @功能描述 :
+ *	卷子表：share_yask_paper
+		名称<br />
+		说明信息<br />
+		题目组成（json形式，方便以后扩展，<br />
+				如：{"0":"20","1":"20"} 表示了判断题有20，单选有20道。0，1 的值参照 Share中的TopicType）<br />
+		卷子形式：<br />
+					每次测试随机抽取一定数量题目<br />
+					手动添加题目<br />
+					3.随机生成卷子<br />
+		参与方式：<br />
+				分享用户登陆<br />
+				选课系统学号/密码登陆<br />
+				学号/姓名/身份证登陆<br />
+				无需登陆<br />
+		答题方式（详见：卷子题目选项效果）<br />
+		所属题库<br />
+		可用测试时间<br />
+		开放时间--start<br />
+		开放时间--end<br />
+		自动执行（必须由技术人员添加，json格式，比如正确率80%以上，可以添加XDB等一系列的操作）<br />
+			比如：{"join":"afterjoin",">20%":"do($me)"}<br />
+			表示当用户完成这个卷子，会执行cn.longan.Worker（这个暂定）这个类中的afterjoin方法<br />
+			当正确率>20%是执行 do 方法，附加参数 $me，这个就是 20% 这个数值
+			<br />
+			这些方法都要求是static的，默认的第一个参数是User：<br />
+			public static afterjoin(User user){<br />
+				//do your work<br />
+			}<br />
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-11
+ * @修改记录 :
+ */
+@Entity
+@Table(name="share_yask_paper")
+@SuppressWarnings("serial")
+public class Paper extends BaseEntity{
+	private YStore ystore;
+	
+	private String name;
+	private int topicNum;
+	private String information;
+	private String elements;//组成
+	private int joinType;//用户参与方式
+	private int bornType;//卷子生成方式
+	private int exeType;//答题方式
+	private long allowTime;//可用时间，单位为秒
+	private Date beforeDate;
+	private Date afterDate;
+	private Date date;
+	
+	private int hitNum;//参与人次统计,这个只是点击的统计，
+	private int maxJoinNum;//最大参与次数，为0则是无限
+	private String data;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="store_id",nullable=false)
+	public YStore getYstore() {
+		return ystore;
+	}
+	public void setYstore(YStore ystore) {
+		this.ystore = ystore;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
+	}
+
+	public String getElements() {
+		return elements;
+	}
+
+	public void setElements(String elements) {
+		this.elements = elements;
+	}
+
+	public int getJoinType() {
+		return joinType;
+	}
+
+	public void setJoinType(int joinType) {
+		this.joinType = joinType;
+	}
+
+	public int getBornType() {
+		return bornType;
+	}
+
+	public void setBornType(int bornType) {
+		this.bornType = bornType;
+	}
+
+	public int getExeType() {
+		return exeType;
+	}
+
+	public void setExeType(int exeType) {
+		this.exeType = exeType;
+	}
+
+	public long getAllowTime() {
+		return allowTime;
+	}
+
+	public void setAllowTime(long allowTime) {
+		this.allowTime = allowTime;
+	}
+
+	public Date getBeforeDate() {
+		return beforeDate;
+	}
+
+	public void setBeforeDate(Date beforeDate) {
+		this.beforeDate = beforeDate;
+	}
+
+	public Date getAfterDate() {
+		return afterDate;
+	}
+
+	public void setAfterDate(Date afterDate) {
+		this.afterDate = afterDate;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+	public int getTopicNum() {
+		return topicNum;
+	}
+	public void setTopicNum(int topicNum) {
+		this.topicNum = topicNum;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public int getHitNum() {
+		return hitNum;
+	}
+	public void setHitNum(int hitNum) {
+		this.hitNum = hitNum;
+	}
+	public int getMaxJoinNum() {
+		return maxJoinNum;
+	}
+	public void setMaxJoinNum(int maxJoinNum) {
+		this.maxJoinNum = maxJoinNum;
+	}
+}

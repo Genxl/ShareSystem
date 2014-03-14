@@ -1,0 +1,44 @@
+package cn.lzs.share.common.util;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import org.apache.commons.codec.binary.Hex;
+
+public class Md5 {
+	public String encodePassword(String rawPass) {
+		MessageDigest messageDigest = getMessageDigest();
+		byte[] digest;
+		try {
+			digest = messageDigest.digest(rawPass.getBytes());
+		} catch (Exception e) {
+			throw new IllegalStateException("UTF-8 not supported!");
+		}
+		return new String(Hex.encodeHex(digest));
+	}
+
+	public boolean isPasswordValid(String encPass, String rawPass) {
+		String pass1 = "" + encPass;
+		String pass2 = encodePassword(rawPass);
+		return pass1.equals(pass2);
+	}
+
+	protected final MessageDigest getMessageDigest() {
+		String algorithm = "MD5";
+		try {
+			return MessageDigest.getInstance(algorithm);
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException("No such algorithm ["
+					+ algorithm + "]");
+		}
+	}
+
+	public static String Encrypt(String s){
+		Md5 md5 = new Md5();
+		return md5.encodePassword(s);
+	}
+	public static void main(String[] args) {
+		System.out.println(Encrypt("123456"));
+		System.out.println(Encrypt("1ab84c8318fe062b569235e12992ee48"));
+	}
+}

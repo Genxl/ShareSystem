@@ -1,0 +1,10 @@
+package cn.yws.longan.dao.admin;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.admin.UploadItem;
+
+@Service("admin.uploadItemDao")
+public class UploadItemDao extends BaseDao<UploadItem>{
+}

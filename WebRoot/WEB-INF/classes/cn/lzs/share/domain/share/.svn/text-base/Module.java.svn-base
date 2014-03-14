@@ -1,0 +1,42 @@
+package cn.yws.longan.domain.share;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import cn.yws.longan.domain.BaseEntity;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Module.java
+ * @所在包 :cn.yws.longan.domain.share
+ * @功能描述 :
+ *	分享的服务模块类，具有名称属性<br />
+ *	其中 beanName 是模块通过后需要执行的bean名字
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-10
+ * @修改记录 :
+ */
+@Entity
+@Table(name="share_module")
+@SuppressWarnings("serial")
+public class Module extends BaseEntity{
+	private String name;
+	private String beanName;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
+	}
+}

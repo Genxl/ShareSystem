@@ -1,0 +1,39 @@
+package cn.yws.longan.web.intercepter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import cn.yws.longan.cache.Cache;
+import cn.yws.longan.domain.text.Document;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :CategoryIntercepter.java
+ * @所在包 :cn.yws.longan.web.intercepter
+ * @功能描述 :
+ *	当用户查看的是分类列表时，这个会注入相应的文档列表，比如同一分类的最新，最热<br />
+ *	这个过程使用的是 拦截器！
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-29
+ * @修改记录 :
+ */
+public class CategoryIntercepter extends HandlerInterceptorAdapter{
+	
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav) throws Exception {
+		if(mav.getViewName().contains("error"))
+			return ;
+		String id=request.getParameter("c_id");
+		if(id==null){
+			Document d=(Document)mav.getModel().get("doc");
+			id=d.getCategory().getId()+"";
+		}
+		Integer i=Integer.valueOf(id);
+		mav.addObject("category_hot", Cache.getCategoryHotList(i));
+		mav.addObject("category_new", Cache.getCategoryNewList(i));
+		super.postHandle(request, response, handler, mav);
+	}
+}

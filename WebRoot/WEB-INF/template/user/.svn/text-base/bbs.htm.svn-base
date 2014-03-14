@@ -1,0 +1,28 @@
+<@LONGAN.header title="用户登录|雨文|雨无声分享平台|集成显卡2011"></@LONGAN.header>
+	<@LONGAN.validate formId="#loginFrom"/>
+<@LONGAN.body>
+	<div class="CONTENT">
+		<div class="MAKER" style="padding-top:0px;background-position:220px 5px;">
+			<div class="ERROR">${error_message?default('')}</div>
+			<div>
+				<p class="INFO">
+					此功能可以从论坛中同步用户信息，请输入雨无声论坛用户名与密码，再点击“同步”。<br />
+					同步用户成功后，可以获取${new_integral}个积分。
+				</p>
+				<form action="${base}/bbs" method="post" id="loginFrom">
+					<p style="margin:15px 0 8px;">
+						用户:<input class="validate[required]" id="name" name="user.name" value="${name}" type="text"/>
+					</p>
+					<p style="margin:15px 0 8px;">
+						密码:<input class="validate[required]" id="pass" name="user.password" type="password"/>
+					</p>
+					<p style="margin:10px 0 8px 47px;">
+						<span class="INFO">已有帐号？</span>
+						<a href="${base}/login">登录</a>
+						<input type="submit" value="同步"/>
+					</p>
+				</form>	
+			</div>
+		</div>
+	</div>	
+</@LONGAN.body>

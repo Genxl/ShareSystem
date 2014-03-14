@@ -1,0 +1,50 @@
+package cn.yws.longan.dao.text;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.text.Document;
+import cn.yws.longan.domain.text.DownLog;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :DownLogDao.java
+ * @所在包 :cn.yws.longan.dao.text
+ * @功能描述 :
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-12
+ * @修改记录 :
+ */
+@Service("document.downLogDao")
+public class DownLogDao extends BaseDao<DownLog> {
+	
+	/**
+	 * 判断用户是否下载过指定文件
+	 *	@param doc
+	 *	@param user
+	 *	@return
+	 *  @date :2011-12-12
+	 */
+	public DownLog getLog(Document doc,User user){
+		List<DownLog> list=getLogs(doc.getId(), user.getId());
+		if(list.size()>0)
+			return list.get(0);
+		return null;
+	}
+	
+	public void delDocumentLog(Document doc)throws Exception{
+		this.executeHsql("delete DownLog where document_id="+doc.getId());
+	}
+	
+	public List<DownLog> getLogs(int id,int uid){
+		Finder finder=Finder.create("from DownLog where document_id="+id+
+				(uid==0?"":" and user_id="+uid));
+		List<DownLog> list=find(finder);
+		return list;
+	}
+}

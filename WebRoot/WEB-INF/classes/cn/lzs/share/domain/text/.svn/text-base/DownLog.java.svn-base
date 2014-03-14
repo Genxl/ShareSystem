@@ -1,0 +1,80 @@
+package cn.yws.longan.domain.text;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import cn.yws.longan.domain.BaseEntity;
+import cn.yws.longan.domain.User;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :DownLog.java
+ * @所在包 :cn.yws.longan.domain.text
+ * @功能描述 :
+ *		下载日志。
+ *		记录了用户下载信息<br />
+ *		用户对于一个文件的重复下载将不会重复扣除积分。
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-12
+ * @修改记录 :
+ */
+@Entity
+@Table(name="document_downlog")
+@SuppressWarnings("serial")
+public class DownLog extends BaseEntity{
+	private Date downTime;
+	
+	private User user;
+	private Document document;
+	
+	public Date getDownTime() {
+		return downTime;
+	}
+	public void setDownTime(Date downTime) {
+		this.downTime = downTime;
+	}
+	
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",nullable=false)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	@ManyToOne( fetch = FetchType.LAZY)
+	@Cascade(value={CascadeType.MERGE})
+	@JoinColumn(name="document_id",nullable=false)
+	public Document getDocument() {
+		return document;
+	}
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+	
+	/**
+	 * 是否下载的时间跟当前时间相隔了 指定的天数
+	 *	@param day
+	 *	@return
+	 *  @date :2011-12-12
+	 */
+	@Transient
+	public boolean isTimeout(String day){
+		long now=System.currentTimeMillis();
+		long before=this.downTime.getTime();
+		now=now-before;
+		System.out.println("已经过"+now+"   可以的时间："+Long.valueOf(day)*24*60*60*1000);
+		return now>Long.valueOf(day)*24*60*60*1000;
+	}
+}

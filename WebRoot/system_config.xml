@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<longan>
+	<app_name>学文声分享系统|梁展胜</app_name>
+	<app_home>/newgxu/tomcat2/webapps/ROOT</app_home>
+	
+	<!--头像目录-->
+	<header_path>/resource/header</header_path>
+	<!--头像大小，长与宽一样的-->
+	<header_size>125</header_size>
+	<!--单一doc等文件的最大大小，如果超过这个值，将分分段保存这个文档，单位为 Kb-->
+	<doc_single_maxsize>10240</doc_single_maxsize>
+	<!--最高级别的在线阅读开头，如果这个没有开启，那么所有文件都不能在线阅读，即不会生成swf文件-->
+	<can_read_online>true</can_read_online>
+	<!--可以上传的文件类型-->
+	<can_upload>*.doc;*.txt;*.docx;*.ppt;*.xls;*.rar;*.zip</can_upload>
+	<!--可以转换成swf在线阅览的文件类型-->
+	<doc_swf_type>DOC|TXT|XLS</doc_swf_type>
+	<!--文档不同类型的保存路径-->
+	<doc_origin_path>/resource/document/origin</doc_origin_path>
+	<doc_pdf_path>/resource/document/pdf</doc_pdf_path>
+	<doc_swf_path>/resource/document/swf</doc_swf_path>
+	<doc_name_length>20</doc_name_length>
+	<!--txt文档转换方法设定，可以是 Jodc，也可以是Itext-->
+	<txt_convert_method>itext</txt_convert_method>
+	<!--是否在转换成功后将pdf文件删除,1为删除-->
+	<del_pdf_file>1</del_pdf_file>
+	<!--swfTools 的路径,-->
+	<swfTools_path>/usr/local/bin/pdf2swf</swfTools_path>
+	<!--指定了对同一个文件多次下载两次扣除积分的时间间隔，为0则是一次下载，永远不会两次扣除积分，单位为天-->
+	<download_timeout>30</download_timeout>
+	<!--openoffice 服务端口-->
+	<openOffice_port>8100</openOffice_port>
+	<!--缓存更新时间，分钟为单位-->
+	<cache_time>15</cache_time>
+	
+</longan>

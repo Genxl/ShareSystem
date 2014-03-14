@@ -1,0 +1,39 @@
+<div class="pageContent">
+	<table class="table" width="100%"  border="1" layoutH="48" align="center" cellspacing="0" bordercolor="#999999" style="border-collapse:collapse">
+		<thead>
+			<tr>
+				<th width="80">标题</th>
+				<th width="100">申请人</th>
+				<th width="60">模块</th>
+				<th width="50">状态</th>
+				<th>理由</th>
+				<th width="80">申请时间</th>
+				<th width="60">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+	 <#assign state=["审核中","已经通过","无效"]/>
+      <#list model.applys as d>
+      <tr align="center">
+		<td>${d.data?html}</td>
+		<td>${d.user.nick}</td>
+		<td>${d.module.name}</td>
+		<td>${state[d.state]}</td>
+		<td>${d.applyReason?html}</td>
+		<td>${d.applyDate}</td>
+		<td>
+			<#if d.state==0>
+				<a href="${base}/ad_min/share/apply/pass?id=${d.id}"target="ajaxTodo" title="确定通过申请，执行吗?">通过</a>			
+			</#if>
+		</td>
+      </tr>
+	</#list>
+	</tbody>
+    </table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>共${model.totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="${model.totalCount}" numPerPage="${model.pageSize}" pageNumShown="16" currentPage="${model.page}"></div>
+	</div>
+</div>

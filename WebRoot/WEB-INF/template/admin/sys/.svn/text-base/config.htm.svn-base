@@ -1,0 +1,144 @@
+<!--系统配置的设计页面-->
+<div style="width:100%;height:550px; overflow:auto;">
+<form id="configForm" action="${base}/ad_min/sys/config/save" method="post" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input type="hidden" name="txt_convert_method" value="${map.txt_convert_method}"/>
+	<table width="800px" class="table" border="0" cellpadding="0" cellspacing="0">
+		<thead>
+			<th width="150px">名称</th>
+			<th width="350px">值</th>
+			<th>说明</th>
+		</thead>
+		<tbody>
+		<tr>
+			<td>系统名称</td>
+			<td><input type="text" name="app_name" style="width:98%" value="${map.app_name}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>文件根目录</td>
+			<td><input type="text" name="app_home" style="width:98%" value="${map.app_home}"/></td>
+			<td>系统根目录，如果更改了系统的保存目录才需要修改</td>
+		</tr>
+		<tr>
+			<td>新用户奖励积分</td>
+			<td><input type="text" name="new_user_integral" style="width:98%" value="${map.new_user_integral}"/></td>
+			<td>从BBS同步过来的新用户可以获取的积分</td>
+		</tr>
+		<tr>
+			<td>头像保存目录</td>
+			<td><input type="text" name="header_path" style="width:98%" value="${map.header_path}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>用户头像大小</td>
+			<td><input type="text" name="header_size" style="width:98%" value="${map.header_size}"/></td>
+			<td>用户上传头像的宽高值</td>
+		</tr>
+		<tr>
+			<td>文件大小限制</td>
+			<td><input type="text" name="doc_single_maxsize" style="width:98%" value="${map.doc_single_maxsize}"/></td>
+			<td>用户上传的单个文件的大小限制</td>
+		</tr>
+		<tr>
+			<td>开启在线阅读</td>
+			<td><input type="text" name="can_read_online" style="width:98%" value="${map.can_read_online}"/></td>
+			<td>如果这个没有开启，则全部文档都不可以在线阅读，也不会生成相应的swf文件</td>
+		</tr>
+		<tr>
+			<td>允许文件类型</td>
+			<td><input type="text" name="can_upload" style="width:98%" value="${map.can_upload}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>允许生成SWF的文件格式</td>
+			<td><input type="text" name="doc_swf_type" style="width:98%" value="${map.doc_swf_type}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>源文件保存目录</td>
+			<td><input type="text" name="doc_origin_path" style="width:98%" value="${map.doc_origin_path}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>PDF文件保存目录</td>
+			<td><input type="text" name="doc_pdf_path" style="width:98%" value="${map.doc_pdf_path}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>SWF文件保存目录</td>
+			<td><input type="text" name="doc_swf_path" style="width:98%" value="${map.doc_swf_path}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>随机文件名长度</td>
+			<td><input type="text" name="doc_name_length" style="width:98%" value="${map.doc_name_length}"/></td>
+			<td>系统随机产生的文件名的长度</td>
+		</tr>
+		<tr>
+			<td>删除临时PDF文件</td>
+			<td><input type="text" name="del_pdf_file" style="width:98%" value="${map.del_pdf_file}"/></td>
+			<td>1为删除临时的pdf文件，0则不删除</td>
+		</tr>
+		<tr>
+			<td>swfTools工具目录</td>
+			<td><input type="text" name="swfTools_path" style="width:98%" value="${map.swfTools_path}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>下载最小间隔天数</td>
+			<td><input type="text" name="download_timeout" style="width:98%" value="${map.download_timeout}"/></td>
+			<td>单位为天</td>
+		</tr>
+		<tr>
+			<td>openoffice端口</td>
+			<td><input type="text" name="openOffice_port" style="width:98%" value="${map.openOffice_port}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>缓存刷新时间</td>
+			<td><input type="text" name="cache_time" style="width:98%" value="${map.cache_time}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>举报最小次数</td>
+			<td><input type="text" name="number_to_lock" style="width:98%" value="${map.number_to_lock}"/></td>
+			<td>当文档被举报到这个次数会自动被锁定</td>
+		</tr>
+		<tr>
+			<td>最小密码长度</td>
+			<td><input type="text" name="password_length" style="width:98%" value="${map.password_length}"/></td>
+			<td>用户密码的长度最小值</td>
+		</tr>
+		<tr>
+			<td>首页图片数</td>
+			<td><input type="text" name="index_pic_number" style="width:98%" value="${map.index_pic_number}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>首页图片宽</td>
+			<td><input type="text" name="index_pic_width" style="width:98%" value="${map.index_pic_width}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>首页图片高</td>
+			<td><input type="text" name="index_pic_height" style="width:98%" value="${map.index_pic_height}"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align:center;">
+				<br />
+				<a href="javascript:;" onclick="return warnning();">保存</a>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</form>
+<script>
+	function warnning(){
+		if(confirm("这个配置是系统的关键配置，请慎重修改！修改时需要看清楚说明。不然可能引起系统瘫痪！")){
+			$("#configForm").submit();
+		}
+		return false;
+	}
+</script>
+</div>

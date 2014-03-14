@@ -1,0 +1,41 @@
+  <form name="form1" method="post" action="${base}/ad_min/sys/tips/addDo"  onsubmit="return validateCallback(this, dialogAjaxDone);">
+  	<input type="hidden" name="tips.id" value="${t.id}"/>
+	<input type="hidden" name="addTime" value="${t.addTime?string('yyyy-MM-dd')}"/>
+    <table width="100%">
+      <tr>
+        <td width="100">图片名称：</td>
+        <td><input type="text" name="tips.name" value="${t.name?default('')}"/></td>
+      </tr>
+	  <tr>
+	  	<td>图片路径：</td>
+		<td>
+			<input type="text" id="img_path" name="tips.imgPath" value="${t.imgPath?default('')}" style="width:300px;"/>
+			<a href="${base}/ad_min/upload" target="dialog" height="150" mask="true" width="360" external="true">上传图片</a>
+		</td>
+	  </tr>
+	  <tr>
+	  	<td>链接地址：</td>
+		<td>
+			<input type="text" id="img_path" name="tips.url" value="${t.url?default('')}" style="width:300px;"/>
+		</td>
+	  </tr>
+	   <tr>
+	  	<td>排序：</td>
+		<td>
+			<input type="text" name="tips.sort" value="${t.sort?default('0')}" style="width:100px;"/>&nbsp;&nbsp;
+			排序值小的图片会在前面显示
+		</td>
+	  </tr>
+	  <tr>
+	  	<td>是否有效：</td>
+		<td>
+			<label><input type="radio" name="tips.ifDie" value="false" <#if !t.ifDie>checked</#if>  />是</label>
+			<label><input type="radio" name="tips.ifDie" value="true" <#if t.ifDie>checked</#if> />否</label>
+		</td>
+	  </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="Submit" class="BUTTON2" value="修　改">
+      </tr>
+    </table>
+  </form>

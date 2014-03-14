@@ -1,0 +1,261 @@
+<#macro share_body nav=0 title="学文分享平台">
+  <body>
+  	<!--分享区域的头部-->
+  	<div class="sHeader">
+  		<div class="son" style="margin: 0 auto;overflow: hidden;width: 960px;">
+  			<div class="logo">
+  				<a href="${base}/"><img src="${base}/resource/images/share.png"/></a>
+  			</div>
+			<div class="bNav">
+				更多分享模块：
+				<a href="" target="_blank">问卷系统</a>
+			</div>
+			<div class="nav">
+				<ul>
+					<li><a href="${base}/" >首 页</a></li>
+					<li><a href="http://ytw.hhtc.edu.cn/" target="_blank" >厚德网</a></li>
+					<li><a href="http://news.hhtc.edu.cn/" target="_blank" >新闻网</a></li>
+					<li><a href="http://tsg.hhtc.edu.cn/" target="_blank" >图书馆</a></li>
+					<li><a href="http://net.hhtc.edu.cn/" target="_blank" >网络中心</a></li>
+					<li><a href="http://job.hhtc.edu.cn/" target="_blank" >就业信息网</a></li>
+					<li><a href="http://172.28.1.222:81/index.action" target="_blank" >计算机工程系</a></li>
+					<li><a href="http://www.hhtc.edu.cn/" target="_blank" >怀化学院</a></li>
+					<li class="clear"></li>
+				</ul>
+				<div class="clear"></div>
+			</div>
+  		</div>
+	</div>
+	
+	<div class="titleBar">
+		<div style="width:960px;margin:0px auto">
+			<div class="left title LEFT">
+				${title}
+			</div>
+			<div class="right info LEFT">
+				<#assign share_info=[
+				"【问卷系统】你还为没有烦恼找到合适的问答系统？还在为搭建一个问卷系统而绞尽脑汁？来学文分享平台吧!
+					学文分享网站给你提供丰富的用户资源...
+				",
+				"文章系统",
+				"投票系统"]/>
+				${share_info[nav]}
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+	<div style="background: none repeat scroll 0 0 #F6F9FC;">
+		<div class="LEFT" style="width:960px;margin:0px auto;border-left:1px solid #CAD7E1;border-right:1px solid #CAD7E1;background-color:#ffffff">
+			<#nested/>
+		</div>
+	</div>
+    
+	<div class="container" style="border-top:1px solid #b5b5b5;width:100%;">
+		<p class="INFO">本次请求用时:${use_time}ms</p>
+	  <div class="footer" style="background: url('') no-repeat scroll 175px 20px transparent;padding:5px;">
+		  	<p align="center">
+		  		<a href="#" target="_blank"><span>关于我们</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网上投稿</span></a>
+			    － <a href="#" class="style4"><span>服务条款</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网友留言</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网站地图</span></a>
+				<br /><span>Copyright © 2012-2015 <a href="http://www.baidu.com/" target="_blank">www.baidu.cn</a> All rights reserved.<br>
+				地址：怀化学院东区9栋218宿舍   &nbsp; 手机：18688608972 &nbsp; E-mail：lzs716@163.com</span>
+				<br /> 联系QQ：383207367  &nbsp; 联系人：梁展胜 
+			</p>
+		</div>
+	</div>
+  </body>
+</html>
+</#macro>
+
+<#--问答系统的说明信息-->
+<#macro share_ask_info>
+	<div class="INFO" style="text-align:left;">
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		你还为没有烦恼找到合适的问答系统？还在为搭建一个问卷系统而绞尽脑汁？来学文分享平台吧！<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		申请开通题库并通过审核后，你就拥有你自己的题库，添加题目并生成“在线试卷”吧。<br />
+	</div>
+</#macro>
+
+<#--如果没有store这个题库对象，都是显示申请页面-->
+<#macro share_ask index=1>
+	<div class="CENTER">
+		<#if model.ystore?? || index==4 >
+			<!--内置的问答系统导航-->
+			<div style="margin-bottom:8px">
+				<div class="C_NAV nav_space" style="width:100px;"></div>
+				<div class="C_NAV <#if index==1>nav_item<#else>nav_space</#if>" style=""><a href="${base}/share/yask/">题库</a></div>
+				<div class="C_NAV <#if index==2>nav_item<#else>nav_space</#if>"><a href="${base}/share/yask/paper">试卷</a></div>
+				<div class="C_NAV <#if index==3>nav_item<#else>nav_space</#if>"><a href="${base}/share/yask/resultList">结果统计</a></div>
+				<div style="width:120px" class="C_NAV <#if index==4>nav_item<#else>nav_space</#if>"><a href="${base}/share/yask/about">关于问卷系统</a></div>
+				<div class="C_NAV nav_space" style="width:330px"></div>
+				<div class="clear"></div>
+			</div>
+			<#nested/>
+			
+		<#else>
+			<p class="INFO">
+				你还没有创建题库。
+				<a href="javascript:;" onclick="SHARE.apply();" class="BUTTON2">马上申请开通</a>
+			</p>
+			<br />
+			<@LONGAN.share_ask_info />
+		</#if>
+	</div>
+</#macro>
+
+<#--试卷信息-->
+<#macro share_yask_paper>
+	
+	<div class="INFO LEFT">
+		试卷生成类型（这里假设要生成一份30道题目的试卷）：<br />
+		&nbsp;&nbsp;1.随机题目--从您的题库中随机抽出30道题目，组合成试卷，试卷生成后不能更改题目。<br />
+		&nbsp;&nbsp;2.每次随机题目--每次测试时都会随机抽取30道题目，每次看到的试卷是不一样的。<br />
+		&nbsp;&nbsp;3.自定义题目--您自己选择试卷的题目，在题目列表中选择，然后点击“添加到试卷”就可以了。<br />
+		【如果题库中没有30道题目，将不能生成试卷！】<br />
+		<br />
+		身份验证方式：<br />
+		&nbsp;&nbsp;1.分享平台帐号--使用雨无声分享平台的帐号登录<br />
+		&nbsp;&nbsp;2.教务网系统学号+密码--使用怀化学院教务网系统的帐号与密码<br />
+	</div>
+	<br />
+</#macro>
+
+<#--分享模块的登录模式-->
+<#macro share_yask_login type=0 pid=0>
+	<#switch type>
+	<#case 0>
+		<#if Session.login_longan??>
+			<div style="margin:20px auto;width:160px">
+				<a class="SHARE_GO" href="${base}/share/yask/start?id=${pid}">进入系统</a>
+			</div>
+		<#else>
+			<div style="background-color:#f3f3f3;margin:8px;border:1px solid #dadada">
+				<br />
+				<p class="INFO" style="padding:6px">
+					要进行此操作，请使用分享平台帐号登录。
+					如果没有帐号，请先<a href="${base}/register" target="_blank">注册</a>
+				</p>
+				<@LONGAN.share_login_div type=type id=pid/>
+			</div>
+			<br />
+		</#if>
+		<#break>
+	<#case 1>
+		<#if Session.share_session_name1??>
+			<div style="margin:20px auto;width:160px">
+				<a class="SHARE_GO" href="${base}/share/yask/start?id=${pid}">进入系统</a>
+			</div>
+		<#else>
+			<div style="background-color:#f3f3f3;margin:8px;border:1px solid #dadada">
+				<br />
+				<p class="INFO" style="padding:6px">
+					要进行此操作，请使用怀化学院教务网系统的帐号和密码登录。
+				</p>
+				<@LONGAN.share_login_div type=type id=pid/>
+			</div>
+		</#if>
+		<#break>
+	<#case 2>
+		<#if Session.share_session_name2??>
+			<a class="SHARE_GO" href="${base}/share/yask/start?id=${pid}"></a>
+		<#else>
+			<p class="INFO">
+				对不起，目前还没有开放此登录模式！请选择其他登录模式
+			</p>
+			<br />
+		</#if>
+		<#break>
+	</#switch>
+</#macro>
+
+<#--
+分享模块中的登录窗口
+具有用户，密码两个输入框
+-->
+<#macro share_login_div type=0 id=0>
+<div>
+	<form action="${base}/share/login" method="post">
+		<input type="hidden" name="errorPage" value="/share/yask/view?id=${id}"/>
+		<input type="hidden" name="successPage" value="/share/yask/start?id=${id}"/>
+		<input type="hidden" name="loginType" value="${type}"/>
+		
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td width="70px" align="right">帐号：</td>
+				<td align="left"><input type="text" style="width:150px" name="name" value=""/></td>
+			</tr>
+			<tr>
+				<td width="70px" align="right">密码：</td>
+				<td align="left"><input type="password" style="width:150px" name="password" value=""/></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" style="padding-top:4px;padding-bottom:10px">
+					<input type="submit" class="BUTTON2" value="登录"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<p class="ERROR CENTER" style="font-size:12px">${Session.SHARE_MESSAGE}</p>
+</#macro>
+
+<#macro share_yask_showTopic type=1>
+<#if type==0>
+	<script src="${base}/resource/component/roundabout/jquery.roundabout2.js" type="text/javascript"></script>
+	<script src="${base}/resource/component/roundabout/jquery.roundabout-shapes2.js" type="text/javascript"></script>
+	<script src="${base}/resource/js/jquery.easing.js" type="text/javascript"></script>
+	<#list model.topics as t>
+		<div class="line_${t_index%2} part moving" items="${t.items?html}" index="${t.id}" id="topic_${t.id}" style="padding-top:8px;width:90%;margin:0px auto">
+			<div class="left" style="margin-left:10px;margin-right:90px;height:60px;line-height:60px;font-size:16px;">
+				<span class="" style="font-weight:bold;padding:0 5px 0px;">${t_index+1}</span>.${t.name?html}
+			</div>
+			<ul class="item" style="margin-bottom:0px">
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</#list>
+	<script>
+		$(document).ready(function(){
+			$('ul.item').roundabout({
+				shape: 'waterWheel',
+				minScale:0.6,
+				maxScale: 1.1,
+				minOpacity: 0.1,
+				duration: 300,
+				easing: 'easeOutCubic'
+			});
+			
+			$('ul.item li').dblclick(function(e) {
+				e.preventDefault();
+				return false;
+			});
+		});
+	</script>
+<#elseif type==1>
+	<#list model.topics as t>
+		<div class="line_${t_index%2} part moving" items="${t.items?html}" index="${t.id}" id="topic_${t.id}" style="padding-top:8px;width:90%;margin:0px auto">
+			<div style="margin-left:10px;font-size:16px;">
+				<span class="" style="font-weight:bold;padding:0 5px 0px;">${t_index+1}</span>.${t.name?html}
+			</div>
+		</div>
+	</#list>
+</#if>
+<script>
+	$(document).ready(function(){
+		$('.item_p').click(function(e) {
+			var index=$(this).attr("pid");
+			var value=$(this).attr("value");
+			if($("#answer_"+index).val()==''){
+				SHARE.complete++;
+			}
+			$("#answer_"+index).val(index+"-"+value);
+			$("#mark_"+index).addClass("complete");
+			$("#complete").html(SHARE.complete);
+		});
+	});
+</script>
+</#macro>

@@ -1,0 +1,24 @@
+package cn.yws.longan.dao.share.yask;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.share.yask.YStore;
+
+@Service("share.yask.storeDao")
+public class YStoreDao extends BaseDao<YStore>{
+	
+	public YStore get(User user){
+		Finder f=Finder.create("from YStore where user_id="+user.getId());
+		List<YStore> list=find(f);
+		System.out.println(list.size());
+		if(list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
+}

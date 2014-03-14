@@ -1,0 +1,76 @@
+package cn.yws.longan.common.util;
+
+import java.util.Random;
+
+import cn.yws.longan.common.RemoteUtil;
+import cn.yws.longan.domain.User;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :ShareWorker.java
+ * @所在包 :cn.yws.longan.common.util
+ * @功能描述 :
+ *	分享模块中的自动功能都是在这里执行
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-17
+ * @修改记录 :
+ */
+public class ShareWorker {
+
+	/**
+	 * 获取100--500之间的随机XDB
+	 *	@param user
+	 *	@return
+	 *  @date :2012-4-17
+	 */
+	public static String askAfterJoin(User user,String data){
+		String tt[]=data.split("-");
+		int start=Integer.valueOf(tt[0]);
+		int end=Integer.valueOf(tt[1]);
+		int count=new Random().nextInt(end-start)+start;
+		try{
+			if(RemoteUtil.exchangeXDB(user.getName(), count)){
+				return "成功给论坛用户‘"+user.getName()+"’添加"+count+"个XDB!";
+			}
+			throw new Exception("远程调用bbs.newgxu.cn出错！");
+		}catch(Exception e){
+			String info="参与问卷系统后添加用户XDB时："+e.getMessage();
+			Log.error(info);
+			return info;
+		}
+	}
+	
+	/**
+	 * 参与问卷后，结果的正确率符合要求后，会执行这个
+	 * data中可以以'#'分隔不同的道具
+	 * 如：3-1|2-1
+	 * 
+	 *	@param user
+	 *	@param data
+	 *	@return
+	 *  @date :2012-4-18
+	 */
+	public static String askInRate(User user,String data){
+		String result="";
+		System.out.println(data+"  被执行了！");
+		String temp[]=data.split("#");
+		for(String a:temp){
+			String tt[]=a.split("-");
+			int itemId=Integer.valueOf(tt[0]);
+			int count=Integer.valueOf(tt[1]);
+			try{
+				if(RemoteUtil.addBBSItem(user.getName(), itemId, count)){
+					result+="成功给论坛用户‘"+user.getName()+"’添加"+count+"个论坛道具，道具id为"+itemId+"。";
+				}else
+					throw new Exception("远程调用bbs.newgxu.cn出错！");
+			}catch(Exception e){
+				String info="参与问卷系统后添加用户道具时："+e.getMessage();
+				Log.error(info);
+				result+=info;
+			}
+		}
+		return result;
+	}
+	
+}

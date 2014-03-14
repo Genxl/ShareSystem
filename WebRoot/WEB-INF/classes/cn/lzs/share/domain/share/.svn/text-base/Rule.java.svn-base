@@ -1,0 +1,45 @@
+package cn.yws.longan.domain.share;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import cn.yws.longan.domain.BaseEntity;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Rule.java
+ * @所在包 :cn.yws.longan.domain.share
+ * @功能描述 :
+ *	用户与模块之间的权限规则记录表
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-10
+ * @修改记录 :
+ */
+@Entity
+@Table(name="share_rule")
+@SuppressWarnings("serial")
+public class Rule extends BaseEntity{
+	private int userId;//用户id
+	private String moduleName;//模块名称
+	private int contentId;//模块中内容id，比如在文章模块中，这个就是对应的板块id
+	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public String getModuleName() {
+		return moduleName;
+	}
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+	public int getContentId() {
+		return contentId;
+	}
+	public void setContentId(int contentId) {
+		this.contentId = contentId;
+	}
+}

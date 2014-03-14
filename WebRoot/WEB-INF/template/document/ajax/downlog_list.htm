@@ -1,0 +1,12 @@
+<#if model.downLogs?size gt 0>
+<#list model.downLogs as c>
+	<div style="width:12%;float:left;text-align:center;">
+		<a href="${base}/user/info?id=${c.user.id}" target="_blank" class="log_item">
+			<img title="${c.user.nick}" width="55" height="55" border="0" src="${base}/resource/header/${c.user.face?default('default.gif')}"/>
+		</a>
+	</div>
+</#list>
+<div class="clear"></div>
+<#else>
+还没有人下载这个文档哦。现在下载?
+</#if>

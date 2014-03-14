@@ -1,0 +1,30 @@
+<@LONGAN.header title="用户登录|雨文|雨无声分享平台|集成显卡2011"></@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT">
+		<div style="width:500px; margin-left:300px; padding-top:20px;">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><img src="${base}/resource/images/success.gif"/></td>
+					<td width="50"></td>
+					<td align="left" valign="middle">
+						<h3 class="SUCCESS">论坛用户同步！</h3>
+						<p>
+							<ul style="list-style:none;margin-left:18px; font-size:12px;padding:10px 0 10px;">
+								<li>用户：${model.user.name}</li>
+								<li>昵称：${model.user.nick}</li>
+							</ul>
+						</p>
+						<p><br /></p>
+						<p class="CENTER">
+							<form  action="${base}/login" method="post">
+								<input type="hidden" name="name" value="${model.user.name}"/>
+								<input type="hidden" name="password" value="${password}"/>
+								<input type="submit" value="马上登录"/>
+							</form>
+						</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</@LONGAN.body>

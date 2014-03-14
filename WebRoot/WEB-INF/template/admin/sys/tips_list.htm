@@ -1,0 +1,57 @@
+<div class="pageHeader">
+	&nbsp;&nbsp;&nbsp;<a class="BUTTON" href="${base}/ad_min/sys/tips/add"  height="200" target="dialog" rel="tips_add" fresh="false">添加新图片</a>
+	这里的图片将会显示在首页图片切换中，选择的是图片有效且排序值小的。
+</div>
+<div class="pageContent">
+	<table class="table" width="1400" layoutH="95">
+		<thead>
+			<tr>
+				<th width="40">编辑</th>
+				<th width="40">删除</th>
+				<th width="40">ID号</th>
+				<th width="140">名称</th>
+				<th width="60">是否有效</th>
+				<th width="40">排序</th>
+				<th width="360">图片路径</th>
+				<th>链接网址</th>
+				<th width="80">加入时间</th>
+			</tr>
+		</thead>
+		<tbody>
+      <#list model.tipsList as h>
+      <tr>
+      	<td><a href="${base}/ad_min/sys/tips/edit?id=${h.id}" target="dialog" fresh="false" height="200" title="[编辑]${h.name}" rel="holiday_${h.id}"><span class="FILE_EDIT"></span></a></td>
+		<td><a href="${base}/ad_min/sys/tips/del?id=${h.id}" target="ajaxTodo" title="真的要删除这个图片么？"><span class="FILE_DEL"></span></a></td>
+      	<td>${h.id}</td>
+		<td>${h.name}</td>
+		<td style="text-align:center;"><span class='<#if h.ifDie>FALSE<#else>TRUE</#if>'></span></td>
+		<td>${h.sort}</td>
+		<td>
+			<a href="javascript:;" onclick="photo(this);">${h.imgPath?default('')}</a>
+		</td>
+		<td>${h.url?default('')}</td>
+	  	<td>${h.addTime?date}</td>
+	  </tr>
+	</#list>
+	</tbody>
+    </table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>共${model.totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="${model.totalCount}" numPerPage="${model.pageSize}" pageNumShown="16" currentPage="${model.page}"></div>
+	</div>
+</div>
+<script language="JavaScript">
+	//弹出图片容器
+	function photo(obj){
+		var src='${base}'+$(obj).html();
+		$.dialog({
+			padding:0,
+			fixed:true,
+		    title: '查看图片(如果图片不居中请点击图片外的空白处)',
+			content: '<img src="'+src+'"/>',
+		    lock: true
+		});
+	}
+</script>

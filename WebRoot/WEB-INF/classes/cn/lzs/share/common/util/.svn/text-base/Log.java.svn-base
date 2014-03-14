@@ -1,0 +1,74 @@
+package cn.yws.longan.common.util;
+
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Log.java
+ * @所在包 :cn.yws.longan.common.util
+ * @功能描述 :
+ *		日志类<br />
+ *		在log4j的配置文件中，我将文件日志的等级设置成了 ERROR 等级<br />
+ *		那么 INFO，WARN，DEBUG 级别的信息就不会保存下来。<br />
+ *		程序日志也只能是  Log.error() 来记录信息。<br />
+ *		time:2011-12-5<br />		
+ *		
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-11-15
+ * @修改记录 :
+ */
+public class Log {
+	public static Logger logger = Logger.getLogger(Logger.class); 
+	
+	public static void info(String message){
+		if(logger.isInfoEnabled()){
+			logger.info(message);
+		}
+	}
+
+	public static void debug(String message){
+		if(logger.isDebugEnabled()){
+			logger.debug(message);
+		}
+	}
+
+	public static void trace(String message){
+		if(logger.isTraceEnabled()){
+			logger.trace(message);
+		}
+	}
+	
+	public static void error(String message){
+		logger.error(message);
+	}
+	
+	public static void error(String message , Exception exception){
+		logger.error(message , exception);
+	}
+	
+	public static void error(Exception exception){
+        StringBuffer errorMsgBuffer = new StringBuffer();
+    	StackTraceElement[] stacks = exception.getStackTrace();
+    	errorMsgBuffer.append(exception.getMessage() +"["+ new Date()+"]" + " detail message : \r\n");
+    	for (int i = 0; i < stacks.length; i++) {
+    	    errorMsgBuffer.append("	at ").append(stacks[i].getClassName());
+    	    errorMsgBuffer.append(".").append(stacks[i].getMethodName());
+    	    errorMsgBuffer.append("(").append(stacks[i].getFileName());
+    	    errorMsgBuffer.append(":").append(stacks[i].getLineNumber()).append(")\r\n");	
+    	}	
+    	logger.error(errorMsgBuffer.toString());
+	}
+	
+	public static void error(Object c,Exception exception){
+		String name=c.getClass().getName();
+		name="error class："+name+"\r\n";
+		logger.error(name, exception);
+	}
+	
+	public static void main(String[] args) {
+		error(new NullPointerException());
+	}
+}

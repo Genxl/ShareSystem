@@ -1,0 +1,67 @@
+<@LONGAN.header title="问卷系统|学文|学文分享平台|">
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+	<script src="${base}/resource/js/share.1.0.js" type="text/javascript"></script>
+	
+	<style>
+		.about h3 {margin-top:20px}
+	</style>
+</@LONGAN.header>
+<@LONGAN.body>
+	<@LONGAN.personal index=11>
+		
+		<@LONGAN.share_ask index=4>
+
+			<div class="about INFO LEFT" style="font-size:13px">
+				“问卷系统”是学文分享平台为方便网友推出的一个开放式问卷平台。<br />
+				任何分享平台用户都可以通过申请来开通自己的”问卷系统“。你可以管理自己的“问卷系统”，设置对外开放的“问卷”。<br />
+				学文分享平台自动为你统计问卷的测试结果。<br />
+				
+				<br />
+				<p style="color:#3d7ee8;font-weight:bold">
+					系统暂定于2013年5月后对外开放！
+				</p>
+				<br />
+				
+				“问卷系统”包含4个部分：<br />
+				<ul style="list-style:disc;padding-left:50px;margin-bottom:50px">
+					<li><a href="#about_1">题库</a></li>
+					<li><a href="#about_2">题目</a></li>
+					<li><a href="#about_3">试卷</a></li>
+					<li><a href="#about_4">成绩单</a></li>
+				</ul>
+				
+				
+				<h3 id="about_1">1.题库</h3>
+				<p style="padding:10px 10px 10px 30px">
+					一个用户只能开通一个题库。题库包含一系列题目。
+				</p>
+				<h3 id="about_2">2.题目</h3>
+				<p style="padding:10px 10px 10px 30px">
+					目前题目有两类：判断题，单选题。
+					<br />
+					判断题只需要填写标题和答案就可以了。
+					<p style="padding-left:40px"><img src="${base}/resource/images/share/yask/topic_judge.jpg"/></p>
+					<br />
+					单选题则需要设置可选的选项，最多填写8个。
+					<p style="padding-left:40px"><img src="${base}/resource/images/share/yask/topic_single.jpg"/></p>
+				</p>
+				<h3 id="about_3">3.试卷</h3>
+				<p style="padding:10px">
+					一个题库可以设置多个试卷。比如“关于计算机题库”可以下设“2011年问卷，“2012年问卷”。<br />
+					<p><img style="border:1px solid #3d7ee8" src="${base}/resource/images/share/yask/paper_add.jpg"/></p>
+					试卷生成类型（这里假设要生成一份30道题目的试卷）：<br />
+					&nbsp;&nbsp;1.随机题目--从您的题库中随机抽出30道题目，组合成试卷，试卷生成后不能更改题目。<br />
+					&nbsp;&nbsp;2.每次随机题目--每次测试时都会随机抽取30道题目，每次看到的试卷是不一样的。<br />
+					&nbsp;&nbsp;3.自定义题目--您自己选择试卷的题目，在题目列表中选择，然后点击“添加到试卷”就可以了。<br />
+					【如果题库中没有30道题目，将不能生成试卷！】<br />
+				</p>
+				<h3 id="about_4">4.成绩单</h3>
+				<p style="padding:10px">
+					是记录了用户参与一个试卷后的成绩。任何人可以访问。
+				</p>
+			</div>
+			
+		</@LONGAN.share_ask>
+		
+	</@LONGAN.personal>	
+</@LONGAN.body>

@@ -1,0 +1,55 @@
+package cn.yws.longan.domain.share.yask;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import cn.yws.longan.domain.BaseEntity;
+import cn.yws.longan.domain.User;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :Store.java
+ * @所在包 :cn.yws.longan.domain.share.yask
+ * @功能描述 :
+ *	题库：share_yask_store
+		名称
+		用户
+		创建时间
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2012-4-11
+ * @修改记录 :
+ */
+@Entity
+@Table(name="share_yask_store")
+@SuppressWarnings("serial")
+public class YStore extends BaseEntity{
+	private User user;
+	private String name;
+	private Date date;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id",nullable=false)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+}

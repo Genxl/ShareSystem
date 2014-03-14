@@ -1,0 +1,75 @@
+/*头部44699C*/
+.sHeader {background: none repeat scroll 0 0 #44699C;width:100%}
+.sHeader .logo {float: left;position: relative;}
+.sHeader .bNav {overflow: hidden;padding-right: 18px;font-size:12px;text-align: right;height:50px;color:#3d3d3d;font-weight:bold}
+.sHeader .nav {overflow: hidden;text-align: right;}
+.sHeader .nav ul { float: right;list-style: none outside none;margin: 0;padding: 0 11px 0 0;}
+.sHeader .nav li {float: left;overflow: hidden;padding: 0 7px;}
+.sHeader .nav li a {float: left;font-size: 15px;padding: 0;text-decoration: none;color:#ffffff}
+.sHeader .nav li a:visited {color:#ffffff}
+.sHeader .nav li a:hover {color:#d5eaff}
+
+.titleBar {background-color: #F5F5F5;border-bottom: 1px solid #DADADA;border-top:0px solid #DADADA;color: #566579;height:40px}
+.titleBar .title {width:450px;line-height:40px;font-size:18px}
+.titleBar .info {width:500px;font-size:12px;line-height:14px;padding-top:5px}
+
+.SHARE_GO {height:59px;border:none; cursor:pointer; text-align:center; width:158px; display:inline-block; line-height:59px; background-color:#92cf28; color:#ffffff; font-size:22px; font-weight:bold; background:url("../../resource/images/icon/big_button.gif"); }
+a.SHARE_GO  {text-decoration:none;}
+a:hover.SHARE_GO {text-decoration:underline;}
+
+/*成绩单*/
+.PMaker {width:935px;height:285px;background:url('../../resource/images/share/yask/result.jpg') no-repeat;}
+.MAKER h3 {}
+/*
+ * =====================================================
+ * 动画效果
+ * =====================================================
+ */
+ul.item {
+	margin-bottom: 3em;
+}
+.roundabout-holder {
+	width: 400px;
+	height: 5em;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	list-style: none;
+	top: -5px;
+	float:left;
+}
+
+.roundabout-moveable-item {
+	width: 400px;
+	height: 1.5em;
+	line-height: 1.5;
+	font-size: 16px;
+	text-align: center;
+	cursor: pointer;
+	color: #329;
+	font-family: Chalkboard, Comic Sans, awful-awful-font;
+}
+
+.roundabout-in-focus {
+	cursor: auto;
+	text-decoration:underline;
+	font-weight:700
+}
+
+.monolith { 
+	background-color: #000;
+	position: absolute;
+	width: 17em;
+	top: 0em;
+	left: 7.5em;
+	z-index: 200;
+	height: 40em;
+}
+
+.monolith .pad {
+	padding: 1em; 
+	text-align: center;
+	color: #999;
+}
+			

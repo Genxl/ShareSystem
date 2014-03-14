@@ -1,0 +1,30 @@
+<@LONGAN.header title="个人信息|雨文|雨无声分享平台|集成显卡2011"></@LONGAN.header>
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+<@LONGAN.body>
+	<@LONGAN.personal index=-1>
+		<div style="border-bottom:1px solid #cecece; text-align:center; margin-bottom:5px;">
+			<h3>'${model.user.nick}'的个人信息</h3>
+		</div>
+		<table >
+			<tr><td>
+				<img width="64px" height="64px" src="${base}/resource/header/${model.user.face?default('default.gif')}"/>
+			</td></tr>
+			<tr><td>昵称：${model.user.nick}</td></tr>
+			<tr><td>积分：${model.user.integral}</td></tr>
+			<tr><td>官阶：${model.user.rank.name}(最大可用空间：${model.user.rank.sizeDisplay})</td></tr>
+			<tr><td>登录次数：${model.user.loginTimes}</td></tr>
+			<tr><td>最后登录：${model.user.lastLoginTime}</td></tr>
+			<tr><td>文档数：${model.user.docNumber}</td></tr>
+			<tr>
+				<td>
+					已用空间：${model.user.fileSizeDisplay}&nbsp;&nbsp;
+					<div class="size_div">
+						<div class="user_size_div" style="width:${model.user.usedSize};"></div>
+						<div class="info_size_div">${model.user.usedSize}</div>
+					</div>
+				</td>
+			</tr>
+			<tr><td>加入时间：${model.user.joinTime}</td></tr>
+		</table>
+	</@LONGAN.personal>	
+</@LONGAN.body>

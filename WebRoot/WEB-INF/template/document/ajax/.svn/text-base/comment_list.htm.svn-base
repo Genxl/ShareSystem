@@ -1,0 +1,12 @@
+<#if model.comments?size gt 0>
+<#list model.comments as c>
+<div id="comment_${c.id}" class="top_comment">
+	<div class="left_part"><a href=""><img src="${base}/resource/header/${c.user.face?default('default.gif')}" class="comment_face"/></a></div>
+	<div class="right_part"><a href="${base}/user/info?id=${c.user.id}">${c.user.nick?default('')}</a>：${c.content?default('')}&nbsp;&nbsp;${c.date?string("MM-dd HH:mm")}</div>
+	<div class="clear"></div>
+</div>
+</#list>
+<div class="PAGE">
+	${model.pageInfo}
+</div>
+</#if>

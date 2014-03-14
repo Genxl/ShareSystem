@@ -1,0 +1,36 @@
+<@LONGAN.header title="用户登录|学文|学文分享平台|"></@LONGAN.header>
+	<@LONGAN.validate formId="#loginFrom"/>
+<@LONGAN.body>
+	<div class="CONTENT" style="margin-top:4px;margin-bottom:10px">
+		<@LONGAN.indexImage />
+		
+		<div style="border:8px Solid #366092; width:942px;">
+			<div class="left LEFT" style="width:240px">
+				<div class="ERROR CENTER" style="height:18px;font-weight:bold;font-size:12px">${error_message?default('')}</div>
+				<form action="${base}/login" method="post" id="loginFrom">
+					<p class="CENTER" style="margin:12px 0 8px;">
+						用户:<input class="validate[required]" name="name" type="text" id="name"/>
+					</p>
+					<p class="CENTER" style="margin:10px 0 8px;">
+						密码:<input class="validate[required]" name="password" type="password" id="pass"/>
+					</p>
+					<p class="CENTER" style="margin:10px 0 8px;">
+						<input type="submit" value="登&nbsp;&nbsp;录"/>
+						<a href="${base}/register">注册</a>
+					</p>
+				</form>
+			</div>
+			<div class="right" style="background-color:#366092;width:700px;height:130px;padding-top:0px;margin-left:0px;background-position:620px 0px">
+				<div style="margin:5px;">
+					<p class="CENTER INFO" style="margin:2px auto;width:500px;color:#d8d8d8">
+						<br/>
+						学文分享平台---是同学们分享资源的开放平台。<br />
+						通过这个校园分享平台，我们可以更好，更快的下载到有用的参考资料，在学习上会起到很好的促进作用，同时我们也不用担心因为积分的不够而下载不到自己想要的资料。只要同学们分享出自己觉得好用的资料，我相信我们这个平台会有越来越多的有价值的资源供大家下载。因此这个网站应该能给更多的学生带来分享的快乐，带来获得知识的满足，越来越多的同学会加入到这个“人人为我，我为人人”的分享行动中来。
+						<br />
+					</p>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</@LONGAN.body>

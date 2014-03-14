@@ -1,0 +1,128 @@
+<@LONGAN.header title="添加试卷--问卷系统|雨文|雨无声分享平台">
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+	<script src="${base}/resource/js/share.1.0.js" type="text/javascript"></script>
+</@LONGAN.header>
+<@LONGAN.datePicker />
+<@LONGAN.body>
+	<@LONGAN.personal index=11>
+		
+		<@LONGAN.share_ask index=2>
+			<p class="LEFT">
+				<a href="${base}/share/yask/paper">&lt;&lt;返回我的试卷</a>
+			</p>
+			<@LONGAN.share_yask_paper/>
+			
+			<p class="ERROR">${error_message}</p>
+			
+			<div>
+				<h4>添加试卷</h4>
+				<form action="${base}/share/yask/paper/add" method="post">
+				<input type="hidden" name="paper.id" value="${model.paper.id}"/>
+				<input type="hidden" id="elements" name="paper.elements" value="${model.paper.elements}"/>
+				<table width="100%" class="TABLE" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td width="110px" align="right">
+							名称：
+						</td>	
+						<td align="left">
+							<input type="text" style="width:500px" name="paper.name" value="${model.paper.name}"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							试卷生成类型：
+						</td>	
+						<td align="left">
+							<select id="bornType" name="paper.bornType">
+								<#list ["随机题目","每次随机题目","自定义题目"] as x>
+								<option value="${x_index}">${x}</option>
+								</#list>
+							</select>
+							&nbsp;
+							<span id="borntip_0"><a href="javascript:;" id="toRandom" title="随机题目，如果不满意可以重新随机">马上随机题目</a></span>
+							<span id="borntip_1" class="INFO">每次都会得到不同的试卷题目</span>
+							<span id="borntip_2" class="INFO">请到题目列表中手动添加题目到这个试卷</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							身份验证方式：
+						</td>	
+						<td align="left">
+							<select name="paper.joinType">
+								<#list ["使用分享平台帐号","使用选课系统的学号+密码","使用学号+密码+身份证","无需登录"] as x>
+								<option value="${x_index}">${x}</option>
+								</#list>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							同一用户参与数：
+						</td>	
+						<td align="left">
+							<input id="topicNum" type="text" style="width:50px" name="paper.maxJoinNum" value="${model.paper.maxJoinNum}"/>
+							<span class="INFO">*这个是指：同一个用户可以参与的次数，超过则不能参与此问卷，为0则不限。[验证方式为”无需登录“时无效]</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							考试时间：
+						</td>	
+						<td align="left">
+							<input type="text" style="width:50px" name="paper.allowTime" value="${model.paper.allowTime}"/>
+							<span class="INFO">*单位是秒，只能填写数字哦</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							有效时间：
+						</td>	
+						<td align="left">
+							<input class="Wdate" name="beforeDate" type="text" value="${beforeDate}" onClick="WdatePicker()">
+							-
+							<input class="Wdate" name="afterDate" type="text" value="${afterDate}" onClick="WdatePicker()">
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							题目数：
+						</td>	
+						<td align="left">
+							<input id="topicNum" type="text" style="width:50px" name="paper.topicNum" value="${model.paper.topicNum}"/>
+							<span class="INFO">*只能填写数字哦</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right">
+							试卷封面：
+						</td>
+						<td align="left">
+							<span class="INFO">*填写试卷的相关说明，这个是试卷的封面哦，可以加入图片与视频丰富内容！(图片/视频请使用外部资源)</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="110px" align="right"></td>
+						<td align="center">
+							<textarea name="paper.information" id="content" style="width:100%;height:350px;visibility:hidden;">${model.paper.information}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<input type="submit" class="BUTTON2" value="<#if model.paper.id gt 0>保存修改<#else>马上创建</#if>"/>
+							<a href="${base}/share/yask/paper">返回我的试卷</a>&nbsp;
+							<a href="${base}/share/yask/">返回我的题库</a>
+						</td>
+						<@LONGAN.editor/>
+					</tr>
+				</table>
+				</form>
+			</div>
+			
+		</@LONGAN.share_ask>
+		
+	</@LONGAN.personal>	
+</@LONGAN.body>
+<script>
+	$(document).ready(function(){SHARE.paper.addInit(${model.paper.bornType},${model.paper.joinType});});
+</script>

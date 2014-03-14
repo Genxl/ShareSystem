@@ -1,0 +1,114 @@
+<#macro header title="">
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>${title}文档分享网站|怀化学院|就业|招聘|学院|图书馆</title>
+		<meta name="keywords" content="#" />
+	    <meta name="description" content="#" />
+	    <script src="${base}/resource/js/jquery-1.6.2.min.js" type="text/javascript"></script>
+		<script src="${base}/resource/js/longan.1.0.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="${base}/resource/css/common.css"/>
+		
+		<script>
+			$(document).ready(function(){
+				try{
+				//初始化ShareSystem系统
+				Longan.initRoot('${base}');
+				<#if Session.login_longan??>
+				Longan.initUser('${Session.login_longan.nick}','${Session.login_longan.face}');
+				</#if>
+				}catch(e){alert(e);}
+			});
+		</script>
+		<@LONGAN.artDialog/>
+		<#nested/>
+	</head> 
+</#macro> 
+
+<#macro body nav="index">
+  <body>
+  	<!--头部-->
+	<div class="header">
+	    <!--head Begin{-->
+    	<div class="_head">
+        	<!--站点导航 Begin{-->
+        	<div class="siteMap">
+           	  <p>
+           	  	<a class="LINK" href="${base}/" >首 页</a>
+           	  	<a class="LINK" href="http://ytw.hhtc.edu.cn/" target="_blank" >厚德网</a>
+				<a class="LINK" href="http://news.hhtc.edu.cn/" target="_blank" >新闻网</a>
+				<a class="LINK" href="http://tsg.hhtc.edu.cn/" target="_blank" >图书馆</a>
+				<a class="LINK" href="http://net.hhtc.edu.cn/" target="_blank" >网络中心</a>
+				<a class="LINK" href="http://job.hhtc.edu.cn/" target="_blank" >就业信息网</a>
+				<a class="LINK" href="http://172.28.1.222:81/index.action" target="_blank" >计算机工程系</a>
+				<a class="LINK" href="http://jwmis.hhtc.edu.cn/" target="_blank" >教务网络管理系统</a>
+				<a class="LINK" href="http://www.hhtc.edu.cn/" target="_blank" >怀化学院</a>
+           	  </p>
+            </div>
+            <!--}站点导航 End-->
+           <div class="head_two">
+           	<div class="left"><a href="${base}/"><div  class="LOGO"></div></a></div>
+            <!--search Begin{-->
+            <div class="left search">
+            	<form action="${base}/document/search" method="post" id="search_form">
+	            	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	            		<tr>
+	            			<td width="100px"><input type="text" name="key" id="search" size="20"/></td>
+							<td width="60px" align="center">
+								<input type="image" src="${base}/resource/images/searchButton.png" width="46" height="20"/>
+							</td>
+							<td width="5px"></td>
+							<td>
+								<#if Session.login_longan??>
+									<div class="login_info_div">
+										欢迎您，${Session.login_longan.nick?default('')}.<!--IP:${Session.login_longan.IP?default('127.0.0.1')}--><br />
+										<a href="${base}/user/personal">个人中心</a>&nbsp;|&nbsp;
+										<a href="${base}/document/new">上传文档</a>&nbsp;|&nbsp;
+										<a href="${base}/logout">退出</a>
+									</div>
+								<#else>
+									<div class="unlogin_info_div">
+										<a href="${base}/login">登录</a>|<a href="${base}/register">注册</a>
+									</div>
+								</#if>
+							</td>
+	            		</tr>
+	            	</table>
+				</form>
+            </div>
+            <!--}search End-->
+            <div class="right logo2"></div>
+			<div class="clear"></div>
+           </div>
+         </div>
+        <!--}head End-->
+	</div>
+  	<div style="width:100%;background-color:#1683c8;height:35px;">
+	  	<div class="nav_div" style="width:960px; height:35px;margin:0 auto;text-align:left;">
+			<a href="${base}/" class="NAV<#if nav=='index'> CUR</#if>">首页</a>
+			<a href="${base}/document/search?sort=downNumber" class="NAV<#if nav=='downNumber'> CUR</#if>">下载排行</a>
+			<a href="${base}/document/search" class="NAV<#if nav=='uploadTime'> CUR</#if>">最新文档</a>
+			<a href="${base}/share/yask/" class="NAV<#if nav=='yask'> CUR</#if>">问卷系统</a>
+			<a href="" class="NAV">帮助</a>
+			<div class="clear"></div>
+		</div>
+	</div>
+    <#nested/>
+	<div class="container" style="border-top:1px solid #b5b5b5;width:100%;">
+		<p class="INFO">本次请求用时:${use_time}ms</p>
+	  <div class="footer" style="background: url('') no-repeat scroll 175px 20px transparent;padding:5px;">
+		  	<p align="center">
+		  		<a href="#" target="_blank"><span>关于我们</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网上投稿</span></a>
+			    － <a href="#" class="style4"><span>服务条款</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网友留言</span></a> 
+				－ <a href="#" target="_blank" class="style4"><span>网站地图</span></a>
+				<br /><span>Copyright © 2012-2015 <a href="http://www.baidu.com/" target="_blank">www.baidu.cn</a> All rights reserved.<br>地址：怀化学院东区9栋218宿舍   &nbsp; 手机：18688608972 &nbsp; E-mail：lzs716@163.com</span>
+				<br /> 联系QQ：383207367  &nbsp; 联系人：梁展胜 
+			</p>
+		</div>
+	</div>
+  </body>
+</html>
+</#macro>

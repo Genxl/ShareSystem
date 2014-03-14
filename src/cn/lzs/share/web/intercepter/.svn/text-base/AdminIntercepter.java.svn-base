@@ -1,0 +1,28 @@
+package cn.yws.longan.web.intercepter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import cn.yws.longan.common.Constant;
+import cn.yws.longan.common.exception.Exceptions;
+import cn.yws.longan.common.util.SessionUtil;
+import cn.yws.longan.domain.admin.Admin;
+
+public class AdminIntercepter extends HandlerInterceptorAdapter{
+	
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(request.getRequestURI().endsWith("/login"))
+			return true;
+		
+		Admin admin=SessionUtil.getAdmin(request);
+		if(admin==null){
+			SessionUtil.put(request, "admin_"+Constant.ERROR_MESSAGE, Exceptions.NOT_LOGIN);
+			response.sendRedirect(request.getContextPath() + "/ad_min/login");
+			return false;
+		}
+		return true;
+	}
+}

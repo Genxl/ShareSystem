@@ -1,0 +1,50 @@
+<#macro hotDoc>
+	<div id="hot_div" style="width:235px;margin-top:0px" class="border">
+		<div class="borderBottom">
+			<div class="left midTitle heiti">本类热门文档</div>
+			<div class="left HOT"></div>
+			<div class="clear"></div>
+		</div>
+		<ul style="list-style:none;">
+			<#assign index=0>
+			<#list category_hot as h>
+				<li class="borderBottom2 left new_${index%2}" style="border-bottom:none;">
+					<span class="${h.fileType} left" style="margin-top:3px;"></span>
+					<span class="left" style="width:205px">
+						<a style="font-size:13px" href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+							<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+						</a>
+					</span>
+				</li>
+				<#assign index=index+1>
+			</#list>
+			<li class="clear"></li>
+		</ul>
+	</div>
+</#macro>
+
+<#macro newDoc>
+	<div id="hot_div" style="width:235px;margin-top:15px" class="border">
+		<div class="borderBottom">
+			<div class="left midTitle heiti">本类最新文档</div>
+			<div class="left NEW"></div>
+			<div class="clear"></div>
+		</div>
+		<ul style="list-style:none;">
+			<#assign index=0>
+			<#list category_new as h>
+				<li class="borderBottom2 left new_${index%2}" style="border-bottom:none;">
+					<span class="${h.fileType} left" style="margin-top:3px;"></span>
+					<span class="left" style="width:140px">
+						<a style="font-size:13px" href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+							<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+						</a>
+					</span>
+					<span class="right RIGHT" style="width:75px;">${h.uploadTime?string('yyyy-MM-dd')}</span>
+				</li>
+				<#assign index=index+1>
+			</#list>
+			<li class="clear"></li>
+		</ul>
+	</div>
+</#macro>

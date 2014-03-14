@@ -1,0 +1,8 @@
+package cn.yws.longan.dao.share;
+
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.share.Rule;
+
+public class RuleDao extends BaseDao<Rule>{
+
+}

@@ -1,0 +1,49 @@
+	.PERSONAL .navTopbg {
+	    background: url("../../resource/images/bg/navTopbg.gif") no-repeat scroll center bottom transparent;
+	    height: 6px;
+	    margin-top: 0 !important;
+	    width: 125px;
+	}
+	.PERSONAL .navButbg {
+	    background: url("../../resource/images/bg/navButbg.gif") no-repeat scroll center top transparent;
+	    height: 6px;
+	    width: 125px;
+	}
+	.PERSONAL .navBg {
+	    background: url("../../resource/images/bg/navbg.gif") repeat-y scroll 0 0 transparent;
+	    text-align: left;
+	    width: 125px;
+	}
+	.PERSONAL .navBg ul {
+	    list-style: none outside none;
+	    margin: 0 10px;
+	    overflow: hidden;
+	    padding: 0;
+	    text-align: left;
+	    width: 100px;
+	}
+	.PERSONAL .navBg li {
+	    border-bottom: 1px solid #E4E4E4;
+	    color: #00007F;
+	    margin: 0;
+	    padding: 8px 0 6px 22px;
+	    text-align: left;
+	}
+	.PERSONAL .current {font-weight:bold;background-color:#1683c8;}
+	
+	.PERSONAL .size_div {width:200px;border:1px solid #999999;height:30px;position:relative;}
+	.PERSONAL .user_size_div {width:0px;background-color:#a50101;height:100%;border-right:1px solid #999999;}
+	.PERSONAL .info_size_div {height:100%;font-size:14px;line-height:30px;text-align:center;width:100%;position:absolute;z-index:100;top:0px;}
+	
+	.PERSONAL .tag {color:#999999;font-size:11px;}
+
+.user_button {background-color:#1683C8;color:#ffffff;border:1px solid #aaaaad;}
+#change_pass_div {display:none;}
+
+.user_div {display:none;padding:12px;border:1px solid #aaaaad;}
+
+/*子导航*/
+.C_NAV {line-height:40px;float:left;width:80px;height:40px;font-size:15px;font-weight:bold;}
+.nav_space {border-bottom:1px solid #aaaaad;}
+.nav_item {border:1px solid #aaaaad;border-bottom:0px}
+.nav_item a{text-decoration:underline;}

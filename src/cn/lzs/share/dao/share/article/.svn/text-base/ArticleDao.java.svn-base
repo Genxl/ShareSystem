@@ -1,0 +1,11 @@
+package cn.yws.longan.dao.share.article;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.share.article.Article;
+
+@Service("share.article.articleDao")
+public class ArticleDao extends BaseDao<Article>{
+
+}

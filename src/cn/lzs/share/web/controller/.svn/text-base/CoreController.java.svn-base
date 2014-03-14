@@ -1,0 +1,112 @@
+package cn.yws.longan.web.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import cn.yws.longan.cache.Cache;
+import cn.yws.longan.common.Constant;
+import cn.yws.longan.common.config.Config;
+import cn.yws.longan.common.config.ConfigItem;
+import cn.yws.longan.common.util.Log;
+import cn.yws.longan.common.util.SessionUtil;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.service.DocumentService;
+import cn.yws.longan.service.UserService;
+import cn.yws.longan.web.model.IndexModel;
+import cn.yws.longan.web.model.UserModel;
+
+@Controller
+public class CoreController {
+	@Resource(name="documentService")
+	private DocumentService documentService;
+	@Resource(name="userService")
+	private UserService userService;
+	
+	/**
+	 * 首页
+	 *	@param request
+	 *	@return
+	 *  @date :2011-12-13
+	 */
+	@RequestMapping(value="")
+	public String index(ModelMap model,IndexModel indexModel,HttpServletRequest request){
+		try{
+			documentService.index(indexModel);
+			model.put("model", indexModel);
+			model.put("tipsList", indexModel.getTipsList());
+			return "index";
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("加载首页时出错："+e.getMessage());
+			model.put(Constant.ERROR_MESSAGE, "sorry,加载首页时出错了！<br />"+e.getMessage());
+			return "error";
+		}
+		
+	}
+	@RequestMapping(value="/login",method=RequestMethod.GET)
+	public String login(ModelMap map){
+		map.put("tipsList", Cache.getTips());
+		return "user/login";
+	}
+	
+	@RequestMapping(value="/login",method=RequestMethod.POST)
+	public String login(@RequestParam("name")String name,
+						 @RequestParam("password")String password,ModelMap model,HttpServletRequest request){
+		try{
+			User user=userService.loign(request,name, password);
+			Log.info("登录成功："+user.getLastLoginTime()+" ,已经登录过："+user.getLoginTimes()+" 次.");
+			return "redirect:"+SessionUtil.getLoginUrl(request);//"redirect:"+
+		}catch(Exception e){
+			e.printStackTrace();
+			SessionUtil.put(request, Constant.ERROR_MESSAGE,e.getMessage()+"如果你使用的是论坛帐号，请先同步");
+			return "redirect:/login";
+		}
+	}
+	
+	@RequestMapping(value="/logout",method=RequestMethod.GET)
+	public String logout(HttpServletRequest request){
+		SessionUtil.clearUser(request);
+		return "redirect:/login";
+	}
+	
+	
+	/*
+	 * ------------------------------------------------------------------------
+	 * BBS验证
+	 * ------------------------------------------------------------------------
+	 */
+	@RequestMapping(value="/bbs",method=RequestMethod.GET)
+	public String bbs(ModelMap map,HttpServletRequest request)throws Exception{
+		map.put("new_integral", Config.getConfig(ConfigItem.NEW_USER_INTEGRAL));
+		return "user/bbs";
+	}
+	@RequestMapping(value="/bbs",method=RequestMethod.POST)
+	public String bbsUser(ModelMap map,UserModel model,HttpServletRequest request){
+		try{
+			String pass=model.getUser().getPassword();
+			model.setRequest(request);
+			userService.bbs(model);
+			map.put("model", model);
+			map.put("password", pass);
+			Log.info("验证BBS用户成功！"+model.getUser().getNick()+"---------");
+			return "user/bbs_ok";
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put(Constant.ERROR_MESSAGE, e.getMessage());
+			map.put("name", model.getUser().getName());
+			Log.error("验证BBS用户时出错！"+e.getMessage(), e);
+			return "user/bbs";
+		}
+	}
+	
+	@RequestMapping(value="/success")
+	public String success(HttpServletRequest request){
+		return "success";
+	}
+}

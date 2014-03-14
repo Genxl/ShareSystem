@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop" 
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+							http://www.springframework.org/schema/context 
+							http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+							http://www.springframework.org/schema/tx 
+							http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+							http://www.springframework.org/schema/aop  
+							http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+							http://www.springframework.org/schema/jee 
+							http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+							http://www.springframework.org/schema/mvc 
+							http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="cn.lzs.share.web.controller"/>
+	
+	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
+	<mvc:resources mapping="/resource/**" location="/resource/"/>
+
+	<!-- 文件上传的bean -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"/> 
+        <property name="maxUploadSize"><value>12582912</value></property><!--字节为单位 -->
+    	<property name="maxInMemorySize"><value>5120</value></property>
+   </bean>
+	
+	<!-- freemarker的配置 -->
+	<!-- 读取freemarker配置文件 -->
+	<bean id="freemarkerConfiguration" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+	  <property name="location" value="classpath:freemarker.properties"/>  
+	</bean>  
+	
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/template/" /><!-- 指定了freemarker模版的前缀，跟其他viewResolver的prefix属性是一个性质的 -->
+		<property name="freemarkerSettings" ref="freemarkerConfiguration"/>
+	</bean>
+	<!--end freemarker的配置 -->
+	<!-- exposeRequestAttributes  exposeSessionAttributes两个属性都被设置为true。结果是请求和会话属性都被复制到模板的属性集中，
+			可以使用FreeMarker的表达式语言来访问并显示。
+			使用这些宏，必须设置FreeMarkerViewResolver的exposeSpringMacroHelpers属性为true：
+	 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="suffix" value=".htm" />
+		<property name="order" value="1" />
+		<property name="cache" value="false" />
+		<property name="contentType" value="text/html;charset=utf-8" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+	</bean>
+
+	<!-- 
+	启动Spring MVC的注解功能，完成请求和注解POJO的映射，添加拦截器，类级别的处理器映射 
+	-->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <list>
+            </list>
+        </property>
+	</bean>
+	
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射-->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="cacheSeconds" value="0" />
+	    <!-- 配置一下对json数据的转换 -->
+	    <property name="messageConverters">
+	    	<list>
+	    		<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+	    	</list>
+	    </property>
+	</bean>
+</beans>

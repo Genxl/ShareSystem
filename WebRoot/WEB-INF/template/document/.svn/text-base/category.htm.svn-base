@@ -1,0 +1,78 @@
+<@LONGAN.header title="${model.category.title}|雨文|雨无声分享平台|集成显卡2011">
+	<style>
+		.category li {display:inline; float:left;font-size:14px;font-weight:bold;width:105px;overflow:hidden;padding:4px 22px 4px;}
+		.category a {color:#d26915;}
+		
+		.PAGE {margin-top:10px;}
+		.PAGE .current {font-weight:bold;color:#555555;}
+		.PAGE .page {margin:0 2px 0 2px;}
+		.PAGE .info {color:#999;font-size:12px;}
+	</style>
+</@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT" style="margin-top:15px;margin-bottom:10px">
+		<div style="float:left; width:700px;">
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="120px"  align="center" style="border:1px solid #ccc; border-bottom:none;font-weight:bold;">
+						<a href="${base}/document/category?c_id=${model.category.id}">${model.category.title}</a>
+					</td>
+					<td style="border-bottom:1px solid #ccc;">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border:1px solid #ccc; border-top:none;">
+						<ul class="clear category" style="list-style:none outside;">
+							<#list model.category.childCategory as c>
+								<li><a href="${base}/document/category?c_id=${c.id}" title="${c.title}--${c.information}">${c.title}</a></li>
+							</#list>
+						</ul>
+					</td>
+				</tr>
+			</table>
+			<#if model.documents?size gt 0>
+			<table class="doc_list" width="100%" style="margin-top:15px;border:1px solid #f7fdff;border-top:2px solid #f7fdff;">
+				<thead>
+					<tr align="center">
+						<th align="left" width="100px">分类</th>
+						<th align="left">标题</th>
+						<th width="70px">所需积分</th>
+						<th width="70px">文件大小</th>
+						<th width="70px">下载次数</th>
+						<th width="80px">上传时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<#list model.documents as d>
+					<tr align="center">
+						<td align="left">[<a href="${base}/document/category?c_id=${d.category.id}">${d.category.title}</a>]</td>
+						<td align="left">
+							<span class="${d.fileType}"></span>&nbsp;<a href="${base}/document/view?id=${d.id}" target="_blank" title="${d.title}">
+							<#if d.title?length gt 18>${d.title[0..17]}..<#else>${d.title}</#if>
+							</a>
+						</td>
+						<td><span class="price">${d.downPrice}</span></td>
+						<td><span class="size">${d.fileSize}</span></td>
+						<td><span class="price">${d.downNumber}</span></td>
+						<td><span class="time">${d.uploadTime?string('yyyy-MM-dd')}</span></td>
+					</tr>
+					</#list>
+					<tr>
+						<td colspan="6" align="center">
+							<div class="PAGE">
+							${model.pageInfo}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<#else>
+			<p>没有找到任何相关的文档。<a href="${base}/document/new">马上创建</a></p>			
+			</#if>
+		</div>
+		<div style="float:right; width:302px;">
+			<@LONGAN.hotDoc/>
+			<@LONGAN.newDoc/>
+		</div>
+		<div class="clear"></div>
+	</div>	
+</@LONGAN.body>

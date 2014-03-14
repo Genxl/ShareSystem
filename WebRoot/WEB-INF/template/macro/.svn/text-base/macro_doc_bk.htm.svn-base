@@ -1,0 +1,40 @@
+<#--这个是旧的，只是保留
+	集成显卡 2012.3.25
+-->
+<#macro hotDoc>
+	<div id="hot_div" style="border:1px solid #ccc;">
+		<h4  class="head">本类热门文档</h4>
+		<table style="width:100%;">
+			<#list category_hot as h>
+			<tr>
+				<td>
+					<span class="${h.fileType}"></span>&nbsp;
+					<a href="${base}/document/view?id=${h.id}" title="${h.title}">
+						<#if h.title?length gt 13>${h.title[0..12]}..<#else>${h.title}</#if>
+					</a>
+				</td>
+				<td width="60" align="right"><span class="INFO BOLD">${h.downNumber}</span><span class="DOWNLOAD"></span></td>
+			</tr>
+			</#list>
+		</table>
+	</div>
+</#macro>
+
+<#macro newDoc>
+	<div id="new_div" style="border:1px solid #ccc;margin-top:15px;">
+		<h4 class="head">本类最新文档</h4>
+		<table style="width:100%;">
+			<#list category_new as h>
+			<tr>
+				<td>
+					<span class="${h.fileType}"></span>&nbsp;
+					<a href="${base}/document/view?id=${h.id}" title="${h.title}">
+						<#if h.title?length gt 13>${h.title[0..12]}..<#else>${h.title}</#if>
+					</a>
+				</td>
+				<td width="80"><span class="TIME">${h.uploadTime?string('yyyy-MM-dd')}</span></td>
+			</tr>
+			</#list>
+		</table>
+	</div>
+</#macro>

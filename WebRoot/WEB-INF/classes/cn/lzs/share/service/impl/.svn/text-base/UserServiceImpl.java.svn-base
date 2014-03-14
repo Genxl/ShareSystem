@@ -1,0 +1,301 @@
+package cn.yws.longan.service.impl;
+
+import java.io.File;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import cn.yws.longan.common.Constant;
+import cn.yws.longan.common.RemoteUtil;
+import cn.yws.longan.common.config.Config;
+import cn.yws.longan.common.config.ConfigItem;
+import cn.yws.longan.common.exception.Exceptions;
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.common.util.FormatUtil;
+import cn.yws.longan.common.util.Log;
+import cn.yws.longan.common.util.Md5;
+import cn.yws.longan.common.util.SessionUtil;
+import cn.yws.longan.common.util.ValidateUtil;
+import cn.yws.longan.dao.RankDao;
+import cn.yws.longan.dao.UserDao;
+import cn.yws.longan.dao.text.CommentDao;
+import cn.yws.longan.dao.text.DocumentDao;
+import cn.yws.longan.dao.text.DownLogDao;
+import cn.yws.longan.dao.text.ReportDao;
+import cn.yws.longan.domain.Rank;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.text.Document;
+import cn.yws.longan.domain.text.Report;
+import cn.yws.longan.service.UserService;
+import cn.yws.longan.web.model.UserModel;
+
+@Service("userService")
+public class UserServiceImpl implements UserService {
+
+	@Resource(name="userDao")
+	private UserDao userDao;
+	@Resource(name="document.documentDao")
+	private DocumentDao docDao;
+	@Resource(name="document.commentDao")
+	private CommentDao commentDao;
+	@Resource(name="document.reportDao")
+	private ReportDao reportDao;
+	@Resource(name="document.downLogDao")
+	private DownLogDao logDao;
+	@Resource(name="rankDao")
+	private RankDao rankDao;
+	
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public User loign(HttpServletRequest request,String name, String password) throws Exception {
+		User user=SessionUtil.getUser(request);
+		if(user==null){
+			System.out.println("从数据库中读取数据！");
+			user=userDao.get(name, password);
+			if(user==null)
+				throw new Exception(Exceptions.USER_LOGIN_ERROR);
+			if(user.getState()==Constant.LOCK)
+				throw new Exception(Exceptions.USER_LOCK);
+			
+			user.setLastLoginTime(new Date());
+			user.setLoginTimes(user.getLoginTimes()+1);
+			user.setIP(FormatUtil.getIp(request));
+			
+			//直接保存一份用户密码
+			SessionUtil.put(request, "BASE_PASSWORD", password);
+			SessionUtil.put(request, Constant.LOGIN_USER,user);
+		}
+		return user;
+	}
+	
+	public void personal(UserModel model) throws Exception {
+		User user=SessionUtil.getUser(model.getRequest());
+		user=userDao.get(user.getId());
+		model.setUser(user);
+	}
+
+	public void docList(UserModel model) throws Exception {
+		User user=SessionUtil.getUser(model.getRequest());
+		Finder finder=Finder.create("from Document as d where d.user=:user order by uploadTime desc,ifPass desc");
+		finder.setPage(model.getPage());
+		finder.setPageSize(model.getPageSize());
+		finder.setParam("user", user);
+		
+		model.setDocuments(docDao.pageFind(finder));
+		model.setTotalCount(finder.getTotalSize());
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void delDoc(UserModel model) throws Exception {
+		User user=SessionUtil.getUser(model.getRequest());
+		String[] ids=model.getIds().split("@");
+		System.out.println("要删除 "+ids.length+" 个文件 ");
+		for(String s:ids){
+			Document doc=docDao.get(Integer.valueOf(s));
+			delDocDo(doc, user);
+		}
+	}
+	private void delDocDo(Document doc,User user)throws Exception{
+		if(user.getId()!=doc.getUser().getId())
+			throw new Exception(Exceptions.UPLOAD_ILLEGAL_USER);
+		
+		user=doc.getUser();
+		//将全部的文件删除
+		File file=new File(Config.getConfig(ConfigItem.APP_HOME)+doc.getOriginPath());
+		if(file.exists()){
+			user.changeFileSize(-1*file.length());
+			file.delete();
+		}
+		String name=null;
+		for(int i=1;i<=doc.getPageNumber();i++){
+			name=Config.getConfig(ConfigItem.APP_HOME)+doc.getSwf()+i+".swf";
+			file=new File(name);
+			if(file.exists())
+				file.delete();
+		}
+		
+		commentDao.executeHsql("delete DocComment where document_id="+doc.getId());
+		reportDao.delReport(doc);
+		logDao.delDocumentLog(doc);
+		docDao.delete(doc);
+		
+		user.changeNumber(-1);
+		user=userDao.save(user);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void bbs(UserModel model) throws Exception {
+		User user=model.getUser();
+		User u=userDao.get(user.getName(), user.getPassword());
+		if(u!=null)
+			throw new Exception(Exceptions.USER_EXIST);
+		
+		Map<String,String> map=RemoteUtil.getBBSUser(user.getName(),user.getPassword());
+		if(map.get("success").equals("false"))
+			throw new Exception(Exceptions.BBS_USER_ERROR);
+		
+		user.setPassword(Md5.Encrypt(user.getPassword()));
+		user.setNick(map.get("nick"));
+		user.setJoinTime(new Date());
+		user.setRank(rankDao.getMinRank());
+		//设置默认积分
+		user.setIntegral(Integer.valueOf(Config.getConfig(ConfigItem.NEW_USER_INTEGRAL)));
+		
+		userDao.save(user);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void uploadHeader(UserModel model, MultipartFile file) throws Exception {
+		User user=userDao.get(SessionUtil.getUser(model.getRequest()).getId());
+		//头像保存目录
+		String root=Config.getFaceRoot();
+		
+		String ext=FormatUtil.getFileSuffix(file.getOriginalFilename());
+		String name=FormatUtil.getRandomName()+"."+ext;
+		File targetFile=new File(root,name);
+		file.transferTo(targetFile);
+		
+		if(!ValidateUtil.checkFaceExt(ext)){
+			targetFile.delete();
+			throw new Exception(Exceptions.FACE_EXT_ERROR);
+		}
+		if(ValidateUtil.checkFaceSize(targetFile)){
+			targetFile.delete();
+			throw new Exception(Exceptions.FACE_SIZE_ERROR);
+		}
+		
+		//如果有旧的头像就清空
+		if(user.getFace()!=null)
+			new File(root+user.getFace()).delete();
+		user.setFace(name);
+		SessionUtil.put(model.getRequest(), Constant.LOGIN_USER, user);
+	}
+
+	public void userInfo(UserModel model) throws Exception {
+		User user=userDao.get(model.getId());
+		model.setUser(user);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void report(UserModel model) throws Exception {
+		Document doc=docDao.checkLock(model.getId());
+		User user=SessionUtil.getUser(model.getRequest());
+		if(reportDao.getReport(doc, user)!=null){
+			throw new Exception(Exceptions.REPORT_EXIST);
+		}
+		
+		doc.setReport(doc.getReport()+1);
+		if(doc.getReport()>=Config.getNumberLock()){
+			doc.setIfLock(true);
+			Log.info(doc.getTitle()+" 被锁定了！");
+		}
+		
+		Report r=new Report();
+		r.setDocument(doc);
+		r.setTime(new Date());
+		r.setUser(user);
+		reportDao.save(r);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void changePass(HttpServletRequest request) throws Exception {
+		User u=SessionUtil.checkLogin(request);
+		
+		String oldP=request.getParameter("oldP");
+		String newP=request.getParameter("newP");
+		
+		if(!Md5.Encrypt(oldP).equals(u.getPassword()))
+			throw new Exception(Exceptions.OLD_PASSWORD_ERROR);
+		
+		if(newP.length()<Config.passwordLength())
+			throw new Exception(Exceptions.PASSWORD_LENGTH+"密码长度至少是"+Config.passwordLength());
+		
+		u.setPassword(Md5.Encrypt(newP));
+		userDao.update(u);
+	}
+
+	public Rank getNextRank(HttpServletRequest request) throws Exception {
+		User u=SessionUtil.checkLogin(request);
+		Rank r=userDao.get(u.getId()).getRank();
+		Finder f=new Finder("from Rank as r where r.integral >"+r.getIntegral()+" order by r.integral");
+		List<Rank> ranks=rankDao.find(f);
+		if(ranks.size()>0)
+			return rankDao.find(f).get(0);
+		else
+			return null;
+	}
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void upgrade(HttpServletRequest request) throws Exception {
+		User u=SessionUtil.checkLogin(request);
+		Rank r=getNextRank(request);
+		u=userDao.get(u.getId());
+		if(r!=null){
+			if(r.getIntegral()>u.getIntegral())
+				throw new Exception("积分还没有达到升级要求！");
+			userDao.executeSql("update user set rank_id="+r.getId()+" where id="+u.getId());
+		}
+		else{
+			throw new Exception("升级错误！可能你已经到达最高等级");
+		}
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public String exchangeXDB(HttpServletRequest request) throws Exception {
+		User user=SessionUtil.getUser(request);
+		user=userDao.get(user.getId());
+		String pass=(String)SessionUtil.get(request, "BASE_PASSWORD");
+		
+		String type=request.getParameter("changeType");//兑换类型，值可以是：toXDB，fromXDB，默认是后者
+		Integer integral=Integer.valueOf(request.getParameter("integral"));//需要操作的积分
+		if(integral<=0)
+			throw new Exception("兑换的积分最小为1");
+		
+		Integer needed=getNeededXDB(integral);
+		
+		//转到西大币
+		if(type.equals("toXDB")){
+			if(user.getIntegral()<integral){
+				throw new Exception("无法兑换，因为你没有足够的积分！");
+			}
+			//远程操作成功的话
+			if(RemoteUtil.exchangeXDB(user.getName(), needed)){
+				user.setIntegral(user.getIntegral()-integral);
+				userDao.update(user);
+			}
+		}
+		//从西大币转入
+		else{
+			//获取这个用户的论坛西大币
+			Integer XDB=RemoteUtil.getBBSUserMoney(user.getName(), pass);
+			//如果用户当前的西大币不足
+			if(XDB<needed){
+				throw new Exception("西大币不足！完成这次兑换需要西大币："+needed+"，但是你当前的论坛西大币为："+XDB);
+			}
+			//远程操作成功的话
+			if(RemoteUtil.exchangeXDB(user.getName(), -1*needed)){
+				user.setIntegral(user.getIntegral()+integral);
+				userDao.update(user);
+			}
+		}
+		String result="兑换成功！";
+		result+=type.equals("toXDB")?("花费 "+integral+" 积分，得到 "+needed+" 西大币"):("花费 "+needed+" 西大币，得到 "+integral+" 积分");
+		return result;
+	}
+	/**
+	 * 获取需要的西大币
+	 *	@param integral 需要兑换的积分
+ 	 *	@return
+	 *  @date :2012-3-31
+	 */
+	public int getNeededXDB(int integral)throws Exception{
+		return integral*Integer.valueOf(Config.getConfig(ConfigItem.XDB_RATE));
+	}
+}

@@ -1,0 +1,51 @@
+package cn.yws.longan.dao.text;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.common.exception.Exceptions;
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.text.Document;
+
+@Service("document.documentDao")
+public class DocumentDao extends BaseDao<Document>{
+	
+	/**
+	 * 获取length 个文档对象，type 是排序类型，当 sort 为true时，降序
+	 *	@param length
+	 *	@param type
+	 *	@param sort
+	 *	@param switchLock 为-1时不考虑 ifLock，1时 ifLock 为1，0时ifLock为0
+	 *	@return
+	 *  @date :2011-12-13
+	 */
+	public List<Document> list(int length,String type,boolean sort,int swithLock){
+		String sql="from Document as d where ifPass=1 and ifLock=0 "+
+			(swithLock==-1?"":("and ifLock="+swithLock+" "));
+		if(type.equals(Document.DWONLOAD))
+			sql+="order by downNumber ";
+		if(type.equals(Document.GOOD))
+			sql+=" and ifGood=1 ";
+		if(type.equals(Document.PRICE))
+			sql+="order by downPrice ";
+		if(type.equals(Document.TIME))
+			sql+="order by uploadTime ";
+		if(sort)
+			sql+="desc ";
+		Finder finder=Finder.create(sql);
+		finder.setPageSize(length);
+		return find(finder);
+	}
+	
+	
+	public Document checkLock(int id)throws Exception{
+		Document doc=get(id);
+		
+		if(doc.isIfLock())
+			throw new Exception(Exceptions.DOC_LOCK);
+		
+		return doc;
+	}
+}

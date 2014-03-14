@@ -1,0 +1,36 @@
+<form name="form1" method="post" action="user/editDo"  onsubmit="return validateCallback(this, dialogAjaxDone);">
+     <input name="user.id" type="hidden" id="Id" value="${model.user.id}" />
+	 <table>
+      <tr>
+        <td width="60px"><br />用户名：</td>
+        <td><input type="text" name="user.name" value="${model.user.name}"></td>
+      </tr>
+	  <tr>
+	  	<td colspan="2">
+	  		<br />
+	  		<span style="color:#3d7efa;">密码，不填则不修改</span>
+	  	</td>
+	  </tr>
+      <tr>
+        <td>密码：</td>
+        <td><input name="user.password" type="text" size="30" value=""></td>
+      </tr>
+	  <tr>
+        <td>积分：</td>
+        <td><input name="user.integral" type="text" size="5" value="${model.user.integral}"></td>
+      </tr>
+      <tr>
+        <td>状态：</td>
+        <td>
+        	<select name="user.state">
+        		<option value="0" <#if model.user.state==0>selected="selected"</#if>>正常</option>
+				<option value="1" <#if model.user.state==1>selected="selected"</#if>>锁定</option>
+        	</select>
+        </td>
+      </tr>
+      <tr>
+        <td><br /></td>
+        <td><br /><input type="submit" name="Submit" class="BUTTON" value="确定"></td>
+      </tr>
+    </table>
+	</form>	

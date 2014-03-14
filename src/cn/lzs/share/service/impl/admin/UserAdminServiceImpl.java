@@ -1,0 +1,213 @@
+package cn.lzs.share.service.impl.admin;
+
+import java.io.File;
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import cn.lzs.share.cache.Cache;
+import cn.lzs.share.common.Constant;
+import cn.lzs.share.common.config.Config;
+import cn.lzs.share.common.config.ConfigItem;
+import cn.lzs.share.common.exception.Exceptions;
+import cn.lzs.share.common.util.Finder;
+import cn.lzs.share.common.util.FormatUtil;
+import cn.lzs.share.common.util.Md5;
+import cn.lzs.share.common.util.SessionUtil;
+import cn.lzs.share.common.util.ValidateUtil;
+import cn.lzs.share.dao.RankDao;
+import cn.lzs.share.dao.UserDao;
+import cn.lzs.share.dao.admin.AdminDao;
+import cn.lzs.share.dao.admin.UploadItemDao;
+import cn.lzs.share.dao.sys.TipsDao;
+import cn.lzs.share.domain.Rank;
+import cn.lzs.share.domain.User;
+import cn.lzs.share.domain.admin.Admin;
+import cn.lzs.share.domain.admin.UploadItem;
+import cn.lzs.share.domain.sys.Tips;
+import cn.lzs.share.service.admin.UserAdminService;
+import cn.lzs.share.web.model.UserModel;
+import cn.lzs.share.web.model.admin.RankAdminModel;
+import cn.lzs.share.web.model.admin.SysModel;
+
+@Service("admin.userService")
+public class UserAdminServiceImpl implements UserAdminService {
+
+	@Resource(name="userDao")
+	private UserDao userDao;
+	@Resource(name="rankDao")
+	private RankDao rankDao;
+	@Resource(name="system.tipsDao")
+	private TipsDao tipDao;
+	@Resource(name="admin.adminDao")
+	private AdminDao adminDao;
+	@Resource(name="admin.uploadItemDao")
+	private UploadItemDao uploadDao;
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void addRank(RankAdminModel model) throws Exception {
+		Rank r=model.getRank();
+		r.setDate(new Date());
+		System.out.println(r.getId()+"---------------------------");
+		if(r.getId()==null||r.getId()==0)
+			rankDao.save(r);
+		else
+			rankDao.update(r);
+		
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void delRank(RankAdminModel model) throws Exception {
+		Rank rank=rankDao.get(model.getId());
+		rankDao.delete(rank);
+	}
+
+	public void editRank(RankAdminModel model) throws Exception {
+		Rank rank=rankDao.get(model.getId());
+		model.setRank(rank);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void editRankDo(RankAdminModel model) throws Exception {
+		if(model.getRank().getId()>0)
+			rankDao.save(model.getRank());
+	}
+
+	public void listRank(RankAdminModel model) throws Exception {
+		model.setRanks(rankDao.findAll());
+	}
+
+	
+	public void listUser(UserModel model) throws Exception {
+		String sql="from User";
+		if(model.getKey() != null){
+			String like=FormatUtil.toSQLLike(model.getKey());
+			sql+=" where name like'"+like+"' or nick like '"+like+"'";
+		}
+		
+		Finder finder=Finder.create(sql);
+		finder.setPage(model.getPage());
+		finder.setPageSize(model.getPageSize());
+		
+		model.setUsers(userDao.pageFind(finder));
+		model.setTotalCount(finder.getTotalSize());
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void lockUser(UserModel model) throws Exception {
+		User u=userDao.get(model.getId());
+		if(u.getState()==Constant.LOCK)
+			u.setState(0);
+		else
+			u.setState(Constant.LOCK);
+		model.setUser(u);
+	}
+	
+	public void editUser(UserModel model)throws Exception{
+		User u=userDao.get(model.getId());
+		model.setUser(u);
+	}
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void editUserDo(UserModel model)throws Exception{
+		User u = model.getUser();
+		User oldU=userDao.get(u.getId());
+		oldU.setIntegral(u.getIntegral());
+		oldU.setState(u.getState());
+		if(u.getPassword()!=null&&u.getPassword().trim().length()>0){
+			oldU.setPassword(Md5.Encrypt(u.getPassword()));
+		}
+		userDao.update(oldU);
+	}
+	
+
+	public void listTips(SysModel model) throws Exception {
+		Finder finder=Finder.create("from Tips as t order by t.addTime desc");
+		finder.setPage(model.getPage());
+		finder.setPageSize(model.getPageSize());
+		
+		model.setTipsList(tipDao.pageFind(finder));
+		model.setTotalCount(finder.getTotalSize());
+	}
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void addTips(SysModel model) throws Exception {
+		Tips t=model.getTips();
+		t.setAddTime(new Date());
+		if(t.getId()==null||t.getId()==0){
+			tipDao.save(t);
+		}
+		else
+			tipDao.update(t);
+		
+		Cache.initPictures();
+	}
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void delTips(SysModel model) throws Exception {
+		Tips t=tipDao.get(model.getId());
+		tipDao.delete(t);
+	}
+	public void editTips(SysModel model) throws Exception {
+		Tips t=tipDao.get(model.getId());
+		model.setTips(t);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public Admin login(HttpServletRequest request, String name, String pass) throws Exception {
+		Admin a=adminDao.get(name, pass);
+		if(a==null)
+			throw new Exception(Exceptions.USER_LOGIN_ERROR);
+		if(a.getState()==Constant.LOCK)
+			throw new Exception(Exceptions.USER_LOCK);
+		
+		a.setLastLogin(new Date());
+		a.setLoginTimes(a.getLoginTimes()+1);
+		
+		SessionUtil.put(request, Constant.ADMIN,a);
+		return a;
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public UploadItem upload(MultipartFile file, HttpServletRequest request) throws Exception {
+		//保存目录，默认是首页大图的目录
+		String filePath=request.getParameter("filePath");
+		if(filePath==null||filePath.length()==0)
+			filePath=UploadItem.INDEX;
+		
+		String root=Config.getConfig(ConfigItem.APP_HOME)+filePath;
+		String ext=FormatUtil.getFileSuffix(file.getOriginalFilename());
+		String name=FormatUtil.getRandomName()+"."+ext;
+		File targetFile=new File(root,name);
+		file.transferTo(targetFile);
+		
+		if(!ValidateUtil.checkFaceExt(ext)){
+			targetFile.delete();
+			throw new Exception(Exceptions.FACE_EXT_ERROR);
+		}
+		if(filePath.equals(UploadItem.INDEX)&&ValidateUtil.checkIndexImg(targetFile)){
+			targetFile.delete();
+			throw new Exception(Exceptions.INDEX_PIC_SIZE_ERROR);
+		}
+		
+		UploadItem i=new UploadItem();
+		i.setSavePath(filePath+name);
+		i.setAdmin(SessionUtil.getAdmin(request));
+		i.setTime(new Date());
+		uploadDao.save(i);
+		
+		return i;
+	}
+
+	public void saveConfig(HttpServletRequest request) throws Exception {
+		String names[]=ConfigItem.getNames();
+		for(String n:names){
+			System.out.println(n+" ---> "+request.getParameter(n));
+			Config.setConfig(n, request.getParameter(n));
+		}
+		Config.updateConfig();
+	}
+}

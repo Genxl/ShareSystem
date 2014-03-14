@@ -1,0 +1,11 @@
+#template_update_delay=60000
+auto_import=/macro/macro_include.htm as LONGAN
+number_format=\# 
+classic_compatible=true
+whitespace_stripping=true
+locale=zh_CN
+default_encoding=utf-8
+url_escaping_charset=utf-8
+date_format=yyyy-MM-dd
+time_format=HH:mm:Ss
+datetime_format=yyyy-MM-dd H\:mm\:Ss

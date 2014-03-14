@@ -1,0 +1,57 @@
+<#assign joinType=["使用分享平台帐号","使用选课系统的学号+密码"]/>
+<@LONGAN.header title="成绩单--问卷系统|学文|学文分享平台">
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/share.css"/>
+	<script src="${base}/resource/js/share.1.0.js" type="text/javascript"></script>
+</@LONGAN.header>
+<@LONGAN.share_body nav=0 title="${model.paper.name?html}">
+	
+	<!--试卷基本信息-->
+	<div>
+		<div class="left" style="color: #566579;font-size:13px;padding:10px">
+			<p>创建者：${model.paper.ystore.user.name}</p>
+			<p>题目数：${model.paper.topicNum}</p>
+			<p>测试时间：${model.paper.allowTime}秒</p>
+			<p>有效时间：${model.paper.beforeDate?string('yyyy-MM-dd HH:mm')}至${model.paper.afterDate?string('yyyy-MM-dd HH:mm')}</p>
+			<p>参与方式：${joinType[model.paper.joinType]}</p>
+			<p>
+				用户
+				<#if model.paper.maxJoinNum == 0>
+					可以不限次数参加此问卷。
+				<#else>
+					最多只能参加此问卷${model.paper.maxJoinNum}次。
+				</#if>
+			</p>
+		</div>
+		<div class="right" style="width:260px;">
+			<@LONGAN.share_yask_login type=model.paper.joinType pid=model.paper.id/>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	
+	<div class="PMaker" style="margin:5px auto;border-top:1px solid #d8d8d8;font-weight:bold;">
+		<div class="MAKER">
+			<h3>成绩单：</h3>
+			<div>
+				<p>答对题目数：${model.result.rightCount}</p>
+				<p>正确率：${model.result.rate}%</p>
+				<p>使用时间：${model.result.usedTime}秒</p>
+				<p>答题时间：${model.result.date?string('yyyy-MM-dd HH:mm')}</p>
+				<#if model.result.data??>
+				<p>
+					奖励信息：
+					<p style="padding-left:20px;color:#3d7ee8">
+						${model.result.data}
+					</p>
+				</p>
+				</#if>
+			</div>
+		</div>
+	</div>
+	
+	<!--试卷封面说明信息-->
+	<div style="margin-top:10px;border-top:1px solid #d8d8d8;padding:5px;padding-left:60px;padding-right:60px;">
+		${model.paper.information}
+	</div>
+	
+</@LONGAN.share_body>

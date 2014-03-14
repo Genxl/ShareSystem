@@ -1,0 +1,90 @@
+<@LONGAN.header title="学文|学文分享平台|">
+	<style>
+		.category li {display:inline; float:left;font-size:14px;font-weight:bold;width:105px;overflow:hidden;padding:4px 22px 4px;}
+		.category a {color:#d26915;}
+		
+		.CONTENT .time {color:#656565;}
+		.CONTENT .size {color:#656565;font-size:12px;}
+		.CONTENT .type {width:60px; height:20px; overflow:hidden;}
+	</style>
+</@LONGAN.header>
+<@LONGAN.body>
+	<div class="CONTENT" style="margin-top:4px;margin-bottom:10px">
+		
+		<@LONGAN.indexImage />
+		
+		<div style="float:left; width:600px;">
+			<div id="category_div" style="border:1px solid #ccc;">
+				<h4 class="head">文档分类</h4>
+				<ul class="clear category" style="list-style:none;">
+					<#list model.categorys as c>
+						<li><a href="${base}/document/category?c_id=${c.id}" title="${c.title}--${c.information}">${c.title}</a></li>
+					</#list>
+					<li class="CLEAR" style="width:93%;"></li>
+				</ul>
+			</div>
+			<div id="hot_div" style="border:1px solid #ccc;">
+				<h4 class="head">热门文档</h4>
+				<table style="width:100%;">
+					<#list model.hotList as h>
+						<tr>
+							<td><span class="${h.fileType}"></span>&nbsp;<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+								<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+							</a></td>
+							<td width="40px" class="size">
+								${h.downNumber}<span class="DOWNLOAD"></span>
+							</td>
+							<td width="70px" class="size">
+								${h.fileSize}
+							</td>
+							<td width="80px" class="time">${h.uploadTime?string('yyyy-MM-dd')}</td>
+						</tr>			
+					</#list>
+				</table>
+			</div>
+			<div id="hot_div" style="margin-top:15px;border:1px solid #ccc;">
+				<h4 class="head">推荐文档</h4>
+				<table style="width:100%;">
+					<#list model.goodList as h>
+						<tr>
+							<td><span class="${h.fileType}"></span>&nbsp;<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+								<#if h.title?length gt 30>${h.title[0..29]}..<#else>${h.title}</#if>
+							</a></td>
+							<td width="70px" class="size">
+								${h.fileSize}
+							</td>
+							<td width="120px" class="time">${h.uploadTime?string('yyyy-MM-dd HH:mm')}</td>
+						</tr>			
+					</#list>
+				</table>
+			</div>
+		</div>
+		<div style="float:right; width:352px;">
+			<div id="new_div" style="border:1px solid #ccc;">
+				<h4 class="head">最新文档</h4>
+				<table style="width:100%;">
+					<#list model.newList as h>
+						<tr>
+							<td><span class="${h.fileType}"></span>&nbsp;<a href="${base}/document/view?id=${h.id}" target="_blank" title="${h.title}">
+								<#if h.title?length gt 23>${h.title[0..22]}..<#else>${h.title}</#if>
+							</a></td>
+							<td width="100px" align="right" class="time">${h.newTime}</td>
+						</tr>			
+					</#list>
+				</table>
+			</div>
+			<div id="user_div" style="margin-top:15px;border:1px solid #ccc;">
+				<h4 class="head">活力用户</h4>
+				<table style="width:100%;">
+					<#list model.users as h>
+						<tr>
+							<td><a href="${base}/user/info?id=${h.id}" target="_blank" title="${h.nick}">${h.nick}</a></td>
+						</tr>			
+					</#list>
+				</table>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<br />
+</@LONGAN.body>

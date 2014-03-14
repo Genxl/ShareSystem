@@ -1,0 +1,60 @@
+<#macro personal index=0>
+	<div class="CONTENT PERSONAL">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top:15px;">
+			<tr>
+				<td valign="top" width="160px;" align="center">
+					<div class="navTopbg"></div>
+					<div class="navBg">
+						<ul>
+							<#if index==0>
+							<li class="current">个人信息</li>
+							<#else>
+							<li>
+								<a href="${base}/user/personal">个人信息</a>
+							</li>
+							</#if>
+							<#if index==3>
+							<li class="current">新建文档</li>
+							<#else>
+							<li>
+								<a href="${base}/document/new">新建文档</a>
+							</li>
+							</#if>
+							<#if index==1>
+							<li class="current">文档管理</li>
+							<#else>
+							<li>
+								<a href="${base}/user/doc/list">文档管理</a>
+							</li>
+							</#if>
+							<#if index==2>
+							<li class="current">上传头像</li>
+							<#else>
+							<li>
+								<a href="${base}/user/header">上传头像</a>
+							</li>
+							</#if>
+							<#if index==11>
+							<li class="current">问卷系统</li>
+							<#else>
+							<li>
+								<a href="${base}/share/yask/">问卷系统</a>
+							</li>
+							</#if>
+							<li>
+								<a href="${base}/user/logout">退出</a>
+							</li>
+						</ul>
+					</div>
+					<div class="navButbg"></div>
+				</td>
+				<td valign="top">
+					<div>
+						<#nested/>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<br />
+	</div>
+</#macro>

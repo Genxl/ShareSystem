@@ -1,0 +1,104 @@
+<@LONGAN.header title="用户登录|学文|学文分享平台"></@LONGAN.header>
+	<@LONGAN.validate formId="#doc_form"/>
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+	<!-- zTree -->
+	<link rel="stylesheet" href="${base}/resource/component/zTree/skins/default/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="${base}/resource/component/zTree/jquery.ztree-2.6.min.js"></script>
+	<!-- zTree end -->
+	<style>
+		.input {width:250px;}
+		.tree_parentDiv {margin:-3px 0 0 35px;z-index:999;position:absolute; display:none; max-height:200px;width:200px; min-width:200px;background-color:white;border:1px solid #68a4ea;overflow:auto; }
+		* html .tree_parentDiv {margin-top:0px;}
+	</style>
+<@LONGAN.body>
+	<@LONGAN.personal index=3>
+		<h4>新加文档信息</h4>
+		<div>${errorMessage?default('')}</div>
+		<form action="${base}/document/new" method="post" id="doc_form">
+			<input type="hidden" name="doc.id" value="${model.doc.id}"/>
+			<input type="hidden" name="category_id" id="categoryId" value="<#if model.doc.id gt 0>${model.doc.category.id}</#if>"/>
+			<p>
+				${error_message?default('新建文档时，请先填写文档的相关信息，保存后，再上传文件！')}
+			</p>
+			<table style="width:100%;">
+				<tr>
+					<td>标题:<input id="title" class="validate[required]" type="text" style="width:400px;" name="doc.title" value="${model.doc.title?default('')}"/></td>
+				</tr>
+				<tr>
+					<td>分类:
+						<input id="category" value="<#if model.doc.id gt 0>${model.doc.category.title}</#if>" name="category_name" type="text" readonly="readonly" class="validate[required]" value="" style="width:200px;" title="请选择分类"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="categoryMenuParent" class="tree_parentDiv">
+							<div id="categoryMenu" class="tree_tree"></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>标签:<input type="text" name="doc.tag" style="width:400px;" value="${model.doc.tag?default('')}"/></td>
+				</tr>
+				<tr>
+					<td>在线阅读:
+						<label><input type="radio" name="doc.canReadOnLine" value="true" <#if model.doc.canReadOnLine>checked</#if>/>允许</label>
+						<label><input type="radio" name="doc.canReadOnLine" value="false" <#if !model.doc.canReadOnLine>checked</#if>/>不允许</label>
+					</td>
+				</tr>
+				<tr>
+					<td>评论:
+						<label><input type="radio" name="doc.canComment" value="true" <#if model.doc.canComment>checked</#if>/>允许</label>
+						<label><input type="radio" name="doc.canComment" value="false" <#if !model.doc.canComment>checked</#if>/>不允许</label>
+					</td>
+				</tr>
+				<tr>
+					<td>下载所需积分:<input style="width:40px;" id="integral" class="validate[required,custom[integer],min[0]" type="text" name="doc.downPrice" value="${model.doc.downPrice?default('0')}"/></td>
+				</tr>
+				
+				<#--是否显示上传的组件，只有在编辑旧文档时才会显示-->
+				<#if model.doc.id gt 0>
+				<tr><td>
+					<p style="color:#d40707">
+						<#if model.doc.ifUpload&&!model.doc.ifPass>
+							这个文档已经有了文件，如果现在上传新的文件，将会删除旧的文件。
+						<#else>
+							<#if !model.doc.ifUpload&&!model.doc.ifPass>
+							这个文档还没有上传过文件，赶紧上传吧！
+							</#if>
+						</#if>
+						<#if model.doc.ifPass>
+							文档已经通过管理员的审核，已经不能再作上传文件操作了。如果需要，请重新创建文档。
+						<#else>
+						<@LONGAN.upload doc_id="${model.doc.id}"/>
+						</#if>
+					</p>
+				<#else>
+					<p style="color:#d40707">
+						保存文档信息后就可以上传相应的文件了!
+					</p>
+				</#if>
+				</td></tr>
+				<tr>
+					<td>详情:
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+						<textarea style="width:400px;height:120px;" name="doc.information" >${model.doc.information?default('')}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td  align="center">
+						<input type="submit" value="保存文档信息"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script>
+		$(document).ready(function(){
+			Document.initDoc();
+		});
+	</script>
+	</@LONGAN.personal>
+</@LONGAN.body>

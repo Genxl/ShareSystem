@@ -1,0 +1,31 @@
+package cn.yws.longan.service;
+
+import java.io.Serializable;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :BaseService.java
+ * @所在包 :cn.yws.longan.service
+ * @功能描述 :
+ *	基本的服务接口，添加了get，find，del 方法接口<br />
+ *	使用泛型<br />
+ *	其他服务类实现BaseServiceImpl（抽象类）进行服务。<br />
+ *	DAO层基于Spring的HibernateDaoSupport<br />
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-11-15
+ * @修改记录 :
+ */
+public interface BaseService<T extends Serializable> {
+
+	public T get(Serializable id);
+	
+	/**
+	 * 根据ID删除记录
+	 * 
+	 * @param id
+	 *            记录ID
+	 */
+	public T deleteById(Serializable id);
+	
+}

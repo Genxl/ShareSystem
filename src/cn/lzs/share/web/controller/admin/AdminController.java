@@ -1,0 +1,119 @@
+package cn.lzs.share.web.controller.admin;
+
+import java.io.IOException;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import cn.lzs.share.cache.Cache;
+import cn.lzs.share.common.Constant;
+import cn.lzs.share.common.config.Config;
+import cn.lzs.share.common.util.Log;
+import cn.lzs.share.common.util.SessionUtil;
+import cn.lzs.share.domain.admin.Admin;
+import cn.lzs.share.domain.admin.UploadItem;
+import cn.lzs.share.service.admin.UserAdminService;
+
+@Controller
+@Scope("prototype")
+@RequestMapping(value="/ad_min")
+public class AdminController {
+	private String PATH="admin/";
+	
+	@Resource(name="admin.userService")
+	private UserAdminService userService;
+	
+	@RequestMapping(value="/login",method=RequestMethod.GET)
+	public String login(){
+		return PATH+"login";
+	}
+	@RequestMapping(value="/login",method=RequestMethod.POST)
+	public String login(@RequestParam("name")String name,
+						 @RequestParam("password")String password,ModelMap model,HttpServletRequest request){
+		try{
+			Admin a=userService.login(request,name, password);
+			Log.info("管理员"+a.getName()+"登录成功："+a.getLastLogin()+" ,已经登录过："+a.getLoginTimes()+" 次.");
+			return "redirect:/ad_min/index";
+		}catch(Exception e){
+			e.printStackTrace();
+			model.put(Constant.ERROR_MESSAGE, e.getMessage());
+			return "redirect:/ad_min/login";
+		}
+	}
+	@RequestMapping(value="/logout",method=RequestMethod.GET)
+	public String logout(HttpServletRequest request){
+		SessionUtil.clearUser(request);
+		return PATH+"login";
+	}
+	
+	@RequestMapping(value="/index",method=RequestMethod.GET)
+	public String index(){
+		return PATH+"index";
+	}
+	
+	@RequestMapping(value="/cache",method=RequestMethod.GET)
+	public String cache(){
+		return PATH+"cache";
+	}
+	
+	@RequestMapping(value="/cache/config")
+	public String cacheConfig(HttpServletRequest request,HttpServletResponse response){
+		response.setCharacterEncoding("utf-8");
+		try{
+			Config.initConfig();
+			SessionUtil.json(response, 0, "更新配置缓存 success!");
+		}catch(Exception e){
+			e.printStackTrace();
+			String info="刷新config缓存时出错-->"+e.getMessage();
+			Log.error(info);
+			SessionUtil.json(response, 1, info);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/cache/data")
+	public String cacheData(HttpServletRequest request,HttpServletResponse response){
+		response.setCharacterEncoding("utf-8");
+		try{
+			Cache.refresh();
+			SessionUtil.json(response, 0, "更新数据缓存 success!");
+		}catch(Exception e){
+			e.printStackTrace();
+			String info="刷新config缓存时出错-->"+e.getMessage();
+			Log.error(info);
+			SessionUtil.json(response, 1, info);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/upload",method=RequestMethod.GET)
+	public String upload() throws IOException{
+		return PATH+"sys/upload";
+	}
+	
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
+	public void upload(@RequestParam(value="imgFile",required=false)MultipartFile file,HttpServletRequest request,
+			HttpServletResponse response) throws IOException{
+		try{
+			System.out.println(file.getSize()+"==================");
+			UploadItem i=userService.upload(file, request);
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().write("<html><head><script>window.parent.gogo('"+i.getSavePath()+"');</script></head><body>success!</body></html>");
+		}catch(Exception e){
+			e.printStackTrace();
+			String info="error!管理员上传文件时出错-->"+e.getMessage();
+			Log.error(info);
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().write("<html><head><script>window.parent.gogo('"+info+"');</script></head><body>success!</body></html>");
+		}
+	}
+}

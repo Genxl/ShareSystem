@@ -1,0 +1,85 @@
+<div class="pageHeader">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+			<td width="30%">
+				&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="text-align:right;" width="69%">
+				<form onsubmit="return navTabSearch(this);" action="document/list" method="post">
+					<div class="searchBar">
+						  <input type="text" name="key"  value="${model.key}">
+						  <select name="doc_type">
+						  	<option value="">不限</option>
+							<option value="TXT">TXT</option>
+							<option value="DOC">DOC</option>
+							<option value="PDF">PDF</option>
+							<option value="RAR">RAR</option>
+							<option value="HTM">HTM</option>
+						  </select>
+						  <input type="submit" name="Submit" value="文档查询">
+						  <a href="document/list?page=1" target="navTab" rel="user_list" title="Users概览">查看全部文档</a>
+					</div>
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="pageContent">
+	<table class="table" width="1365"  border="1" layoutH="85" align="center" cellspacing="0" bordercolor="#999999" style="border-collapse:collapse">
+		<thead>
+			<tr>
+				<th width="120">操作</th>
+				<th width="50">ID</th>
+				<th width="40">精华</th>
+				<th width="40">锁定</th>
+				<th width="40">通过</th>
+				<th width="90">用户名</th>
+				<th width="80">分类</th>
+				<th width="40">格式</th>
+				<th width="300">标题</th>
+				<th width="40">积分</th>
+				<th width="60">大小</th>
+				<th width="50">下载数</th>
+				<th width="50">可阅读</th>
+				<th width="50">阅读数</th>
+				<th width="50">可评论</th>
+				<th width="100">上时时间</th>
+				<th width="210">文件路径</th>
+			</tr>
+		</thead>
+		<tbody>
+      <#setting number_format="0">
+      <#list model.documents as d>
+      <tr align="center">
+      	 <td>
+      	 	<a href="${base}/ad_min/document/convert?doc_id=${d.id}" target="ajaxTodo" title="通过这个文档，执行吗?">通过</a>
+			&nbsp;|&nbsp;<a href="${base}/ad_min/document/toGood?doc_id=${d.id}" target="ajaxTodo" title="推荐这个文档，执行吗?">推荐</a>
+			&nbsp;|&nbsp;<a href="${base}/ad_min/document/lock?doc_id=${d.id}" target="ajaxTodo" title="这个是对文档锁定/解锁操作，执行吗?"><#if d.ifLock>解锁<#else>锁定</#if></a>
+		 </td>
+      	 <td>${d.id}</td>
+		 <td><span class='<#if d.ifGood>TRUE<#else>FALSE</#if>'></span></td>
+		 <td><span class='<#if d.ifLock>TRUE<#else>FALSE</#if>'></span></td>
+		 <td><span class='<#if d.ifPass>TRUE<#else>FALSE</#if>'></span></td>
+		 <td>${d.user.name?default('')}</td>
+		 <td>${d.category.title?default('')}</td>
+		 <td><span class='${d.fileType}'></span></td>
+		 <td><a href='${base}/document/view?id=${d.id}' target="_blank">${d.title}</a></td>
+		 <td>${d.downPrice}</td>
+		 <td>${d.fileSize}</td>
+		 <td>${d.downNumber}</td>
+		 <td><span class='<#if d.canReadOnLine>TRUE<#else>FALSE</#if>'></span></td>
+		 <td>${d.readNumber}</td>
+		 <td><span class='<#if d.canComment>TRUE<#else>FALSE</#if>'></span></td>
+		 <td>${d.uploadTime?string('yyyy-MM-dd')}</td>
+		 <td>${d.saveName}</td>
+      </tr>
+	</#list>
+	</tbody>
+    </table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>共${model.totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="${model.totalCount}" numPerPage="${model.pageSize}" pageNumShown="16" currentPage="${model.page}"></div>
+	</div>
+</div>

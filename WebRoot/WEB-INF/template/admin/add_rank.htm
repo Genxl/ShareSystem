@@ -1,0 +1,33 @@
+<form name="form1" method="post" action="user/rank/addDo"  onsubmit="return validateCallback(this, dialogAjaxDone);">
+     <input name="rank.id" type="hidden" id="Id" value="${model.rank.id}" />
+	 <table>
+      <tr>
+        <td width="60px"><br />官阶名：</td>
+        <td><input type="text" name="rank.name" value="${model.rank.name}"></td>
+      </tr>
+	  <tr>
+	  	<td colspan="2">
+	  		<br />
+	  		<span style="color:#3d7efa;">*升级到这个等级所需要的最小积分</span>
+	  	</td>
+	  </tr>
+      <tr>
+        <td>所需积分：</td>
+        <td><input name="rank.integral" type="text" size="5" value="${model.rank.integral}"></td>
+      </tr>
+	  <tr>
+	  	<td colspan="2">
+	  		<br />
+	  		<div style="color:#3d7efa;">*上传文件的最大总空间(单位为 b,1Mb=1024Kb=1024*1024b)</div>
+	  	</td>
+	  </tr>
+      <tr>
+        <td>空间大小：</td>
+        <td><input name="rank.size" type="text" size="30" style="width:100px" value="${model.rank.size}"></td>
+      </tr>
+      <tr>
+        <td><br /></td>
+        <td><br /><input type="submit" name="Submit" class="BUTTON" value="确定"></td>
+      </tr>
+    </table>
+	</form>	

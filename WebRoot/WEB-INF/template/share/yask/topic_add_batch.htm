@@ -1,0 +1,56 @@
+<@LONGAN.header title="批量添加题目--问卷系统|学文|学文分享平台">
+	<link rel="stylesheet" type="text/css" href="${base}/resource/css/personal.css"/>
+</@LONGAN.header>
+<@LONGAN.body>
+	<@LONGAN.personal index=11>
+		<div class="CENTER">
+			<p class="LEFT">
+				<a href="${base}/share/yask/">&lt;&lt;返回题库</a>
+			</p>
+			<div class="INFO LEFT">
+				请在下面输入框中输入批量题目数据。<br />
+				请按照以下的格式(以添加两个题目为例子）：<br />
+				<table>
+					<tr>
+						<td width="300px">
+							<p style="padding:8px">
+								中国的首府是？<br />
+								北流<br />
+								北海<br />
+								北京<br />
+								3<br />
+								<br />
+								世界上使用最多的语言是？<br />
+								英语<br />
+								汉语<br />
+								俄语<br />
+								2<br />
+							</p>
+						</td>
+						<td style="border-left:1px dashed #dadada;padding:8px" valign="top">
+							题目第一行是标题，最后一行是答案。<br />
+							答案只支持数字形式，比如答案是A就写1，B就写2.<br />
+							中间的行都是选项，至少两个选项。<br />
+							以空行隔开每道题目.<br />
+							<br />
+							注意：所有空格都会被系统删除，请不要填写空格。
+							
+						</td>
+					</tr>
+				</table>
+			</div>
+			<br />
+			<div>
+				<form action="${base}/share/yask/topic/add_batch" method="post">
+					<textarea style="width:700px;height:400px;" name="data">
+						${model.data}
+					</textarea>
+					<p style="text-align:center;">
+						<input type="submit" value="确定" />
+					</p>
+				</form>
+			</div>
+			<div style="text-align:center;" class="ERROR">${error_message}</div>
+		</div>
+	</@LONGAN.personal>	
+</@LONGAN.body>

@@ -1,0 +1,22 @@
+<div style="width:400px">
+	<p class="INFO CENTER">
+		只能将题目添加到生成类型为“自定义题目”的问卷中。<br />
+		请注意：如果试卷设置的题目数为10，但是添加的题目数超过10条，系统只会显示前10条题目。<br />
+		如果添加的题目数不足够，则会使得问卷无法正常参与！
+		<br /><br />
+		找到符合条件的问卷&nbsp;${model.papers?size}&nbsp;个。
+	</p>
+	<p class="INFO CENTER">
+		添加到：
+		<select id="paper_select">
+			<#list model.papers as p>
+			<option value="${p.id}">${p.name?html}</option>							
+			</#list>
+		</select>
+	</p>
+	<p class="INFO CENTER">
+		<a href="javascript:;" onclick="SHARE.topic.addToPaperDo();" class="BUTTON2">确定</a>
+		<a href="javascript:;" onclick="$.dialog.get('TOPIC').close();">取消</a>
+	</p>
+	<div id="topic_error" class="ERROR" style="text-align:center;"></div>
+</div>

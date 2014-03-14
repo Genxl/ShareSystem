@@ -1,0 +1,48 @@
+<div style="width:400px">
+	<p class="INFO">
+		如果是判断题，则不需要填写“选项”。
+	</p>
+	<div class="paddingP">
+		<p>标题：<input type="text" id="topic_name" class="textIn"/></p>
+		<p>
+			类型：
+			<select id="topic_type">
+				<option value="0">判断题</option>
+				<option value="1">单选题</option>
+			</select>
+		</p>
+		<div>
+			<!--判断-->
+			<div class="topic_type" id="topic_type_0" style="margin-left:20px;font-size:12px;">
+				答案：
+				<label><input type="radio" value="TRUE" name="t_type_0" checked="checked"/><span class="TRUE"></span></label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label><input type="radio" value="FALSE" name="t_type_0"/><span class="FALSE"></span></label>
+			</div>
+			<!--单选-->
+			<div id="topic_type_1" class="topic_type">
+				选项：<a href="javascript:;" id="t_add_item">添加选项</a><br />
+				<div id="topic_option_div" style="margin-left:20px;font-size:12px;">
+					<p style="padding:0 0 0 11px">
+						<input name="" type="text" class="textIn"/>&nbsp;<input type="radio" name="t_type_1" checked="checked" value="1"/>
+					</p>
+					<p style="padding:0 0 0 11px">
+						<input name="" type="text" class="textIn"/>&nbsp;<input type="radio" name="t_type_1" value="2"/>
+					</p>
+				</div>
+			</div>
+		</div>
+		<p style="text-align:center;" class="clear">
+			<span class="BUTTON2" id="topic_add" onclick="SHARE.topic.addDo();">确定</span>
+			<a class="right" href="${base}/share/yask/topic/add_batch">添加太慢？试试批量导入...</a>
+		</p>
+	</div>
+	<div id="topic_error" class="ERROR" style="text-align:center;"></div>
+</div>
+<script>
+	$(document).ready(function(){
+		$("#t_add_item").click(function(){SHARE.topic.addItem();});
+		$("#topic_type").change(function(){
+			$(".topic_type").hide();$("#topic_type_"+$(this).val()).slideDown('fast');}).trigger("change");
+	});
+</script>

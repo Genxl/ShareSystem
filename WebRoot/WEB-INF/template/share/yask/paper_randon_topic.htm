@@ -1,0 +1,13 @@
+<p class="INFO">随机题目成功，抽取了${model.id}条题目。</p>
+<div style="width:400px;height:300px;overflow-y:auto;color:#333333;padding-left:30px;">
+	<#list model.topics as t>
+		${t_index+1}.${t.name?html}<br />
+	</#list>
+</div>
+<div class="CENTER">
+	<a href="javascript:;" onclick="$.dialog.get('PAPER').close();" class="BUTTON2">就要这些</a>
+	<p class="right"><a href="javascript:;" onclick="SHARE.paper.reRandom();">不满意？重新随机...</a></p>
+</div>
+<script>
+	SHARE.paper.setElement('${model.data}');
+</script>

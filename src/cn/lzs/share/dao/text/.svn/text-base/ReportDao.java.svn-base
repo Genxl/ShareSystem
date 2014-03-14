@@ -1,0 +1,47 @@
+package cn.yws.longan.dao.text;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import cn.yws.longan.common.util.Finder;
+import cn.yws.longan.dao.BaseDao;
+import cn.yws.longan.domain.User;
+import cn.yws.longan.domain.text.Document;
+import cn.yws.longan.domain.text.Report;
+
+/**
+ * @项目名称 :longan
+ * @文件名称 :DownLogDao.java
+ * @所在包 :cn.yws.longan.dao.text
+ * @功能描述 :
+ *
+ * @创建者 :集成显卡	1053214511@qq.com
+ * @创建日期 :2011-12-12
+ * @修改记录 :
+ */
+@Service("document.reportDao")
+public class ReportDao extends BaseDao<Report> {
+	
+	/**
+	 * 判断用户是否举报过指定文件
+	 *	@param doc
+	 *	@param user
+	 *	@return
+	 *  @date :2011-12-12
+	 */
+	public Report getReport(Document doc,User user){
+		Finder finder=Finder.create("from Report where document_id="+doc.getId()+
+				" and user_id="+user.getId());
+		finder.setPageSize(1);
+		List<Report> list=pageFind(finder);
+		if(list.size()>0)
+			return list.get(0);
+		return null;
+	}
+	
+	public void delReport(Document doc)throws Exception{
+		this.executeHsql("delete Report where document_id="+doc.getId());
+	}
+
+}
